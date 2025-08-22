@@ -428,27 +428,37 @@ body {
     }
     
     /* Ajustes para la vista de horarios en tablets */
+    .week-day {
+        min-height: 120px;
+        padding: 0.6rem;
+    }
+    
     .time-range {
-        gap: 0.3rem;
+        gap: 0.25rem;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.7rem;
-        gap: 0.3rem;
+        font-size: 0.65rem;
+        gap: 0.25rem;
     }
     
     .time-label {
-        min-width: 28px;
+        min-width: 25px;
+        font-size: 0.6rem;
     }
     
     .time-value {
         padding: 0.1rem 0.3rem;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
     }
     
     .time-separator {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+    
+    .day-hours {
+        min-height: 50px;
     }
 }
 
@@ -748,6 +758,7 @@ body {
     margin-bottom: 2rem;
     width: 100%;
     overflow-x: auto;
+    align-items: stretch;
 }
 
 /* Asegurar que en pantallas grandes todos los días se vean */
@@ -774,27 +785,37 @@ body {
     }
     
     /* Ajustes para la vista de horarios en pantallas grandes */
+    .week-day {
+        min-height: 150px;
+        padding: 1.25rem;
+    }
+    
     .time-range {
-        gap: 0.6rem;
+        gap: 0.5rem;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.9rem;
-        gap: 0.6rem;
+        font-size: 0.85rem;
+        gap: 0.5rem;
     }
     
     .time-label {
-        min-width: 40px;
+        min-width: 35px;
+        font-size: 0.75rem;
     }
     
     .time-value {
-        padding: 0.25rem 0.6rem;
-        font-size: 0.9rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
     }
     
     .time-separator {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
+    }
+    
+    .day-hours {
+        min-height: 70px;
     }
 }
 
@@ -808,6 +829,10 @@ body {
     cursor: pointer;
     min-width: 0;
     flex-shrink: 0;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .week-day:hover {
@@ -836,23 +861,24 @@ body {
 }
 
 .day-header {
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .day-name {
     font-weight: 600;
     color: var(--text-light);
-    margin-bottom: 0.25rem;
-    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
     white-space: nowrap;
 }
 
 .day-status {
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     white-space: nowrap;
@@ -872,55 +898,67 @@ body {
     color: var(--text-gray);
     font-size: 0.9rem;
     line-height: 1.4;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
 }
 
 /* Estilos para la nueva vista de horarios */
 .time-range {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.3rem;
     align-items: center;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .time-start,
 .time-end {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
 }
 
 .time-label {
     font-weight: 600;
     color: var(--text-gray);
-    min-width: 35px;
+    min-width: 30px;
+    font-size: 0.7rem;
 }
 
 .time-value {
     font-weight: 700;
     color: var(--text-light);
     background: var(--card-hover);
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
     font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
 }
 
 .time-separator {
     color: var(--accent-color);
     font-weight: bold;
-    font-size: 1.2rem;
-    margin: 0.2rem 0;
+    font-size: 1rem;
+    margin: 0.1rem 0;
+    line-height: 1;
 }
 
 .time-range.closed {
     color: var(--text-gray);
     font-style: italic;
     text-align: center;
+    font-size: 0.75rem;
 }
 
 .time-range.closed i {
     color: var(--danger-color);
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 /* Tables - Diseño Moderno y Atractivo */
@@ -1919,27 +1957,37 @@ body {
     }
     
     /* Ajustes para la vista de horarios en pantallas medianas */
+    .week-day {
+        min-height: 130px;
+        padding: 0.875rem;
+    }
+    
     .time-range {
-        gap: 0.4rem;
+        gap: 0.3rem;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.75rem;
-        gap: 0.4rem;
+        font-size: 0.7rem;
+        gap: 0.3rem;
     }
     
     .time-label {
-        min-width: 30px;
+        min-width: 28px;
+        font-size: 0.65rem;
     }
     
     .time-value {
-        padding: 0.15rem 0.4rem;
-        font-size: 0.75rem;
+        padding: 0.1rem 0.35rem;
+        font-size: 0.7rem;
     }
     
     .time-separator {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .day-hours {
+        min-height: 55px;
     }
     
     .table-responsive {
@@ -2022,27 +2070,37 @@ body {
     }
     
     /* Ajustes para la vista de horarios en móviles */
+    .week-day {
+        min-height: 110px;
+        padding: 0.5rem;
+    }
+    
     .time-range {
-        gap: 0.25rem;
+        gap: 0.2rem;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.65rem;
-        gap: 0.25rem;
+        font-size: 0.6rem;
+        gap: 0.2rem;
     }
     
     .time-label {
-        min-width: 25px;
+        min-width: 22px;
+        font-size: 0.55rem;
     }
     
     .time-value {
-        padding: 0.1rem 0.25rem;
-        font-size: 0.65rem;
+        padding: 0.1rem 0.2rem;
+        font-size: 0.6rem;
     }
     
     .time-separator {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .day-hours {
+        min-height: 45px;
     }
     
     /* Configuración más compacta en móviles */
