@@ -54,6 +54,26 @@ document.addEventListener('DOMContentLoaded', function() {
             loadFallbackServices();
         }
     }
+
+    // Función para cargar servicios de respaldo cuando no hay barberos disponibles
+    function loadFallbackServices() {
+        console.log('🔄 Cargando servicios de respaldo...');
+        
+        // Mostrar mensaje informativo
+        showAvailabilityMessage('Cargando servicios de respaldo...', 'info');
+        
+        // Limpiar selectores
+        barberoSelect.innerHTML = '<option value="">No hay barberos disponibles</option>';
+        serviceSelect.innerHTML = '<option value="">No hay servicios disponibles</option>';
+        
+        // Deshabilitar formulario
+        document.getElementById('bookingForm').classList.add('disabled');
+        
+        // Mostrar mensaje de estado
+        setTimeout(() => {
+            showAvailabilityMessage('Por favor, contacta al administrador para configurar servicios', 'warning');
+        }, 2000);
+    }
     
     function loadBarberSelector() {
         barberoSelect.innerHTML = '<option value="">Selecciona un barbero</option>';

@@ -7,6 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "fix-dates": "node scripts/fix-invalid-dates.js",
+    "check-db": "node scripts/check-database.js",
+    "populate-db": "node scripts/populate-database.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

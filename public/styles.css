@@ -15,6 +15,24 @@
     --gradient-dark: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
     --shadow-light: 0 10px 30px rgba(212, 175, 55, 0.2);
     --shadow-dark: 0 20px 40px rgba(0, 0, 0, 0.5);
+    
+    /* Nuevas variables para tamaños optimizados */
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 1.875rem;  /* 30px */
+    --font-size-4xl: 2.25rem;   /* 36px */
+    
+    /* Espaciados optimizados */
+    --spacing-xs: 0.25rem;      /* 4px */
+    --spacing-sm: 0.5rem;       /* 8px */
+    --spacing-md: 1rem;         /* 16px */
+    --spacing-lg: 1.5rem;       /* 24px */
+    --spacing-xl: 2rem;         /* 32px */
+    --spacing-2xl: 3rem;        /* 48px */
 }
 
 /* Reset y configuración base */
@@ -37,7 +55,7 @@ body {
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem 0;
+    padding: var(--spacing-md) 0;
     transition: all 0.3s ease;
     position: relative;
     z-index: 1000;
@@ -49,7 +67,7 @@ body {
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: var(--font-size-2xl);
     color: var(--accent-color) !important;
     text-decoration: none;
     font-weight: 800;
@@ -58,10 +76,11 @@ body {
 .navbar-nav .nav-link {
     color: var(--text-light) !important;
     font-weight: 500;
-    margin: 0 0.5rem;
+    margin: 0 var(--spacing-sm);
     transition: all 0.3s ease;
     position: relative;
-    padding: 0.5rem 1rem !important;
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+    font-size: var(--font-size-base);
 }
 
 .navbar-nav .nav-link:hover {
@@ -89,13 +108,14 @@ body {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 25px;
-    padding: 8px 20px !important;
+    padding: var(--spacing-sm) var(--spacing-lg) !important;
     color: var(--accent-color) !important;
     font-weight: 500;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
+    font-size: var(--font-size-sm);
 }
 
 .login-btn::before {
@@ -179,10 +199,10 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(1.875rem, 5vw, 2.25rem);
     font-weight: 800;
     letter-spacing: 3px;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
     text-transform: uppercase;
     line-height: 1.1;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -214,7 +234,7 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
+    font-size: var(--font-size-lg);
     color: rgba(255, 255, 255, 0.95);
     max-width: 700px;
     margin: 0 auto;
@@ -224,11 +244,11 @@ body {
 }
 
 .hero-buttons {
-    margin-top: 3rem;
+    margin-top: var(--spacing-2xl);
 }
 
 .btn {
-    padding: 1rem 2.5rem;
+    padding: var(--spacing-md) var(--spacing-2xl);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -236,7 +256,7 @@ body {
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
-    font-size: 0.95rem;
+    font-size: var(--font-size-sm);
 }
 
 .btn-primary {
@@ -277,7 +297,7 @@ body {
 
 .scroll-arrow {
     color: var(--accent-color);
-    font-size: 1.8rem;
+    font-size: var(--font-size-2xl);
     animation: bounce 2s infinite;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -297,7 +317,7 @@ body {
 /* Services Section */
 .services-section {
     background: var(--dark-bg);
-    padding: 6rem 0;
+    padding: var(--spacing-2xl) 0;
     position: relative;
 }
 
@@ -312,10 +332,10 @@ body {
 }
 
 .section-title {
-    font-size: 3rem;
+    font-size: var(--font-size-3xl);
     font-weight: 800;
     color: var(--text-light);
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-md);
     text-transform: uppercase;
     letter-spacing: 3px;
     position: relative;
@@ -334,8 +354,8 @@ body {
 
 .section-subtitle {
     color: var(--text-gray);
-    font-size: 1.2rem;
-    margin-bottom: 4rem;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-2xl);
     font-weight: 300;
 }
 
@@ -343,7 +363,7 @@ body {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 3rem 2rem;
+    padding: var(--spacing-2xl) var(--spacing-lg);
     text-align: center;
     transition: all 0.4s ease;
     height: 100%;
@@ -375,15 +395,15 @@ body {
 }
 
 .service-icon {
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
     background: var(--gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 2rem;
-    font-size: 2.2rem;
+    margin: 0 auto var(--spacing-lg);
+    font-size: var(--font-size-2xl);
     color: var(--dark-bg);
     transition: all 0.4s ease;
     box-shadow: var(--shadow-light);
@@ -395,20 +415,21 @@ body {
 }
 
 .service-card h3 {
-    font-size: 1.6rem;
+    font-size: var(--font-size-xl);
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-md);
     color: var(--text-light);
 }
 
 .service-card p {
     color: var(--text-gray);
     line-height: 1.7;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
 }
 
 .service-price {
-    font-size: 1.8rem;
+    font-size: var(--font-size-2xl);
     font-weight: 800;
     color: var(--accent-color);
     margin-top: auto;
@@ -417,7 +438,7 @@ body {
 /* Gallery Section */
 .gallery-section {
     background: var(--darker-bg);
-    padding: 6rem 0;
+    padding: var(--spacing-2xl) 0;
     position: relative;
 }
 
@@ -441,7 +462,7 @@ body {
 
 .gallery-image img {
     width: 100%;
-    height: 300px;
+    height: 250px;
     object-fit: cover;
     transition: all 0.4s ease;
 }
@@ -480,43 +501,46 @@ body {
 }
 
 .gallery-content h4 {
-    font-size: 1.4rem;
+    font-size: var(--font-size-lg);
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
 }
 
 .gallery-content p {
     font-weight: 500;
     opacity: 0.9;
+    font-size: var(--font-size-sm);
 }
 
 /* Footer */
 .footer {
     background: var(--darker-bg);
-    padding: 4rem 0 2rem;
+    padding: var(--spacing-2xl) 0 var(--spacing-lg);
     border-top: 1px solid var(--border-color);
 }
 
 .footer-brand h4 {
     color: var(--accent-color);
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-xl);
 }
 
 .footer-brand p {
     color: var(--text-gray);
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
 }
 
 .social-links {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-md);
 }
 
 .social-link {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: var(--gradient-primary);
     border-radius: 50%;
     display: flex;
@@ -525,7 +549,7 @@ body {
     color: var(--dark-bg);
     text-decoration: none;
     transition: all 0.3s ease;
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg);
 }
 
 .social-link:hover {
@@ -537,8 +561,8 @@ body {
 .footer-links h5, .footer-services h5 {
     color: var(--text-light);
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-lg);
 }
 
 .footer-links ul, .footer-services ul {
@@ -547,7 +571,8 @@ body {
 }
 
 .footer-links ul li, .footer-services ul li {
-    margin-bottom: 0.8rem;
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-sm);
 }
 
 .footer-links ul li a {
@@ -558,7 +583,7 @@ body {
 
 .footer-links ul li a:hover {
     color: var(--accent-color);
-    padding-left: 5px;
+    padding-left: var(--spacing-xs);
 }
 
 .footer-services ul li {
@@ -567,12 +592,12 @@ body {
 
 .footer-divider {
     border-color: var(--border-color);
-    margin: 3rem 0 2rem;
+    margin: var(--spacing-2xl) 0 var(--spacing-lg);
 }
 
 .footer-copyright, .footer-credit {
     color: var(--text-gray);
-    font-size: 0.9rem;
+    font-size: var(--font-size-xs);
 }
 
 /* Responsive Design */
@@ -588,46 +613,46 @@ body {
     }
     
     .hero-title {
-        font-size: 2.5rem;
+        font-size: var(--font-size-2xl);
         letter-spacing: 2px;
     }
     
     .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: var(--font-size-base);
     }
     
     .btn {
-        padding: 0.8rem 2rem;
-        font-size: 0.9rem;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-xs);
     }
     
     .section-title {
-        font-size: 2.2rem;
+        font-size: var(--font-size-2xl);
     }
     
     .service-card {
-        padding: 2.5rem 1.5rem;
+        padding: var(--spacing-xl) var(--spacing-lg);
     }
     
     .gallery-image img {
-        height: 250px;
+        height: 200px;
     }
     
     .login-btn {
-        padding: 6px 16px !important;
-        font-size: 0.9rem;
+        padding: var(--spacing-xs) var(--spacing-md) !important;
+        font-size: var(--font-size-xs);
     }
 }
 
 @media (max-width: 576px) {
     .navbar-brand {
-        font-size: 1.2rem;
+        font-size: var(--font-size-lg);
     }
     
     .hero-buttons .btn {
         display: block;
         width: 100%;
-        margin-bottom: 1rem;
+        margin-bottom: var(--spacing-md);
     }
     
     .hero-buttons .btn:last-child {
@@ -635,12 +660,12 @@ body {
     }
     
     .login-btn {
-        padding: 5px 14px !important;
-        font-size: 0.85rem;
+        padding: var(--spacing-xs) var(--spacing-sm) !important;
+        font-size: var(--font-size-xs);
     }
     
     .service-card {
-        padding: 2rem 1.5rem;
+        padding: var(--spacing-lg) var(--spacing-md);
     }
 }
 
@@ -710,7 +735,7 @@ html {
 .barber-access-card {
     background: var(--text-light);
     border-radius: 20px;
-    padding: 3rem;
+    padding: var(--spacing-2xl);
     box-shadow: var(--shadow-dark);
     border: 1px solid rgba(212, 175, 55, 0.1);
     position: relative;
@@ -730,15 +755,15 @@ html {
 .barber-access-content h3 {
     color: var(--dark-bg);
     font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-lg);
 }
 
 .barber-access-content p {
     color: var(--text-dark);
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg);
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-lg);
 }
 
 .barber-features {
@@ -748,26 +773,27 @@ html {
 
 .barber-features li {
     color: var(--text-dark);
-    font-size: 1rem;
-    margin-bottom: 0.8rem;
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
     display: flex;
     align-items: center;
 }
 
 .barber-features li i {
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
+    font-size: var(--font-size-sm);
+    margin-right: var(--spacing-sm);
 }
 
 .barber-access-buttons .btn {
     font-weight: 600;
-    padding: 1rem 2rem;
+    padding: var(--spacing-md) var(--spacing-lg);
     border-radius: 50px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    font-size: var(--font-size-sm);
 }
 
 .barber-access-buttons .btn::before {
@@ -813,34 +839,34 @@ html {
 /* Responsive adjustments for barber access section */
 @media (max-width: 768px) {
     .barber-access-card {
-        padding: 2rem;
-        margin: 0 1rem;
+        padding: var(--spacing-lg);
+        margin: 0 var(--spacing-md);
     }
     
     .barber-access-content h3 {
-        font-size: 1.5rem;
+        font-size: var(--font-size-xl);
     }
     
     .barber-access-content p {
-        font-size: 1rem;
+        font-size: var(--font-size-base);
     }
     
     .barber-access-buttons .btn {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-xs);
     }
 }
 
 @media (max-width: 576px) {
     .barber-access-card {
-        padding: 1.5rem;
+        padding: var(--spacing-md);
     }
     
     .barber-access-content h3 {
-        font-size: 1.3rem;
+        font-size: var(--font-size-lg);
     }
     
     .barber-features li {
-        font-size: 0.9rem;
+        font-size: var(--font-size-xs);
     }
 }
