@@ -21,6 +21,11 @@ class Appointment {
                 metodo_pago = 'efectivo'
             } = appointmentData;
 
+            // Validar fecha antes de insertar
+            if (!Appointment.isValidDate(fecha)) {
+                throw new Error('Fecha inválida proporcionada');
+            }
+
             const sql = `
                 INSERT INTO turnos (
                     fecha, hora_inicio, hora_fin, id_cliente, id_usuario, 
@@ -334,6 +339,33 @@ class Appointment {
             console.error('Error al obtener próximas citas:', error);
             throw new Error('Error al obtener próximas citas');
         }
+    }
+
+    /**
+     * Validar si una fecha es válida
+     * @param {string} dateString - Fecha en formato YYYY-MM-DD
+     * @returns {boolean} - True si la fecha es válida
+     */
+    static isValidDate(dateString) {
+        // Verificar formato básico YYYY-MM-DD
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(dateString)) {
+            return false;
+        }
+
+        // Crear objeto Date y verificar que sea válido
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return false;
+        }
+
+        // Verificar que la fecha no sea anterior a 2020
+        const minDate = new Date('2020-01-01');
+        if (date < minDate) {
+            return false;
+        }
+
+        return true;
     }
 }
 

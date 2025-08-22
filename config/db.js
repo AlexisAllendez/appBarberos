@@ -10,6 +10,8 @@ const dbConfig = {
     // Configuración del pool de conexiones
     connectionLimit: 10,
     multipleStatements: true, // Permitir múltiples sentencias SQL
+    // Configuración para manejar fechas inválidas
+    dateStrings: true,
     // Configuración de SSL (opcional para producción)
     ssl: process.env.NODE_ENV === 'production' ? {
         rejectUnauthorized: false

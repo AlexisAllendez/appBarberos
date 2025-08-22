@@ -148,7 +148,7 @@ async function getDashboardStats(req, res) {
                 id, fecha, estado, id_usuario
             FROM turnos 
             WHERE id_usuario = ? 
-            AND (fecha IS NULL OR fecha = '0000-00-00' OR fecha < '2020-01-01')
+            AND (fecha IS NULL OR fecha < '2020-01-01')
             LIMIT 5
         `, [userId]);
         if (problematicDates.length > 0) {

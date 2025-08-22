@@ -30,6 +30,14 @@ class BookingController {
                 });
             }
 
+            // Validar formato de fecha
+            if (!BookingController.isValidDate(fecha)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'El formato de fecha no es válido'
+                });
+            }
+
             // Validar formato de email si se proporciona
             if (email && !BookingController.isValidEmail(email)) {
                 return res.status(400).json({
@@ -795,6 +803,33 @@ class BookingController {
                 zona_horaria: 'America/Argentina/Buenos_Aires'
             };
         }
+    }
+
+    /**
+     * Validar si una fecha es válida
+     * @param {string} dateString - Fecha en formato YYYY-MM-DD
+     * @returns {boolean} - True si la fecha es válida
+     */
+    static isValidDate(dateString) {
+        // Verificar formato básico YYYY-MM-DD
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(dateString)) {
+            return false;
+        }
+
+        // Crear objeto Date y verificar que sea válido
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return false;
+        }
+
+        // Verificar que la fecha no sea anterior a 2020
+        const minDate = new Date('2020-01-01');
+        if (date < minDate) {
+            return false;
+        }
+
+        return true;
     }
 }
 
