@@ -264,19 +264,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 dayHeader.querySelector('.day-status').className = 'day-status active';
                 dayHeader.querySelector('.day-status').textContent = 'Abierto';
                 
-                // Mostrar horarios de inicio y fin de forma más clara
+                // Mostrar horarios de inicio y fin de forma compacta
                 const horaInicio = horario.hora_inicio;
                 const horaFin = horario.hora_fin;
                 dayHours.querySelector('.hours').innerHTML = `
-                    <div class="time-range">
+                    <div class="time-range compact">
                         <div class="time-start">
-                            <i class="fas fa-clock me-1"></i>
-                            <span class="time-label">Inicio:</span>
                             <span class="time-value">${horaInicio}</span>
                         </div>
                         <div class="time-separator">—</div>
                         <div class="time-end">
-                            <span class="time-label">Fin:</span>
                             <span class="time-value">${horaFin}</span>
                         </div>
                     </div>
