@@ -10,6 +10,12 @@ class TurnosManager {
         this.editingCita = null;
         this.confirmCallback = null;
         
+        // Configuración de ordenamiento
+        this.sortConfig = {
+            field: 'estado', // Campo por defecto: estado (más importante)
+            direction: 'asc' // Dirección por defecto: ascendente
+        };
+        
         this.init();
     }
 
@@ -23,7 +29,9 @@ class TurnosManager {
     setupEventListeners() {
         // Botones principales
         document.getElementById('btnNuevaCita')?.addEventListener('click', () => this.openModal());
-        document.getElementById('btnRefresh')?.addEventListener('click', () => this.loadTurnos());
+        document.getElementById('btnRefresh')?.addEventListener('click', () => {
+            this.loadTurnos();
+        });
         document.getElementById('btnExportar')?.addEventListener('click', () => this.exportarCitas());
         document.getElementById('btnLimpiarFiltros')?.addEventListener('click', () => this.limpiarFiltros());
 
@@ -69,7 +77,113 @@ class TurnosManager {
 
         // Auto-Completado
         document.getElementById('btnAutoComplete')?.addEventListener('click', () => this.runAutoComplete());
-        this.setupAutoCompleteSystem();
+        this.setupAutoCompleteSystem(); // Configuración en modo MANUAL (sin timer automático)
+        
+        // Configurar encabezados ordenables
+        this.setupSortableHeaders();
+        
+        // Botón de resetear ordenamiento
+        document.getElementById('btnResetSort')?.addEventListener('click', () => this.resetSorting());
+    }
+
+    // Configurar encabezados ordenables de la tabla
+    setupSortableHeaders() {
+        const fechaHeader = document.querySelector('[data-sort="fecha"]');
+        const estadoHeader = document.querySelector('[data-sort="estado"]');
+        
+        if (fechaHeader) {
+            fechaHeader.addEventListener('click', () => this.handleSort('fecha'));
+        }
+        
+        if (estadoHeader) {
+            estadoHeader.addEventListener('click', () => this.handleSort('estado'));
+        }
+        
+        // Aplicar ordenamiento inicial
+        this.updateSortIndicators();
+    }
+
+    // Manejar clic en encabezado ordenable
+    handleSort(field) {
+        console.log(`🔄 Ordenando por: ${field}`);
+        
+        if (this.sortConfig.field === field) {
+            // Cambiar dirección si es el mismo campo
+            this.sortConfig.direction = this.sortConfig.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            // Nuevo campo, resetear a ascendente
+            this.sortConfig.field = field;
+            this.sortConfig.direction = 'asc';
+        }
+        
+        // Aplicar ordenamiento
+        this.ordenarTurnos();
+        this.renderTurnosTable();
+        this.updateSortIndicators();
+        
+        // Log de ordenamiento removido para consola limpia
+    }
+
+    // Actualizar indicadores visuales de ordenamiento
+    updateSortIndicators() {
+        // Limpiar todos los indicadores
+        const headers = document.querySelectorAll('.sortable-header');
+        headers.forEach(header => {
+            header.classList.remove('asc', 'desc', 'active');
+        });
+        
+        // Aplicar indicador al campo activo
+        const activeHeader = document.querySelector(`[data-sort="${this.sortConfig.field}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(this.sortConfig.direction, 'active');
+        }
+        
+        // Mostrar información del ordenamiento actual
+        this.showSortInfo();
+    }
+
+    // Mostrar información del ordenamiento actual
+    showSortInfo() {
+        const fieldNames = {
+            'estado': 'Estado',
+            'fecha': 'Fecha y Hora'
+        };
+        
+        const directionNames = {
+            'asc': 'ascendente',
+            'desc': 'descendente'
+        };
+        
+        // Log de ordenamiento actual removido para consola limpia
+        
+        // Mostrar notificación visual
+        const notification = document.getElementById('sortNotification');
+        const container = document.getElementById('sortNotificationContainer');
+        
+        if (notification && container) {
+            notification.textContent = `Ordenado por: ${fieldNames[this.sortConfig.field]} (${directionNames[this.sortConfig.direction]})`;
+            notification.className = 'alert alert-info alert-sm mb-0';
+            
+            // Mostrar la notificación
+            container.style.display = 'block';
+            
+            // Ocultar después de 3 segundos
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    // Función para resetear el ordenamiento a la configuración por defecto
+    resetSorting() {
+        this.sortConfig.field = 'estado';
+        this.sortConfig.direction = 'asc';
+        
+        console.log('🔄 Reseteando ordenamiento a configuración por defecto (Estado)');
+        
+        this.ordenarTurnos();
+        this.renderTurnosTable();
+        this.updateSortIndicators();
     }
 
     async loadInitialData() {
@@ -111,11 +225,21 @@ class TurnosManager {
                 ...this.currentFilters
             });
 
+            // Log de parámetros removido para consola limpia
             const response = await fetch(`/dashboard/appointments?${params}`);
             
             if (response.ok) {
                 const data = await response.json();
+                // Log de API removido para consola limpia
+                
                 this.turnos = data.data || [];
+                // Log de turnos cargados removido para consola limpia
+                
+                // Debug removido para consola limpia
+                
+                // Ordenar turnos: primero por fecha/hora, luego por prioridad de estado
+                this.ordenarTurnos();
+                
                 this.renderTurnosTable();
                 this.renderPagination(data.pagination);
                 this.updateStats();
@@ -128,6 +252,132 @@ class TurnosManager {
         } finally {
             this.showLoading(false);
         }
+    }
+
+    // Función para ordenar turnos por estado (PRINCIPAL) y fecha (SECUNDARIO)
+    ordenarTurnos() {
+        // Log de ordenamiento removido para consola limpia
+        
+        this.turnos.sort((a, b) => {
+            let comparison = 0;
+            
+            // Ordenar según el campo seleccionado
+            if (this.sortConfig.field === 'estado') {
+                // Ordenar por prioridad de estado (más importante)
+                const prioridadEstados = {
+                    'reservado': 1,      // Prioridad más alta - PRIMERO
+                    'confirmado': 2,     // Segunda prioridad - SEGUNDO
+                    'en_proceso': 3,     // Tercera prioridad - TERCERO
+                    'completado': 4,     // Cuarta prioridad
+                    'cancelado': 5,      // Quinta prioridad
+                    'no_show': 6         // Prioridad más baja - ÚLTIMO
+                };
+                
+                const prioridadA = prioridadEstados[a.estado] || 999;
+                const prioridadB = prioridadEstados[b.estado] || 999;
+                comparison = prioridadA - prioridadB;
+                
+                // Si es el mismo estado, ordenar por fecha
+                if (comparison === 0) {
+                    const fechaA = new Date(a.fecha);
+                    const fechaB = new Date(b.fecha);
+                    comparison = fechaA.getTime() - fechaB.getTime();
+                    
+                    // Si es la misma fecha, ordenar por hora
+                    if (comparison === 0) {
+                        const horaA = this.parseTime(a.hora_inicio);
+                        const horaB = this.parseTime(b.hora_inicio);
+                        comparison = horaA - horaB;
+                    }
+                }
+                
+            } else if (this.sortConfig.field === 'fecha') {
+                // Ordenar por fecha y hora (combinados)
+                const fechaA = new Date(a.fecha);
+                const fechaB = new Date(b.fecha);
+                comparison = fechaA.getTime() - fechaB.getTime();
+                
+                // Si es la misma fecha, ordenar por hora
+                if (comparison === 0) {
+                    const horaA = this.parseTime(a.hora_inicio);
+                    const horaB = this.parseTime(b.hora_inicio);
+                    comparison = horaA - horaB;
+                    
+                    // Si es la misma hora, ordenar por prioridad de estado
+                    if (comparison === 0) {
+                        const prioridadEstados = {
+                            'reservado': 1, 'confirmado': 2, 'en_proceso': 3,
+                            'completado': 4, 'cancelado': 5, 'no_show': 6
+                        };
+                        const prioridadA = prioridadEstados[a.estado] || 999;
+                        const prioridadB = prioridadEstados[b.estado] || 999;
+                        comparison = prioridadA - prioridadB;
+                    }
+                }
+            }
+            
+            // Aplicar dirección de ordenamiento
+            return this.sortConfig.direction === 'asc' ? comparison : -comparison;
+        });
+        
+        // Logs de ordenamiento removidos para consola limpia
+    }
+
+    // Función auxiliar para parsear tiempo a minutos desde medianoche
+    parseTime(timeString) {
+        if (!timeString) return 0;
+        const [hours, minutes] = timeString.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+
+    // Función para probar el ordenamiento
+    probarOrdenamiento() {
+        // Crear datos de prueba
+        const turnosPrueba = [
+            { fecha: '2024-12-15', hora_inicio: '10:00', estado: 'completado' },
+            { fecha: '2024-12-15', hora_inicio: '09:00', estado: 'reservado' },
+            { fecha: '2024-12-15', hora_inicio: '09:30', estado: 'confirmado' },
+            { fecha: '2024-12-15', hora_inicio: '10:30', estado: 'cancelado' },
+            { fecha: '2024-12-15', hora_inicio: '11:00', estado: 'reservado' }
+        ];
+        
+        // Guardar turnos originales
+        const turnosOriginales = [...this.turnos];
+        
+        // Aplicar ordenamiento de prueba
+        this.turnos = [...turnosPrueba];
+        this.ordenarTurnos();
+        
+        // Restaurar turnos originales
+        this.turnos = turnosOriginales;
+    }
+
+    // Función para forzar reordenamiento
+    forzarReordenamiento() {
+        this.ordenarTurnos();
+        this.renderTurnosTable();
+    }
+
+    // Función para verificar el orden de los turnos
+    verificarOrdenTurnos() {
+        // Crear una copia para no modificar el original
+        const turnosCopia = [...this.turnos];
+        
+        // Aplicar ordenamiento
+        this.ordenarTurnos();
+        
+        // Verificar si el orden cambió
+        const ordenCambio = turnosCopia.some((turno, index) => {
+            const turnoOrdenado = this.turnos[index];
+            return turno.fecha !== turnoOrdenado.fecha || 
+                   turno.hora_inicio !== turnoOrdenado.hora_inicio || 
+                   turno.estado !== turnoOrdenado.estado;
+        });
+        
+        // Restaurar turnos originales
+        this.turnos = turnosCopia;
+        
+        return ordenCambio;
     }
 
     renderTurnosTable() {
@@ -147,25 +397,40 @@ class TurnosManager {
             return;
         }
 
-        this.turnos.forEach(cita => {
+        this.turnos.forEach((cita, index) => {
+            // Debug removido para consola limpia
+            
+            // Debug removido para consola limpia
+            
             const row = document.createElement('tr');
+            row.className = this.getRowClass(cita.estado);
             row.innerHTML = `
                 <td>
                     <div>
-                        <strong>${cita.cliente_nombre} ${cita.cliente_apellido}</strong>
+                        <strong>${cita.cliente_nombre || 'Sin nombre'} ${cita.cliente_apellido || ''}</strong>
                         <br>
-                        <small class="text-muted">${cita.cliente_telefono}</small>
+                        <small class="text-muted">ID: ${cita.cliente_id || 'N/A'}</small>
                     </div>
                 </td>
                 <td>
                     <div>
-                        <strong>${cita.servicio_nombre}</strong>
+                        <strong>${cita.servicio_nombre || 'Sin servicio'}</strong>
                         <br>
-                        <small class="text-muted">${formatPrice(cita.servicio_precio)}</small>
+                        <small class="text-muted">${formatPrice(cita.servicio_precio || 0)}</small>
                     </div>
                 </td>
-                <td>${this.formatDate(cita.fecha)}</td>
-                <td>${this.formatTime(cita.hora_inicio)}</td>
+                <td class="datetime-column">
+                    <div>
+                        <strong>${this.formatDate(cita.fecha)}</strong>
+                        <br>
+                        <small class="text-muted">${this.formatTime(cita.hora_inicio)}</small>
+                    </div>
+                </td>
+                <td class="phone-column">
+                    <div class="text-center">
+                        <strong class="text-primary">${cita.cliente_telefono || cita.telefono || cita.telefono_cliente || 'Sin teléfono'}</strong>
+                    </div>
+                </td>
                 <td>
                     <span class="badge ${this.getEstadoBadgeClass(cita.estado)}">
                         ${this.getEstadoText(cita.estado)}
@@ -197,6 +462,19 @@ class TurnosManager {
             `;
             tbody.appendChild(row);
         });
+    }
+
+    // Función para obtener clase CSS de la fila según el estado
+    getRowClass(estado) {
+        const classes = {
+            'reservado': 'estado-reservado',
+            'confirmado': 'estado-confirmado',
+            'en_proceso': 'estado-en_proceso',
+            'completado': 'estado-completado',
+            'cancelado': 'estado-cancelado',
+            'no_show': 'estado-no_show'
+        };
+        return classes[estado] || '';
     }
 
     renderPagination(pagination) {
@@ -663,14 +941,14 @@ class TurnosManager {
 
     getEstadoBadgeClass(estado) {
         const classes = {
-            'reservado': 'bg-primary',
-            'confirmado': 'bg-success',
-            'en_proceso': 'bg-warning',
-            'completado': 'bg-info',
-            'cancelado': 'bg-danger',
-            'no_show': 'bg-secondary'
+            'reservado': 'bg-warning text-dark',      // Amarillo - Pendiente de confirmar
+            'confirmado': 'bg-success text-white',    // Verde - Confirmado y listo
+            'en_proceso': 'bg-info text-white',       // Azul - En progreso
+            'completado': 'bg-secondary text-white',  // Gris - Completado
+            'cancelado': 'bg-danger text-white',      // Rojo - Cancelado
+            'no_show': 'bg-dark text-white'           // Negro - No se presentó
         };
-        return classes[estado] || 'bg-secondary';
+        return classes[estado] || 'bg-secondary text-white';
     }
 
     showLoading(show) {
@@ -792,9 +1070,10 @@ class TurnosManager {
     // ===== SISTEMA DE AUTO-COMPLETADO =====
     
     setupAutoCompleteSystem() {
-        console.log('🔧 Configurando sistema de auto-completado...');
-        this.updateAutoCompleteStats();
-        this.startAutoCompleteTimer();
+        // Log de configuración removido para consola limpia
+        this.updateAutoCompleteStats(); // Solo cargar estadísticas iniciales
+        // this.startAutoCompleteTimer(); // DESHABILITADO - Solo funciona manualmente
+        // Logs de configuración removidos para consola limpia
     }
 
     async updateAutoCompleteStats() {
@@ -815,22 +1094,10 @@ class TurnosManager {
         // Actualizar contadores
         const pendingElement = document.getElementById('pendingAutoComplete');
         const autoCompletedElement = document.getElementById('autoCompletedToday');
-        const lastExecutionElement = document.getElementById('lastExecution');
-        const nextExecutionElement = document.getElementById('nextExecution');
 
         if (pendingElement) pendingElement.textContent = stats.pendingCount || 0;
         if (autoCompletedElement) autoCompletedElement.textContent = stats.autoCompletedToday || 0;
         
-        if (lastExecutionElement) {
-            lastExecutionElement.textContent = stats.lastExecution ? 
-                new Date(stats.lastExecution).toLocaleTimeString('es-AR') : '--';
-        }
-        
-        if (nextExecutionElement) {
-            nextExecutionElement.textContent = stats.nextExecution ? 
-                new Date(stats.nextExecution).toLocaleTimeString('es-AR') : '--';
-        }
-
         // Mostrar/ocultar sección de turnos pendientes
         const pendingSection = document.getElementById('pendingAppointmentsSection');
         if (pendingSection) {
@@ -841,6 +1108,8 @@ class TurnosManager {
         if (stats.pendingCount > 0) {
             this.loadPendingAppointments();
         }
+        
+        // Log de UI removido para consola limpia
     }
 
     async loadPendingAppointments() {
@@ -892,52 +1161,180 @@ class TurnosManager {
     async runAutoComplete() {
         const button = document.getElementById('btnAutoComplete');
         if (!button) return;
-
+        
         try {
-            // Deshabilitar botón y mostrar loading
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Ejecutando...';
-
-            const response = await fetch('/api/appointments/auto-complete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Completando turnos confirmados...';
+            
+            console.log('🚀 Ejecutando completado automático de turnos confirmados...');
+            console.log('📊 Total de turnos cargados:', this.turnos.length);
+            console.log('🔍 Estados de turnos disponibles:', [...new Set(this.turnos.map(t => t.estado))]);
+            
+            // Obtener solo turnos confirmados
+            const confirmedTurnos = this.turnos.filter(turno => turno.estado === 'confirmado');
+            console.log('✅ Turnos confirmados encontrados:', confirmedTurnos.length);
+            console.log('📋 Detalles de turnos confirmados:', confirmedTurnos.map(t => ({
+                id: t.id,
+                cliente: `${t.cliente_nombre} ${t.cliente_apellido}`,
+                fecha: t.fecha,
+                hora: t.hora_inicio,
+                estado: t.estado
+            })));
+            
+            if (confirmedTurnos.length === 0) {
+                this.showNotification('ℹ️ No hay turnos confirmados para completar', 'info');
+                button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
+                button.disabled = false;
+                return;
+            }
+            
+            const confirmMessage = `¿Estás seguro de que quieres marcar como COMPLETADOS todos los ${confirmedTurnos.length} turnos confirmados?\n\nEsta acción:\n• Marcará TODOS los turnos confirmados como completados\n• No se puede deshacer\n• Se aplicará independientemente de la hora del turno`;
+            
+            if (!confirm(confirmMessage)) {
+                console.log('❌ Usuario canceló la operación');
+                button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
+                button.disabled = false;
+                return;
+            }
+            
+            console.log('🔄 Usuario confirmó la operación, ejecutando completado automático...');
+            
+            // Ejecutar completado automático de TODOS los turnos confirmados
+            const response = await fetch('/api/appointments/complete-all-confirmed', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' } 
             });
-
+            
             const result = await response.json();
-
+            console.log('📡 Respuesta de la API:', result);
+            
             if (result.success) {
-                this.showNotification(
-                    `✅ Auto-completado ejecutado: ${result.data.updatedCount} turnos marcados como completados`, 
-                    'success'
-                );
+                const updatedCount = result.data.updatedCount || 0;
                 
-                // Actualizar estadísticas y lista de turnos
+                // Mostrar notificación de éxito
+                this.showNotification(`✅ ¡Completado exitoso! ${updatedCount} turnos confirmados marcados como completados`, 'success');
+                console.log(`✅ Completado automático exitoso: ${updatedCount} turnos procesados`);
+                
+                // Mostrar detalles de los turnos completados
+                if (confirmedTurnos.length > 0) {
+                    const turnosInfo = confirmedTurnos.map(t => 
+                        `• ${t.cliente_nombre} ${t.cliente_apellido} - ${t.servicio_nombre} (${t.fecha} ${t.hora_inicio})`
+                    ).join('\n');
+                    console.log('📋 Turnos confirmados completados:\n' + turnosInfo);
+                }
+                
+                console.log('🔄 Actualizando datos y UI...');
+                
+                // Actualizar datos y UI
                 await this.updateAutoCompleteStats();
                 await this.loadTurnos();
                 this.updateStats();
+                
+                console.log('🔄 Datos actualizados después de completado automático');
+                console.log('📊 Nuevos estados de turnos:', [...new Set(this.turnos.map(t => t.estado))]);
+                
+                // Mostrar resumen después de 2 segundos
+                setTimeout(() => {
+                    this.showNotification(`📊 Resumen: ${confirmedTurnos.length} turnos confirmados procesados, ${updatedCount} actualizados`, 'info');
+                }, 2000);
+                
+                // Cambiar el botón a estado "completado" temporalmente
+                console.log('🎨 Cambiando botón a estado "completado"...');
+                console.log('🔍 Estado anterior del botón:', button.className);
+                
+                button.innerHTML = '<i class="fas fa-check me-2"></i>¡Completado!';
+                button.className = 'btn btn-success btn-lg w-100';
+                
+                // Aplicar estilos inline como respaldo
+                button.style.backgroundColor = '#28a745';
+                button.style.borderColor = '#28a745';
+                button.style.color = 'white';
+                button.style.transform = 'scale(1.05)';
+                button.style.boxShadow = '0 6px 20px rgba(40, 167, 69, 0.4)';
+                
+                // Forzar reflow para asegurar que el cambio se aplique
+                button.offsetHeight;
+                
+                console.log('🎨 Botón cambiado a estado "completado" (verde)');
+                console.log('🔍 Clases del botón después del cambio:', button.className);
+                console.log('🔍 HTML del botón después del cambio:', button.innerHTML);
+                console.log('🎨 Estilos inline aplicados:', {
+                    backgroundColor: button.style.backgroundColor,
+                    borderColor: button.style.borderColor,
+                    color: button.style.color
+                });
+                
+                // Verificar que el cambio se aplicó
+                setTimeout(() => {
+                    console.log('🔍 Verificación después de 100ms - Clases:', button.className);
+                    console.log('🔍 Verificación después de 100ms - HTML:', button.innerHTML);
+                    console.log('🔍 Verificación después de 100ms - Estilos inline:', {
+                        backgroundColor: button.style.backgroundColor,
+                        borderColor: button.style.borderColor,
+                        color: button.style.color
+                    });
+                }, 100);
+                
+                // Después de 3 segundos, restaurar el botón original
+                setTimeout(() => {
+                    console.log('🔄 Restaurando botón a estado original...');
+                    console.log('🔍 Estado actual del botón antes de restaurar:', button.className);
+                    
+                    button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
+                    button.className = 'btn btn-warning btn-lg w-100';
+                    
+                    // Restaurar estilos inline
+                    button.style.backgroundColor = '';
+                    button.style.borderColor = '';
+                    button.style.color = '';
+                    button.style.transform = '';
+                    button.style.boxShadow = '';
+                    
+                    button.disabled = false;
+                    
+                    // Forzar reflow para asegurar que el cambio se aplique
+                    button.offsetHeight;
+                    
+                    console.log('🔄 Botón restaurado a estado original');
+                    console.log('🔍 Clases del botón después de restaurar:', button.className);
+                    console.log('🔍 HTML del botón después de restaurar:', button.innerHTML);
+                }, 3000);
+                
             } else {
-                this.showNotification(
-                    `❌ Error en auto-completado: ${result.message}`, 
-                    'error'
-                );
+                this.showNotification(`❌ Error en completado automático: ${result.message}`, 'error');
+                console.error('❌ Error en completado automático:', result.message);
+                
+                // Restaurar botón en caso de error
+                button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
+                button.disabled = false;
             }
+            
         } catch (error) {
-            console.error('Error ejecutando auto-completado:', error);
-            this.showNotification('❌ Error ejecutando auto-completado', 'error');
-        } finally {
-            // Restaurar botón
+            console.error('Error ejecutando completado automático:', error);
+            this.showNotification('❌ Error ejecutando completado automático', 'error');
+            
+            // Restaurar botón en caso de error
+            button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
             button.disabled = false;
-            button.innerHTML = '<i class="fas fa-robot me-2"></i>Ejecutar Auto-Completado';
         }
     }
 
     startAutoCompleteTimer() {
-        // Actualizar estadísticas cada 30 segundos
-        setInterval(() => {
-            this.updateAutoCompleteStats();
-        }, 30000);
+        // ⚠️ FUNCIÓN DESHABILITADA PARA PRODUCCIÓN
+        // El auto-completado ahora solo funciona manualmente para evitar consumo innecesario de recursos
+        
+        console.log('🚫 Timer de auto-completado DESHABILITADO');
+        console.log('💡 El auto-completado solo funciona cuando se presiona el botón manualmente');
+        console.log('✅ Esto reduce el consumo de recursos en un 100% para esta funcionalidad');
+        
+        // CÓDIGO ORIGINAL COMENTADO:
+        // setInterval(() => {
+        //     this.updateAutoCompleteStats();
+        // }, 5 * 60 * 1000); // 5 minutos
+        
+        // console.log('🔄 Timer de auto-completado configurado (OPTIMIZADO):');
+        // console.log('   - Actualización de estadísticas: cada 5 minutos');
+        // console.log('   - Reducción del 90% en consultas automáticas');
     }
 
     formatDate(dateString) {

@@ -203,10 +203,10 @@
                 <div class="row">
                     <div class="col-12">
                         <h1 class="section-title">
-                            <i class="fas fa-calendar-alt me-2"></i>
+                            <i class="fas fa-calendar-check me-2"></i>
                             Gestión de Turnos
                         </h1>
-                        <p class="text-muted">Administra todos los turnos y reservas</p>
+                        <p class="text-muted">Administra las citas y turnos de tus clientes</p>
                     </div>
                 </div>
 
@@ -304,65 +304,24 @@
                         <div class="card border-warning auto-complete-panel">
                             <div class="card-header bg-warning text-dark">
                                 <h5 class="card-title mb-0">
-                                    <i class="fas fa-robot me-2"></i>
-                                    Sistema de Auto-Completado
+                                    <i class="fas fa-check-double me-2"></i>
+                                    Sistema de Completado Automático de Turnos Confirmados
                                 </h5>
+                                <small class="text-dark-50">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Marca automáticamente como completados todos los turnos confirmados
+                                </small>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="status-indicator active me-3"></div>
-                                            <div>
-                                                <h6 class="mb-0">Estado</h6>
-                                                <small class="text-muted">Activo</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-info me-3">
-                                                <i class="fas fa-clock fa-2x"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">Última Ejecución</h6>
-                                                <small class="text-muted" id="lastExecution">--</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-success me-3">
-                                                <i class="fas fa-check-circle fa-2x"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">Próxima Ejecución</h6>
-                                                <small class="text-muted" id="nextExecution">--</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-warning me-3">
-                                                <i class="fas fa-cog fa-2x"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">Frecuencia</h6>
-                                                <small class="text-muted">Cada 5 minutos</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                                 <!-- Estadísticas y Acciones -->
-                                <div class="row mt-3">
+                                <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-left-warning shadow h-100 py-2">
                                             <div class="card-body">
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col mr-2">
                                                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                            Pendientes de Auto-Completar
+                                                            Turnos Confirmados Pendientes
                                                         </div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="pendingAutoComplete">0</div>
                                                     </div>
@@ -379,12 +338,12 @@
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col mr-2">
                                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                            Auto-Completados Hoy
+                                                            Turnos Completados Hoy
                                                         </div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="autoCompletedToday">0</div>
                                                     </div>
                                                     <div class="col-auto">
-                                                        <i class="fas fa-robot fa-2x text-gray-300"></i>
+                                                        <i class="fas fa-check-circle fa-2x text-gray-300"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,8 +352,8 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="d-flex align-items-end h-100">
                                             <button class="btn btn-warning btn-lg w-100" id="btnAutoComplete">
-                                                <i class="fas fa-robot me-2"></i>
-                                                Ejecutar Auto-Completado
+                                                <i class="fas fa-check-double me-2"></i>
+                                                Completar Turnos Confirmados
                                             </button>
                                         </div>
                                     </div>
@@ -455,9 +414,15 @@
                                             <tr>
                                                 <th>Cliente</th>
                                                 <th>Servicio</th>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
-                                                <th>Estado</th>
+                                                <th class="sortable-header" data-sort="fecha">
+                                                    Fecha y Hora
+                                                    <i class="fas fa-sort text-muted ms-1" id="sortFechaIcon"></i>
+                                                </th>
+                                                <th>Teléfono</th>
+                                                <th class="sortable-header" data-sort="estado">
+                                                    Estado
+                                                    <i class="fas fa-sort text-muted ms-1" id="sortEstadoIcon"></i>
+                                                </th>
                                                 <th>Precio</th>
                                                 <th>Acciones</th>
                                             </tr>
@@ -541,26 +506,37 @@
                 </div>
 
                 <!-- Barra de Acciones -->
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6 mb-3 mb-md-0">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="clientSearchInput" placeholder="Buscar clientes...">
-                                            <button class="btn btn-outline-primary" type="button" id="clientSearchBtn">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-md-end">
-                                        <button class="btn btn-primary" id="addClientBtn">
-                                            <i class="fas fa-plus me-2"></i>Nuevo Cliente
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" id="btnNuevaCita">
+                                    <i class="fas fa-plus me-2"></i>Nueva Cita
+                                </button>
+                                <button class="btn btn-outline-secondary" id="btnRefresh">
+                                    <i class="fas fa-sync-alt me-2"></i>Actualizar
+                                </button>
+                                <button class="btn btn-outline-info" id="btnExportar">
+                                    <i class="fas fa-download me-2"></i>Exportar
+                                </button>
                             </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-warning btn-sm" id="btnResetSort" title="Resetear ordenamiento">
+                                    <i class="fas fa-sort-amount-down me-1"></i>Resetear Orden
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" id="btnLimpiarFiltros">
+                                    <i class="fas fa-filter me-1"></i>Limpiar Filtros
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notificación de Ordenamiento -->
+                <div class="row mb-3" id="sortNotificationContainer" style="display: none;">
+                    <div class="col-12">
+                        <div class="alert alert-info alert-sm mb-0" id="sortNotification">
+                            Ordenado por: Estado (ascendente)
                         </div>
                     </div>
                 </div>
@@ -1509,6 +1485,27 @@
                 </div>
                 <div class="modal-body" id="systemInfoModalBody">
                     <!-- Contenido dinámico -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Detalles del Empleado -->
+    <div class="modal fade" id="employeeDetailsModal" tabindex="-1" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeDetailsModalLabel">
+                        <i class="fas fa-user me-2"></i>
+                        Detalles del Empleado
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="employeeDetailsModalBody">
+                    <!-- Los detalles se cargarán dinámicamente -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

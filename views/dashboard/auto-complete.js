@@ -78,23 +78,29 @@ class AutoCompleteManager {
     }
 
     /**
-     * Configurar actualizaciones automáticas
+     * Configurar actualizaciones automáticas - OPTIMIZADO PARA PRODUCCIÓN
      */
     setupAutoRefresh() {
-        // Actualizar estadísticas cada 2 minutos
+        // Actualizar estadísticas cada 10 minutos (en lugar de 2)
         setInterval(() => {
             this.loadStats();
-        }, 2 * 60 * 1000);
+        }, 10 * 60 * 1000);
 
-        // Actualizar turnos pendientes cada 5 minutos
+        // Actualizar turnos pendientes cada 15 minutos (en lugar de 5)
         setInterval(() => {
             this.loadPendingAppointments();
-        }, 5 * 60 * 1000);
+        }, 15 * 60 * 1000);
 
-        // Actualizar timestamps cada minuto
+        // Actualizar timestamps cada 5 minutos (en lugar de 1)
         setInterval(() => {
             this.updateTimestamps();
-        }, 60 * 1000);
+        }, 5 * 60 * 1000);
+        
+        console.log('🔄 Auto-refresh configurado (OPTIMIZADO):');
+        console.log('   - Estadísticas: cada 10 minutos');
+        console.log('   - Turnos pendientes: cada 15 minutos');
+        console.log('   - Timestamps: cada 5 minutos');
+        console.log('   - Reducción del 75% en actualizaciones automáticas');
     }
 
     /**
@@ -146,21 +152,27 @@ class AutoCompleteManager {
     }
 
     /**
-     * Actualizar timestamps de ejecución
+     * Actualizar timestamps de ejecución - DESHABILITADO PARA MODO MANUAL
      */
     updateTimestamps() {
-        const lastExecutionEl = document.getElementById('lastExecution');
-        const nextExecutionEl = document.getElementById('nextExecution');
-
-        if (lastExecutionEl && this.lastExecution) {
-            lastExecutionEl.textContent = this.lastExecution.toLocaleTimeString('es-AR');
-        }
-
-        if (nextExecutionEl) {
-            const now = new Date();
-            const nextExec = new Date(now.getTime() + 5 * 60 * 1000); // 5 minutos
-            nextExecutionEl.textContent = nextExec.toLocaleTimeString('es-AR');
-        }
+        // ⚠️ FUNCIÓN DESHABILITADA - Los timestamps ya no se muestran en la UI
+        // El auto-completado funciona en modo manual, no hay próxima ejecución automática
+        
+        console.log('🚫 Timestamps deshabilitados - Modo manual activo');
+        
+        // CÓDIGO ORIGINAL COMENTADO:
+        // const lastExecutionEl = document.getElementById('lastExecution');
+        // const nextExecutionEl = document.getElementById('nextExecution');
+        // 
+        // if (lastExecutionEl && this.lastExecution) {
+        //     lastExecutionEl.textContent = this.lastExecution.toLocaleTimeString('es-AR');
+        // }
+        // 
+        // if (nextExecutionEl) {
+        //     const now = new Date();
+        //     const nextExec = new Date(now.getTime() + 5 * 60 * 1000); // 5 minutos
+        //     nextExecutionEl.textContent = nextExec.toLocaleTimeString('es-AR');
+        // }
     }
 
     /**

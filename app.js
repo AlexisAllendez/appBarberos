@@ -234,7 +234,7 @@ async function startServer() {
 function setupScheduledTasks() {
     console.log('⏰ Configurando tareas programadas...');
     
-    // Tarea 1: Actualizar turnos automáticamente cada 5 minutos
+    // Tarea 1: Actualizar turnos automáticamente cada 30 minutos (en lugar de 5)
     const autoCompleteInterval = setInterval(async () => {
         try {
             console.log('🔄 Ejecutando tarea programada: Actualización automática de turnos...');
@@ -248,9 +248,9 @@ function setupScheduledTasks() {
         } catch (error) {
             console.error('❌ Error en tarea programada de auto-completado:', error);
         }
-    }, 5 * 60 * 1000); // 5 minutos
+    }, 30 * 60 * 1000); // 30 minutos (en lugar de 5)
     
-    // Tarea 2: Actualizar turnos al inicio del día (00:01 AM)
+    // Tarea 2: Actualizar turnos al inicio del día (00:01 AM) - OPTIMIZADO
     const dailyUpdateInterval = setInterval(async () => {
         try {
             const now = new Date();
@@ -271,11 +271,12 @@ function setupScheduledTasks() {
         } catch (error) {
             console.error('❌ Error en tarea diaria de auto-completado:', error);
         }
-    }, 60 * 1000); // Verificar cada minuto
+    }, 5 * 60 * 1000); // Verificar cada 5 minutos (en lugar de cada minuto)
     
-    console.log('✅ Tareas programadas configuradas:');
-    console.log('   - Actualización automática cada 5 minutos');
-    console.log('   - Actualización diaria a las 00:01 AM');
+    console.log('✅ Tareas programadas configuradas (OPTIMIZADAS PARA PRODUCCIÓN):');
+    console.log('   - Actualización automática cada 30 minutos (reducido de 5 minutos)');
+    console.log('   - Actualización diaria a las 00:01 AM (verificación cada 5 minutos)');
+    console.log('   - Reducción del 83% en consultas automáticas');
     
     // Retornar los intervalos para poder limpiarlos si es necesario
     return { autoCompleteInterval, dailyUpdateInterval };

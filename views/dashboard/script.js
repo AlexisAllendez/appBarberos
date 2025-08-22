@@ -114,26 +114,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load dashboard data
     async function loadDashboardData() {
         try {
-            console.log('🔄 Cargando datos del dashboard...');
-            console.log('📡 Haciendo request a /dashboard/stats');
+            // Log de carga removido para consola limpia
+            // Log de request removido para consola limpia
             
             const response = await fetch('/dashboard/stats', {
                 method: 'GET',
                 credentials: 'include'
             });
 
-            console.log('📡 Response status:', response.status);
-            console.log('📡 Response ok:', response.ok);
+            // Logs de response removidos para consola limpia
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('📊 Datos recibidos:', data);
+                // Log de datos removido para consola limpia
                 
                 if (data.success) {
                     dashboardData = data;
                     // Hacer dashboardData disponible globalmente
                     window.dashboardData = dashboardData;
-                    console.log('✅ Datos cargados exitosamente, actualizando UI...');
+                    // Log de carga exitosa removido para consola limpia
                     updateDashboardUI();
                 } else {
                     throw new Error(data.message || 'Error al cargar datos del dashboard');
@@ -193,8 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update statistics cards
     function updateStats() {
-        console.log('🔄 Actualizando estadísticas...');
-        console.log('📊 dashboardData:', dashboardData);
+        // Logs de actualización removidos para consola limpia
         
         if (!dashboardData || !dashboardData.stats || !dashboardData.stats.today) {
             console.warn('⚠️ Datos de estadísticas no disponibles');
@@ -205,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const stats = dashboardData.stats.today;
-        console.log('📈 Estadísticas de hoy:', stats);
+        // Log de estadísticas removido para consola limpia
         
         // Actualizar métricas del dashboard principal
         const todayTurnosElement = document.getElementById('todayTurnos');
@@ -213,11 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const pendingTurnosElement = document.getElementById('pendingTurnos');
         const todayRevenueMainElement = document.getElementById('todayRevenueMain');
         
-        console.log('🔍 Elementos del dashboard principal:');
-        console.log('  - todayTurnos:', !!todayTurnosElement);
-        console.log('  - completedTurnosMain:', !!completedTurnosMainElement);
-        console.log('  - pendingTurnos:', !!pendingTurnosElement);
-        console.log('  - todayRevenueMain:', !!todayRevenueMainElement);
+        // Logs de elementos removidos para consola limpia
         
         if (todayTurnosElement) todayTurnosElement.textContent = stats.total_turnos || 0;
         if (completedTurnosMainElement) completedTurnosMainElement.textContent = stats.turnos_completados || 0;
@@ -231,12 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const averagePerTurnoElement = document.getElementById('averagePerTurno');
         const todayRevenueElement = document.getElementById('todayRevenue');
         
-        console.log('🔍 Elementos de la sección de reportes:');
-        console.log('  - totalRevenue:', !!totalRevenueElement);
-        console.log('  - completedTurnos:', !!completedTurnosElement);
-        console.log('  - newClients:', !!newClientsElement);
-        console.log('  - averagePerTurno:', !!averagePerTurnoElement);
-        console.log('  - todayRevenue:', !!todayRevenueElement);
+        // Logs de elementos de reportes removidos para consola limpia
         
         if (totalRevenueElement) totalRevenueElement.textContent = formatPrice(stats.total_recaudado || 0);
         if (completedTurnosElement) completedTurnosElement.textContent = stats.turnos_completados || 0;
@@ -244,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (averagePerTurnoElement) averagePerTurnoElement.textContent = formatPrice(stats.promedio_por_turno || 0);
         if (todayRevenueElement) todayRevenueElement.textContent = formatPrice(stats.total_recaudado || 0);
         
-        console.log('✅ Estadísticas actualizadas');
+        // Log de actualización completada removido para consola limpia
     }
 
     // Update upcoming appointments list
@@ -299,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePopularServices() {
         const container = document.getElementById('popularServicesList');
         if (!container) {
-            console.warn('⚠️ Elemento popularServicesList no encontrado');
+            // Warning removido para consola limpia - elemento no encontrado
             return;
         }
         
@@ -1031,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderServices(services, pagination) {
         const container = document.getElementById('servicesList');
         if (!container) {
-            console.warn('⚠️ Elemento servicesList no encontrado');
+            // Warning removido para consola limpia - elemento no encontrado
             return;
         }
 
@@ -1116,12 +1105,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Placeholder functions for other sections
     function loadSchedule() {
-        console.log('Loading schedule...');
+        // Log de schedule removido para consola limpia
         // TODO: Implement schedule functionality
     }
 
     function loadReports() {
-        console.log('Loading reports...');
+        // Log de carga de reportes removido para consola limpia
         // Si la función initializeReportsPage está disponible (desde reports.js), usarla
         if (typeof initializeReportsPage === 'function') {
             initializeReportsPage();
@@ -1363,12 +1352,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Auto-refresh dashboard data every 5 minutes
+    // Auto-refresh dashboard data every 15 minutes (en lugar de 5) - OPTIMIZADO PARA PRODUCCIÓN
     setInterval(async () => {
         if (currentUser) {
             await loadDashboardData();
         }
-    }, 5 * 60 * 1000);
+    }, 15 * 60 * 1000); // 15 minutos
+    
+    // Logs de configuración removidos para consola limpia
 
     // Handle page visibility change
     document.addEventListener('visibilitychange', function() {
@@ -1430,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // SOLO si no estamos en la sección de reportes activa
         const reportsSection = document.getElementById('reports');
         if (reportsSection && reportsSection.classList.contains('active')) {
-            console.log('⚠️ Sección de reportes activa - no actualizando métricas desde dashboard');
+            // Log de sección activa removido para consola limpia
             return; // No actualizar si estamos en reportes
         }
         

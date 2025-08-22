@@ -1,5 +1,5 @@
 // Reportes con Filtros por Período - Sistema Avanzado
-console.log('🚀 Sistema de Reportes Avanzado cargado');
+    // Log de sistema removido para consola limpia
 
 // Variables globales para los gráficos
 let revenueChart = null;
@@ -19,7 +19,7 @@ const PERIODS = {
 
 // Función principal de inicialización
 function inicializarReportes() {
-    console.log('📊 Inicializando sistema de reportes...');
+            // Log de inicialización removido para consola limpia
     
     // Configurar event listeners
     configurarEventListeners();
@@ -84,14 +84,14 @@ function configurarFechasPorDefecto() {
 // Función principal para cargar reportes
 async function cargarReporte() {
     try {
-        console.log('📊 Cargando reporte...');
+        // Log de carga removido para consola limpia
         
         const period = document.getElementById('reportPeriod')?.value || 'month';
         const startDate = document.getElementById('startDate')?.value;
         const endDate = document.getElementById('endDate')?.value;
         
-        console.log('📅 Período seleccionado:', period);
-        console.log('📅 Fechas:', { startDate, endDate });
+        // Log de período removido para consola limpia
+        // Log de fechas removido para consola limpia
         
         // Mostrar loading
         mostrarLoading(true);
@@ -108,7 +108,7 @@ async function cargarReporte() {
         const result = await response.json();
         
         if (result.success) {
-            console.log('✅ Datos del reporte recibidos:', result.data);
+            // Log de datos removido para consola limpia
             
             // Actualizar métricas
             actualizarMetricas(result.data.metrics);
@@ -142,7 +142,7 @@ function actualizarMetricas(metrics) {
         return;
     }
     
-    console.log('📊 Actualizando métricas:', metrics);
+            // Log de métricas removido para consola limpia
     
     // Actualizar elementos de la UI
     actualizarElemento('totalTurnos', metrics.totalTurnos || 0);
@@ -171,7 +171,7 @@ function actualizarGraficos(charts) {
         return;
     }
     
-    console.log('📈 Actualizando gráficos:', charts);
+    // Log de gráficos removido para consola limpia
     
     // Gráfico de ingresos por período
     if (charts.revenueByPeriod) {
@@ -196,7 +196,7 @@ function actualizarTablas(tables) {
         return;
     }
     
-    console.log('📋 Actualizando tablas:', tables);
+    // Log de tablas removido para consola limpia
     
     // Tabla de top clientes
     if (tables.topClients) {
@@ -436,7 +436,7 @@ function actualizarTablaServicios(servicios) {
 function actualizarTituloPeriodo(period) {
     const periodInfo = PERIODS[period];
     if (periodInfo) {
-        console.log('📅 Período actualizado:', periodInfo.label);
+        // Log de período removido para consola limpia
     }
 }
 
@@ -446,7 +446,7 @@ function actualizarElemento(elementId, valor) {
     if (element) {
         element.textContent = valor;
     } else {
-        console.warn(`⚠️ Elemento ${elementId} no encontrado`);
+        // Warning removido para consola limpia - elemento no encontrado
     }
 }
 
@@ -553,7 +553,7 @@ function mostrarInsights(insights) {
 
 // Inicializar cuando se carga la página
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 Página cargada, inicializando reportes avanzados...');
+    // Log de página removido para consola limpia
     
     // Esperar un poco para que el DOM esté completamente listo
     setTimeout(inicializarReportes, 500);
@@ -562,9 +562,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Inicializar cuando se cambia a la sección de reportes
 document.addEventListener('click', function(e) {
     if (e.target.matches('[data-section="reports"]')) {
-        console.log('🔄 Cambiando a sección de reportes...');
+        // Log de cambio de sección removido para consola limpia
         setTimeout(inicializarReportes, 100);
     }
 });
 
-console.log('✅ Sistema de Reportes Avanzado inicializado correctamente');
+// Log de inicialización removido para consola limpia

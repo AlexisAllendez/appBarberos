@@ -26,6 +26,32 @@ class AppointmentController {
             });
         }
     }
+
+    /**
+     * Marcar TODOS los turnos confirmados como completados
+     * Endpoint para ejecutar manualmente el completado de turnos confirmados
+     */
+    static async completeAllConfirmed(req, res) {
+        try {
+            console.log('🚀 Solicitud manual de completado de TODOS los turnos confirmados');
+            
+            const result = await AppointmentService.completeAllConfirmedAppointments();
+            
+            res.json({
+                success: true,
+                message: result.message,
+                data: result
+            });
+            
+        } catch (error) {
+            console.error('Error ejecutando completado de turnos confirmados:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error al ejecutar completado de turnos confirmados',
+                error: error.message
+            });
+        }
+    }
     
     /**
      * Obtener estadísticas de auto-completado

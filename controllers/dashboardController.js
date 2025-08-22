@@ -353,6 +353,41 @@ async function getAllAppointments(req, res) {
         console.log('limit:', limit, 'offset:', offset);
         console.log('whereClause:', whereClause);
         
+        // Debug: Mostrar la consulta SQL completa
+        const debugSQL = `
+            SELECT
+                t.id,
+                t.fecha,
+                t.hora_inicio,
+                t.hora_fin,
+                t.estado,
+                t.precio_final,
+                t.notas,
+                t.codigo_cancelacion,
+                c.id as cliente_id,
+                c.nombre as cliente_nombre,
+                c.apellido as cliente_apellido,
+                c.telefono as cliente_telefono,
+                c.email as cliente_email,
+                s.id as servicio_id,
+                s.nombre as servicio_nombre,
+                s.precio as servicio_precio
+            FROM turnos t
+            JOIN clientes c ON t.id_cliente = c.id
+            JOIN servicios s ON t.id_servicio = s.id
+            WHERE ${whereClause}
+            ORDER BY 
+                CASE 
+                    WHEN t.estado = 'pendiente' THEN 1
+                    WHEN t.estado = 'confirmado' THEN 2
+                    ELSE 3
+                END ASC,
+                t.fecha DESC, 
+                t.hora_inicio DESC
+            LIMIT ? OFFSET ?
+        `;
+        console.log('Debug - SQL Query:', debugSQL);
+        
         // Asegurar que limit y offset sean números
         const limitNum = parseInt(limit) || 20;
         const offsetNum = parseInt(offset) || 0;
@@ -384,9 +419,22 @@ async function getAllAppointments(req, res) {
             JOIN clientes c ON t.id_cliente = c.id
             JOIN servicios s ON t.id_servicio = s.id
             WHERE ${whereClause}
-            ORDER BY t.fecha DESC, t.hora_inicio DESC
+            ORDER BY 
+                CASE 
+                    WHEN t.estado = 'pendiente' THEN 1
+                    WHEN t.estado = 'confirmado' THEN 2
+                    ELSE 3
+                END ASC,
+                t.fecha DESC, 
+                t.hora_inicio DESC
             LIMIT ? OFFSET ?
         `, finalParams);
+
+        // Debug: Mostrar los resultados ordenados
+        console.log('Debug - Resultados ordenados:');
+        appointments.forEach((appointment, index) => {
+            console.log(`${index + 1}. ID: ${appointment.id}, Estado: ${appointment.estado}, Fecha: ${appointment.fecha}, Hora: ${appointment.hora_inicio}`);
+        });
 
         // Obtener total de registros para paginación
         const totalResult = await query(`
@@ -712,7 +760,14 @@ async function getClientDetails(req, res) {
             FROM turnos t
             JOIN servicios s ON t.id_servicio = s.id
             WHERE t.id_cliente = ? AND t.id_usuario = ?
-            ORDER BY t.fecha DESC, t.hora_inicio DESC
+            ORDER BY 
+                CASE 
+                    WHEN t.estado = 'pendiente' THEN 1
+                    WHEN t.estado = 'confirmado' THEN 2
+                    ELSE 3
+                END ASC,
+                t.fecha DESC, 
+                t.hora_inicio DESC
             LIMIT 20
         `, [id, userId]);
 

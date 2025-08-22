@@ -9,6 +9,9 @@ router.use(authenticateToken);
 // Ejecutar actualización automática de turnos
 router.post('/auto-complete', AppointmentController.runAutoComplete);
 
+// Marcar TODOS los turnos confirmados como completados
+router.post('/complete-all-confirmed', AppointmentController.completeAllConfirmed);
+
 // Obtener estadísticas de auto-completado
 router.get('/auto-complete/stats', AppointmentController.getAutoCompleteStats);
 

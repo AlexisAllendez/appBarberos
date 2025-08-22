@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
         barberosData.forEach(barbero => {
             const option = document.createElement('option');
             option.value = barbero.id;
-            option.textContent = `${barbero.nombre} ${barbero.apellido}`;
+            // Evitar mostrar 'undefined' en el nombre
+            const nombreCompleto = `${barbero.nombre || ''} ${barbero.apellido || ''}`.trim();
+            option.textContent = nombreCompleto || 'Barbero sin nombre';
             barberoSelect.appendChild(option);
         });
         
@@ -97,16 +99,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateServiceBarberInfo(barbero) {
-        const serviceBarber = document.getElementById('serviceBarber');
-        const serviceBarberia = document.getElementById('serviceBarberia');
-        
-        if (serviceBarber && barbero) {
-            // Mostrar solo el nombre completo del barbero, sin rol
-            const displayName = `${barbero.nombre} ${barbero.apellido}`;
-            serviceBarber.textContent = displayName;
-        }
-        if (serviceBarberia && barbero) {
-            serviceBarberia.textContent = barbero.barberia || 'Barbería';
+        // Función simplificada - solo para compatibilidad
+        // Los elementos de información del servicio han sido removidos
+        console.log('Barbero seleccionado:', barbero);
+    }
+
+    function cleanProfessionalInfo() {
+        // Buscar y remover cualquier elemento que contenga información del profesional
+        const summaryCard = document.querySelector('.summary-card');
+        if (summaryCard) {
+            // Buscar elementos que contengan "Profesional" o el emoji
+            const professionalElements = summaryCard.querySelectorAll('*');
+            professionalElements.forEach(element => {
+                const text = element.textContent || element.innerText || '';
+                if (text.includes('Profesional') || text.includes('👨‍💼') || text.includes('Establecimiento') || text.includes('🏪')) {
+                    // Remover el elemento padre (summary-item)
+                    const summaryItem = element.closest('.summary-item');
+                    if (summaryItem) {
+                        summaryItem.remove();
+                        console.log('🧹 Información innecesaria removida:', text.trim());
+                    }
+                }
+            });
         }
     }
 
@@ -155,6 +169,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateSummary() {
+        // Limpiar cualquier elemento de "Profesional" que pueda haber aparecido dinámicamente
+        cleanProfessionalInfo();
+        
         const selectedService = serviceSelect.value;
         const selectedDate = fechaInput.value;
         const selectedTime = horaSelect.value;
@@ -204,21 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             summaryPrecio.textContent = '-';
         }
         
-        // Actualizar información del barbero en el resumen
-        const serviceBarber = document.getElementById('serviceBarber');
-        const serviceBarberia = document.getElementById('serviceBarberia');
-        if (serviceBarber && serviceBarber.textContent !== '-') {
-            const summaryBarbero = document.getElementById('summaryBarbero');
-            if (summaryBarbero) {
-                summaryBarbero.textContent = serviceBarber.textContent;
-            }
-        }
-        if (serviceBarberia && serviceBarberia.textContent !== '-') {
-            const summaryBarberia = document.getElementById('summaryBarberia');
-            if (summaryBarberia) {
-                summaryBarberia.textContent = serviceBarberia.textContent;
-            }
-        }
+        // Información del barbero removida del resumen
     }
     
     // Event listeners para actualizar resumen
@@ -271,7 +274,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const selectedBarber = barberosData.find(b => b.id == selectedBarberId);
                 if (selectedBarber) {
-                    showAvailabilityMessage(`Barbero seleccionado: ${selectedBarber.nombre} ${selectedBarber.apellido}`, 'success');
+                    const nombreCompleto = `${selectedBarber.nombre || ''} ${selectedBarber.apellido || ''}`.trim();
+                    showAvailabilityMessage(`Barbero seleccionado: ${nombreCompleto}`, 'success');
                     // Actualizar el resumen con la información del barbero
                     updateSummary();
                 }
@@ -299,7 +303,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const selectedBarber = barberosData.find(b => b.id == selectedBarberId);
-            console.log(`✅ Barbero validado: ${selectedBarber.nombre} ${selectedBarber.apellido} (ID: ${selectedBarber.id})`);
+            const nombreCompleto = `${selectedBarber.nombre || ''} ${selectedBarber.apellido || ''}`.trim();
+            console.log(`✅ Barbero validado: ${nombreCompleto} (ID: ${selectedBarber.id})`);
             
             const params = new URLSearchParams({ fecha });
             
@@ -368,32 +373,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateServiceInfo() {
-        const selectedService = serviceSelect.value;
-        const serviceInfoCard = document.getElementById('serviceInfo');
-        
-        if (selectedService && servicesData[selectedService]) {
-            const serviceData = servicesData[selectedService];
-            
-            // Mostrar duración del servicio correctamente
-            const durationElement = document.getElementById('serviceDuration');
-            if (serviceData.duracion && serviceData.duracion > 0) {
-                durationElement.textContent = `${serviceData.duracion} minutos`;
-            } else {
-                durationElement.textContent = 'Duración no especificada';
-            }
-            
-            // Mostrar descripción o guión medio si no hay descripción
-            const descriptionElement = document.getElementById('serviceDescription');
-            if (serviceData.descripcion && serviceData.descripcion.trim() !== '') {
-                descriptionElement.textContent = serviceData.descripcion.trim();
-            } else {
-                descriptionElement.textContent = '—'; // Guión medio para descripciones vacías
-            }
-            
-            serviceInfoCard.style.display = 'block';
-        } else {
-            serviceInfoCard.style.display = 'none';
-        }
+        // Función simplificada - solo para compatibilidad
+        // Los elementos de información del servicio han sido removidos
+        console.log('Servicio seleccionado:', serviceSelect.value);
     }
     
     function validateForm() {
@@ -577,6 +559,9 @@ document.addEventListener('DOMContentLoaded', function() {
     loadServices();
     loadAvailableSlots(fechaInput.value);
     updateSummary();
+    
+    // Limpiar información innecesaria que pueda existir
+    setTimeout(cleanProfessionalInfo, 500);
     
     const formSections = document.querySelectorAll('.form-section');
     formSections.forEach((section, index) => {

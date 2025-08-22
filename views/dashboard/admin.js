@@ -1,8 +1,21 @@
 // Panel de Administración
 class AdminPanel {
     constructor() {
+        // ✅ VALIDAR QUE EL USUARIO SEA ADMIN ANTES DE INICIALIZAR
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado - Se requiere rol de administrador');
+            throw new Error('Acceso denegado: Se requiere rol de administrador');
+        }
+        
+        // Log de inicialización removido para consola limpia
         this.initializeEventListeners();
         this.loadAdminData();
+    }
+
+    // ✅ FUNCIÓN DE UTILIDAD PARA VERIFICAR ROL
+    isUserAdmin() {
+        const userRole = localStorage.getItem('userRole');
+        return userRole === 'admin';
     }
 
     initializeEventListeners() {
@@ -35,6 +48,12 @@ class AdminPanel {
     }
 
     async loadAdminData() {
+        // ✅ VERIFICAR ROL ANTES DE CARGAR DATOS
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a loadAdminData');
+            return;
+        }
+
         try {
             // Cargar estadísticas de barberos
             await this.loadEmployeeStats();
@@ -52,6 +71,12 @@ class AdminPanel {
     }
 
     async loadEmployeeStats() {
+        // ✅ VERIFICAR ROL ANTES DE CARGAR ESTADÍSTICAS
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a loadEmployeeStats');
+            return;
+        }
+
         try {
             const response = await fetch('/api/employees/stats', {
                 method: 'GET',
@@ -81,6 +106,12 @@ class AdminPanel {
     }
 
     async loadEmployees() {
+        // ✅ VERIFICAR ROL ANTES DE CARGAR EMPLEADOS
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a loadEmployees');
+            return;
+        }
+
         try {
             const response = await fetch('/api/employees', {
                 method: 'GET',
@@ -153,6 +184,13 @@ class AdminPanel {
     }
 
     async toggleEmployeeStatus(employeeId) {
+        // ✅ VERIFICAR ROL ANTES DE CAMBIAR ESTADO
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a toggleEmployeeStatus');
+            this.showToast('Acceso denegado: Se requiere rol de administrador', 'error');
+            return;
+        }
+
         try {
             const response = await fetch(`/api/employees/${employeeId}/status`, {
                 method: 'PUT',
@@ -162,20 +200,27 @@ class AdminPanel {
                 }
             });
 
-                    if (response.ok) {
-            this.showToast('Estado del barbero actualizado', 'success');
-            await this.loadEmployees();
-            await this.loadEmployeeStats();
-        } else {
-            throw new Error('Error al actualizar estado');
+            if (response.ok) {
+                this.showToast('Estado del barbero actualizado', 'success');
+                await this.loadEmployees();
+                await this.loadEmployeeStats();
+            } else {
+                throw new Error('Error al actualizar estado');
+            }
+        } catch (error) {
+            console.error('Error cambiando estado:', error);
+            this.showToast('Error al cambiar estado del barbero', 'error');
         }
-    } catch (error) {
-        console.error('Error cambiando estado:', error);
-        this.showToast('Error al cambiar estado del barbero', 'error');
-    }
     }
 
     async changeEmployeeRole(employeeId) {
+        // ✅ VERIFICAR ROL ANTES DE CAMBIAR ROL
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a changeEmployeeRole');
+            this.showToast('Acceso denegado: Se requiere rol de administrador', 'error');
+            return;
+        }
+
         const newRole = confirm('¿Cambiar rol del barbero?') ? 'admin' : 'barbero';
         
         try {
@@ -188,22 +233,117 @@ class AdminPanel {
                 body: JSON.stringify({ role: newRole })
             });
 
-                    if (response.ok) {
-            this.showToast('Rol del barbero actualizado', 'success');
-            await this.loadEmployees();
-            await this.loadEmployeeStats();
-        } else {
-            throw new Error('Error al actualizar rol');
+            if (response.ok) {
+                this.showToast('Rol del barbero actualizado', 'success');
+                await this.loadEmployees();
+                await this.loadEmployeeStats();
+            } else {
+                throw new Error('Error al actualizar rol');
+            }
+        } catch (error) {
+            console.error('Error cambiando rol:', error);
+            this.showToast('Error al cambiar rol del barbero', 'error');
         }
-    } catch (error) {
-        console.error('Error cambiando rol:', error);
-        this.showToast('Error al cambiar rol del barbero', 'error');
-    }
     }
 
-    viewEmployeeDetails(employeeId) {
-        // Implementar modal con detalles del barbero
-        this.showToast('Función en desarrollo', 'info');
+    async viewEmployeeDetails(employeeId) {
+        // ✅ VERIFICAR ROL ANTES DE VER DETALLES
+        if (!this.isUserAdmin()) {
+            console.warn('AdminPanel: Acceso denegado a viewEmployeeDetails');
+            this.showToast('Acceso denegado: Se requiere rol de administrador', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/employees/${employeeId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    this.displayEmployeeDetails(data.employee);
+                } else {
+                    throw new Error('Error al cargar detalles del barbero');
+                }
+            } else {
+                throw new Error('Error al cargar detalles del barbero');
+            }
+        } catch (error) {
+            console.error('Error cargando detalles del barbero:', error);
+            this.showToast('Error al cargar detalles del barbero', 'error');
+        }
+    }
+
+    displayEmployeeDetails(employee) {
+        const modalBody = document.getElementById('employeeDetailsModalBody');
+        const modalTitle = document.getElementById('employeeDetailsModalLabel');
+        
+        modalTitle.textContent = `Detalles de ${employee.nombre || 'Empleado'}`;
+        
+        const detailsHtml = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Información Personal</h6>
+                    <ul class="list-unstyled">
+                        <li><strong>Nombre:</strong> ${employee.nombre || 'N/A'}</li>
+                        <li><strong>Apellido:</strong> ${employee.apellido || 'N/A'}</li>
+                        <li><strong>Email:</strong> ${employee.email || 'N/A'}</li>
+                        <li><strong>Teléfono:</strong> ${employee.telefono || 'N/A'}</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Información Laboral</h6>
+                    <ul class="list-unstyled">
+                        <li><strong>Rol:</strong> <span class="badge bg-${employee.rol === 'admin' ? 'danger' : 'primary'}">${employee.rol || 'N/A'}</span></li>
+                        <li><strong>Estado:</strong> <span class="badge bg-${employee.estado === 'activo' ? 'success' : 'warning'}">${employee.estado || 'N/A'}</span></li>
+                        <li><strong>Barbería:</strong> ${employee.barberia || 'N/A'}</li>
+                        <li><strong>Fecha de Registro:</strong> ${employee.fecha_registro ? new Date(employee.fecha_registro).toLocaleDateString() : 'N/A'}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h6>Estadísticas</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="h4 text-primary">${employee.total_turnos || 0}</div>
+                                <small class="text-muted">Total Turnos</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="h4 text-success">${employee.turnos_completados || 0}</div>
+                                <small class="text-muted">Completados</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="h4 text-warning">${employee.turnos_pendientes || 0}</div>
+                                <small class="text-muted">Pendientes</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="h4 text-info">${employee.rating || 'N/A'}</div>
+                                <small class="text-muted">Rating</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        modalBody.innerHTML = detailsHtml;
+        
+        // Mostrar el modal
+        const modal = new bootstrap.Modal(document.getElementById('employeeDetailsModal'));
+        modal.show();
     }
 
     loadRegistrationCodes() {
@@ -360,16 +500,75 @@ class AdminPanel {
 let adminPanel;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar si el usuario es admin desde localStorage (fallback)
+    // Verificar si el usuario es admin desde localStorage
     const userRole = localStorage.getItem('userRole');
     
     if (userRole === 'admin') {
-        // Solo mostrar el enlace de navegación de administración
+        // Mostrar el enlace de navegación de administración
         const adminNavItem = document.querySelector('.nav-item.admin-only');
         if (adminNavItem) {
             adminNavItem.style.display = 'block';
         }
+        
+        // ✅ SOLO INICIALIZAR EL PANEL SI ES ADMIN
+        try {
+            adminPanel = new AdminPanel();
+            // Log de inicialización removido para consola limpia
+        } catch (error) {
+            console.error('❌ Error inicializando AdminPanel:', error);
+            // Si hay error, ocultar la sección de admin
+            const adminSection = document.getElementById('admin');
+            if (adminSection) {
+                adminSection.style.display = 'none';
+            }
+        }
+    } else {
+        // ✅ OCULTAR COMPLETAMENTE LA SECCIÓN DE ADMIN PARA NO-ADMINS
+        const adminSection = document.getElementById('admin');
+        if (adminSection) {
+            adminSection.style.display = 'none';
+        }
+        
+        // ✅ OCULTAR ENLACE DE NAVEGACIÓN
+        const adminNavItem = document.querySelector('.nav-item.admin-only');
+        if (adminNavItem) {
+            adminNavItem.style.display = 'none';
+        }
     }
+});
+
+// ✅ INICIALIZACIÓN SOLO PARA ADMINS AL CAMBIAR DE SECCIÓN
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('[data-section="admin"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            // ✅ VERIFICAR ROL ANTES DE INICIALIZAR
+            const userRole = localStorage.getItem('userRole');
+            if (userRole === 'admin') {
+                setTimeout(() => {
+                    if (!adminPanel) {
+                        try {
+                            adminPanel = new AdminPanel();
+                            // Log de inicialización removido para consola limpia
+                        } catch (error) {
+                            console.error('❌ Error inicializando AdminPanel por clic:', error);
+                            // Si hay error, ocultar la sección de admin
+                            const adminSection = document.getElementById('admin');
+                            if (adminSection) {
+                                adminSection.style.display = 'none';
+                            }
+                        }
+                    }
+                }, 100);
+            } else {
+                // ✅ PREVENIR ACCESO NO AUTORIZADO
+                console.warn('Acceso denegado: Se requiere rol de administrador');
+                // Opcional: mostrar mensaje de error
+                alert('Acceso denegado: Se requiere rol de administrador');
+                return false;
+            }
+        });
+    });
 });
 
 // Hacer la clase AdminPanel disponible globalmente

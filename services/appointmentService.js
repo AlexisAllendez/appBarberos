@@ -70,7 +70,7 @@ class AppointmentService {
                         fecha: appointment.fecha,
                         hora_fin: appointment.hora_fin,
                         barbero: appointment.barbero_nombre,
-                        cliente: `${appointment.cliente_nombre} ${appointment.cliente_apellido}`,
+                        cliente: `${appointment.cliente_nombre} ${appointment.apellido}`,
                         servicio: appointment.servicio_nombre,
                         estado_anterior: appointment.estado,
                         estado_nuevo: 'completado'
@@ -95,6 +95,98 @@ class AppointmentService {
         } catch (error) {
             console.error('❌ Error en autoCompleteAppointments:', error);
             throw new Error('Error al actualizar turnos automáticamente');
+        }
+    }
+
+    /**
+     * Marcar TODOS los turnos confirmados como completados
+     * Esta función se ejecuta manualmente para marcar turnos confirmados sin importar la hora
+     */
+    static async completeAllConfirmedAppointments() {
+        try {
+            console.log('🚀 Iniciando completado manual de TODOS los turnos confirmados...');
+            
+            // Obtener TODOS los turnos confirmados, sin importar la hora
+            const sql = `
+                SELECT 
+                    t.id,
+                    t.fecha,
+                    t.hora_inicio,
+                    t.hora_fin,
+                    t.estado,
+                    t.id_usuario,
+                    u.nombre as barbero_nombre,
+                    c.nombre as cliente_nombre,
+                    c.apellido as cliente_apellido,
+                    s.nombre as servicio_nombre
+                FROM turnos t
+                JOIN usuarios u ON t.id_usuario = u.id
+                JOIN clientes c ON t.id_cliente = c.id
+                JOIN servicios s ON t.id_servicio = s.id
+                WHERE t.estado = 'confirmado'
+                ORDER BY t.fecha ASC, t.hora_inicio ASC
+            `;
+            
+            const confirmedAppointments = await query(sql);
+            
+            if (confirmedAppointments.length === 0) {
+                console.log('✅ No hay turnos confirmados para marcar como completados');
+                return {
+                    success: true,
+                    message: 'No hay turnos confirmados para actualizar',
+                    updatedCount: 0,
+                    appointments: []
+                };
+            }
+            
+            console.log(`📋 Encontrados ${confirmedAppointments.length} turnos confirmados para marcar como completados`);
+            
+            let updatedCount = 0;
+            const updatedAppointments = [];
+            
+            // Actualizar cada turno confirmado
+            for (const appointment of confirmedAppointments) {
+                try {
+                    // Marcar como completado
+                    await query(`
+                        UPDATE turnos 
+                        SET estado = 'completado', 
+                            actualizado_en = CURRENT_TIMESTAMP
+                        WHERE id = ?
+                    `, [appointment.id]);
+                    
+                    updatedCount++;
+                    updatedAppointments.push({
+                        id: appointment.id,
+                        fecha: appointment.fecha,
+                        hora_inicio: appointment.hora_inicio,
+                        hora_fin: appointment.hora_fin,
+                        barbero: appointment.barbero_nombre,
+                        cliente: `${appointment.cliente_nombre} ${appointment.cliente_apellido}`,
+                        servicio: appointment.servicio_nombre,
+                        estado_anterior: 'confirmado',
+                        estado_nuevo: 'completado'
+                    });
+                    
+                    console.log(`✅ Turno ${appointment.id} marcado como completado (${appointment.fecha} ${appointment.hora_inicio})`);
+                    
+                } catch (error) {
+                    console.error(`❌ Error actualizando turno ${appointment.id}:`, error);
+                }
+            }
+            
+            console.log(`🎯 Proceso completado: ${updatedCount}/${confirmedAppointments.length} turnos confirmados marcados como completados`);
+            
+            return {
+                success: true,
+                message: `Se marcaron ${updatedCount} turnos confirmados como completados`,
+                updatedCount,
+                appointments: updatedAppointments
+            };
+            
+        } catch (error) {
+            console.error('❌ Error en completeAllConfirmedAppointments:', error);
+            throw new Error('Error al marcar turnos confirmados como completados');
         }
     }
     
