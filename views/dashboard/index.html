@@ -756,7 +756,7 @@
 
                 <!-- Configuración General -->
                 <div class="row mb-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">
@@ -765,9 +765,9 @@
                                 </h5>
                             </div>
                             <div class="card-body">
-                                <form id="configForm">
+                                <form id="configForm" class="config-form">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-12 mb-3">
                                             <label for="bufferTime" class="form-label">Buffer entre turnos</label>
                                             <select class="form-select" id="bufferTime">
                                                 <option value="0">Sin buffer</option>
@@ -780,7 +780,7 @@
                                                 Tiempo de limpieza/preparación entre turnos
                                             </small>
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-12 mb-3">
                                             <label for="anticipacionReserva" class="form-label">Anticipación mínima</label>
                                             <select class="form-select" id="anticipacionReserva">
                                                 <option value="60">1 hora antes</option>
@@ -792,12 +792,12 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-12 mb-3">
                                             <label for="maxReservasDia" class="form-label">Máximo reservas por día</label>
                                             <input type="number" class="form-control" id="maxReservasDia" value="20" min="1" max="50">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-check mt-4">
+                                        <div class="col-12 mb-3">
+                                            <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="permitirReservasMismoDia" checked>
                                                 <label class="form-check-label" for="permitirReservasMismoDia">
                                                     Permitir reservas el mismo día
@@ -805,7 +805,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary w-100">
                                         <i class="fas fa-save me-2"></i>Guardar Configuración
                                     </button>
                                 </form>
@@ -813,7 +813,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">

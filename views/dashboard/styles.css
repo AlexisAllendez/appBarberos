@@ -442,6 +442,53 @@ body {
     }
 }
 
+/* Configuración General - Optimizada para columna más pequeña */
+.config-form .form-label {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.config-form .form-select,
+.config-form .form-control {
+    background: var(--card-hover);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.config-form .form-select:focus,
+.config-form .form-control:focus {
+    background: var(--card-hover);
+    border-color: var(--accent-color);
+    color: var(--text-light);
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+}
+
+.config-form .form-text {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin-top: 0.25rem;
+}
+
+.config-form .form-check-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.config-form .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+.config-form .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -673,7 +720,7 @@ body {
 .weekly-overview {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.75rem;
+    gap: 1rem;
     margin-bottom: 2rem;
     width: 100%;
     overflow-x: auto;
@@ -682,24 +729,24 @@ body {
 /* Asegurar que en pantallas grandes todos los días se vean */
 @media (min-width: 1400px) {
     .weekly-overview {
-        gap: 1rem;
+        gap: 1.25rem;
     }
     
     .week-day {
-        padding: 1rem;
+        padding: 1.25rem;
     }
     
     .day-name {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .day-status {
-        font-size: 0.8rem;
-        padding: 0.25rem 0.75rem;
+        font-size: 0.85rem;
+        padding: 0.3rem 0.8rem;
     }
     
     .day-hours {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 }
 
@@ -707,7 +754,7 @@ body {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    padding: 0.75rem;
+    padding: 1rem;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -741,7 +788,7 @@ body {
 }
 
 .day-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-color);
 }
@@ -750,14 +797,14 @@ body {
     font-weight: 600;
     color: var(--text-light);
     margin-bottom: 0.25rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     white-space: nowrap;
 }
 
 .day-status {
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     white-space: nowrap;
@@ -775,10 +822,11 @@ body {
 
 .day-hours {
     color: var(--text-gray);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.4;
 }
 
 /* Tables - Diseño Moderno y Atractivo */
@@ -1729,13 +1777,94 @@ body {
 @media (max-width: 1200px) {
     .weekly-overview {
         grid-template-columns: repeat(4, 1fr);
-        gap: 0.5rem;
+        gap: 0.75rem;
+    }
+    
+    .week-day {
+        padding: 0.875rem;
+    }
+    
+    /* Configuración más compacta en pantallas medianas */
+    .config-form .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .config-form .form-select,
+    .config-form .form-control {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .config-form .btn-primary {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 768px) {
     .weekly-overview {
         grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+    }
+    
+    .week-day {
+        padding: 0.6rem;
+    }
+    
+    .day-name {
+        font-size: 0.85rem;
+    }
+    
+    .day-status {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .day-hours {
+        font-size: 0.8rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .special-day-card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn-sm {
+        padding: 0.375rem 0.75rem;
+    }
+    
+    /* Configuración más compacta en tablets */
+    .config-form .form-label {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .config-form .form-select,
+    .config-form .form-control {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.65rem;
+    }
+    
+    .config-form .form-text {
+        font-size: 0.75rem;
+    }
+    
+    .config-form .form-check-label {
+        font-size: 0.8rem;
+    }
+    
+    .config-form .btn-primary {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .weekly-overview {
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
     }
     
@@ -1754,42 +1883,6 @@ body {
     
     .day-hours {
         font-size: 0.75rem;
-    }
-    
-    .table-responsive {
-        font-size: 0.875rem;
-    }
-    
-    .special-day-card {
-        margin-bottom: 1rem;
-    }
-    
-    .btn-sm {
-        padding: 0.375rem 0.75rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .weekly-overview {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.4rem;
-    }
-    
-    .week-day {
-        padding: 0.4rem;
-    }
-    
-    .day-name {
-        font-size: 0.75rem;
-    }
-    
-    .day-status {
-        font-size: 0.65rem;
-        padding: 0.1rem 0.3rem;
-    }
-    
-    .day-hours {
-        font-size: 0.7rem;
     }
     
     .card-body {
