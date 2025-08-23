@@ -264,30 +264,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 dayHeader.querySelector('.day-status').className = 'day-status active';
                 dayHeader.querySelector('.day-status').textContent = 'Abierto';
                 
-                // Mostrar horarios de inicio y fin de forma compacta
+                // Mostrar horarios en dos líneas: inicio arriba, fin abajo
                 const horaInicio = horario.hora_inicio;
                 const horaFin = horario.hora_fin;
                 dayHours.querySelector('.hours').innerHTML = `
-                    <div class="time-range compact">
-                        <div class="time-start">
-                            <span class="time-value">${horaInicio}</span>
-                        </div>
+                    <div class="time-display">
+                        <div class="time-start">${horaInicio}</div>
                         <div class="time-separator">—</div>
-                        <div class="time-end">
-                            <span class="time-value">${horaFin}</span>
-                        </div>
+                        <div class="time-end">${horaFin}</div>
                     </div>
                 `;
             } else {
                 // Día inactivo
                 dayHeader.querySelector('.day-status').className = 'day-status inactive';
                 dayHeader.querySelector('.day-status').textContent = 'Cerrado';
-                dayHours.querySelector('.hours').innerHTML = `
-                    <div class="time-range closed">
-                        <i class="fas fa-times-circle me-1"></i>
-                        <span>No disponible</span>
-                    </div>
-                `;
+                dayHours.querySelector('.hours').textContent = 'Cerrado';
             }
         });
     }

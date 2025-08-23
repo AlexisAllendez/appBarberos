@@ -429,40 +429,7 @@ body {
     
     /* Ajustes para la vista de horarios en tablets */
     .week-day {
-        min-height: 100px;
         padding: 0.6rem;
-    }
-    
-    .time-range {
-        gap: 0.25rem;
-    }
-    
-    .time-range.compact {
-        gap: 0.3rem;
-    }
-    
-    .time-start,
-    .time-end {
-        font-size: 0.65rem;
-        gap: 0.25rem;
-    }
-    
-    .time-label {
-        min-width: 25px;
-        font-size: 0.6rem;
-    }
-    
-    .time-value {
-        padding: 0.1rem 0.3rem;
-        font-size: 0.65rem;
-    }
-    
-    .time-separator {
-        font-size: 0.8rem;
-    }
-    
-    .day-hours {
-        min-height: 30px;
     }
 }
 
@@ -758,72 +725,49 @@ body {
 .weekly-overview {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 2rem;
     width: 100%;
     overflow-x: auto;
-    align-items: stretch;
 }
 
 /* Asegurar que en pantallas grandes todos los días se vean */
 @media (min-width: 1400px) {
     .weekly-overview {
-        gap: 1.25rem;
+        gap: 1rem;
     }
     
     .week-day {
-        padding: 1.25rem;
+        padding: 1rem;
     }
     
     .day-name {
-        font-size: 1.1rem;
-    }
-    
-    .day-status {
-        font-size: 0.85rem;
-        padding: 0.3rem 0.8rem;
-    }
-    
-    .day-hours {
         font-size: 1rem;
     }
     
-    /* Ajustes para la vista de horarios en pantallas grandes */
-    .week-day {
-        min-height: 130px;
-        padding: 1.25rem;
+    .day-status {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
     }
     
-    .time-range {
-        gap: 0.5rem;
+    .day-hours {
+        font-size: 0.9rem;
     }
     
-    .time-range.compact {
-        gap: 0.6rem;
+    /* Ajustes para horarios en pantallas grandes */
+    .time-display {
+        gap: 0.3rem;
+        padding: 0.3rem 0;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.85rem;
-        gap: 0.5rem;
-    }
-    
-    .time-label {
-        min-width: 35px;
-        font-size: 0.75rem;
-    }
-    
-    .time-value {
-        padding: 0.2rem 0.5rem;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
     
     .time-separator {
-        font-size: 1.1rem;
-    }
-    
-    .day-hours {
-        min-height: 50px;
+        font-size: 0.75rem;
+        margin: 0.15rem 0;
     }
 }
 
@@ -831,16 +775,12 @@ body {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    padding: 1rem;
+    padding: 0.75rem;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
     min-width: 0;
     flex-shrink: 0;
-    min-height: 120px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .week-day:hover {
@@ -870,23 +810,22 @@ body {
 
 .day-header {
     margin-bottom: 0.75rem;
-    padding-bottom: 0.4rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
 }
 
 .day-name {
     font-weight: 600;
     color: var(--text-light);
-    margin-bottom: 0.2rem;
-    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
     white-space: nowrap;
 }
 
 .day-status {
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     white-space: nowrap;
@@ -906,11 +845,34 @@ body {
     color: var(--text-gray);
     font-size: 0.9rem;
     line-height: 1.4;
-    flex: 1;
+}
+
+/* Estilos para la visualización de horarios en dos líneas */
+.time-display {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 40px;
+    gap: 0.2rem;
+    padding: 0.25rem 0;
+}
+
+.time-start {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.time-separator {
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    line-height: 1;
+    margin: 0.1rem 0;
+}
+
+.time-end {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
 }
 
 /* Estilos para la nueva vista de horarios */
@@ -1925,11 +1887,7 @@ body {
 @media (max-width: 1200px) {
     .weekly-overview {
         grid-template-columns: repeat(4, 1fr);
-        gap: 0.75rem;
-    }
-    
-    .week-day {
-        padding: 0.875rem;
+        gap: 0.5rem;
     }
     
     /* Configuración más compacta en pantallas medianas */
@@ -1952,62 +1910,36 @@ body {
 @media (max-width: 768px) {
     .weekly-overview {
         grid-template-columns: repeat(3, 1fr);
-        gap: 0.6rem;
-    }
-    
-    .week-day {
-        padding: 0.6rem;
+        gap: 0.5rem;
     }
     
     .day-name {
-        font-size: 0.85rem;
-    }
-    
-    .day-status {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.5rem;
-    }
-    
-    .day-hours {
         font-size: 0.8rem;
     }
     
-    /* Ajustes para la vista de horarios en pantallas medianas */
-    .week-day {
-        min-height: 110px;
-        padding: 0.875rem;
+    .day-status {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.4rem;
     }
     
-    .time-range {
-        gap: 0.3rem;
+    .day-hours {
+        font-size: 0.75rem;
     }
     
-    .time-range.compact {
-        gap: 0.4rem;
+    /* Ajustes para horarios en tablets */
+    .time-display {
+        gap: 0.15rem;
+        padding: 0.2rem 0;
     }
     
     .time-start,
     .time-end {
-        font-size: 0.7rem;
-        gap: 0.3rem;
-    }
-    
-    .time-label {
-        min-width: 28px;
-        font-size: 0.65rem;
-    }
-    
-    .time-value {
-        padding: 0.1rem 0.35rem;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
     }
     
     .time-separator {
-        font-size: 0.9rem;
-    }
-    
-    .day-hours {
-        min-height: 35px;
+        font-size: 0.65rem;
+        margin: 0.05rem 0;
     }
     
     .table-responsive {
@@ -2051,24 +1983,36 @@ body {
 @media (max-width: 576px) {
     .weekly-overview {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-    }
-    
-    .week-day {
-        padding: 0.5rem;
+        gap: 0.4rem;
     }
     
     .day-name {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
     
     .day-status {
-        font-size: 0.7rem;
-        padding: 0.15rem 0.4rem;
+        font-size: 0.65rem;
+        padding: 0.1rem 0.3rem;
     }
     
     .day-hours {
+        font-size: 0.7rem;
+    }
+    
+    /* Ajustes para horarios en móviles */
+    .time-display {
+        gap: 0.1rem;
+        padding: 0.15rem 0;
+    }
+    
+    .time-start,
+    .time-end {
         font-size: 0.75rem;
+    }
+    
+    .time-separator {
+        font-size: 0.6rem;
+        margin: 0.05rem 0;
     }
     
     .card-body {
@@ -2087,44 +2031,6 @@ body {
     .special-day-actions .btn {
         width: 100%;
         margin-bottom: 0.25rem;
-    }
-    
-    /* Ajustes para la vista de horarios en móviles */
-    .week-day {
-        min-height: 90px;
-        padding: 0.5rem;
-    }
-    
-    .time-range {
-        gap: 0.2rem;
-    }
-    
-    .time-range.compact {
-        gap: 0.25rem;
-    }
-    
-    .time-start,
-    .time-end {
-        font-size: 0.6rem;
-        gap: 0.2rem;
-    }
-    
-    .time-label {
-        min-width: 22px;
-        font-size: 0.55rem;
-    }
-    
-    .time-value {
-        padding: 0.1rem 0.2rem;
-        font-size: 0.6rem;
-    }
-    
-    .time-separator {
-        font-size: 0.75rem;
-    }
-    
-    .day-hours {
-        min-height: 25px;
     }
     
     /* Configuración más compacta en móviles */
