@@ -55,9 +55,6 @@ class AdminPanel {
         }
 
         try {
-            // Cargar estadísticas de barberos
-            await this.loadEmployeeStats();
-            
             // Cargar lista de barberos
             await this.loadEmployees();
             
@@ -70,40 +67,9 @@ class AdminPanel {
         }
     }
 
-    async loadEmployeeStats() {
-        // ✅ VERIFICAR ROL ANTES DE CARGAR ESTADÍSTICAS
-        if (!this.isUserAdmin()) {
-            console.warn('AdminPanel: Acceso denegado a loadEmployeeStats');
-            return;
-        }
 
-        try {
-            const response = await fetch('/api/employees/stats', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
 
-            if (response.ok) {
-                const data = await response.json();
-                this.updateEmployeeStats(data);
-            } else {
-                throw new Error('Error al cargar estadísticas');
-            }
-        } catch (error) {
-            console.error('Error cargando estadísticas:', error);
-            this.showToast('Error cargando estadísticas de barberos', 'error');
-        }
-    }
 
-    updateEmployeeStats(stats) {
-        document.getElementById('totalEmployees').textContent = stats.total || 0;
-        document.getElementById('activeEmployees').textContent = stats.active || 0;
-        document.getElementById('inactiveEmployees').textContent = stats.inactive || 0;
-        document.getElementById('adminCount').textContent = stats.admins || 0;
-    }
 
     async loadEmployees() {
         // ✅ VERIFICAR ROL ANTES DE CARGAR EMPLEADOS
@@ -203,7 +169,6 @@ class AdminPanel {
             if (response.ok) {
                 this.showToast('Estado del barbero actualizado', 'success');
                 await this.loadEmployees();
-                await this.loadEmployeeStats();
             } else {
                 throw new Error('Error al actualizar estado');
             }
@@ -236,7 +201,6 @@ class AdminPanel {
             if (response.ok) {
                 this.showToast('Rol del barbero actualizado', 'success');
                 await this.loadEmployees();
-                await this.loadEmployeeStats();
             } else {
                 throw new Error('Error al actualizar rol');
             }
