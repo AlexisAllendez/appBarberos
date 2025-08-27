@@ -138,7 +138,7 @@ class Appointment {
             `;
 
             const appointments = await query(sql, [id_usuario, fecha]);
-            console.log(`🔍 Citas activas encontradas para ${fecha}: ${appointments.length}`);
+
             if (appointments.length > 0) {
                 appointments.forEach(app => {
                     console.log(`   - ${app.hora_inicio} - ${app.hora_fin} (${app.estado})`);
@@ -162,26 +162,36 @@ class Appointment {
      */
     static async checkAvailability(id_usuario, fecha, hora_inicio, hora_fin, exclude_id = null) {
         try {
+            // CORREGIDO: Lógica de solapamiento completa y excluir citas completadas
             let sql = `
                 SELECT COUNT(*) as count
                 FROM turnos
                 WHERE id_usuario = ? 
                 AND fecha = ? 
-                AND estado NOT IN ('cancelado', 'no_show')
+                AND estado NOT IN ('cancelado', 'no_show', 'completado')
                 AND (
+                    -- Caso 1: La cita existente empieza antes y termina después del inicio del nuevo slot
+                    (hora_inicio <= ? AND hora_fin > ?)
+                    OR
+                    -- Caso 2: La cita existente empieza después del inicio pero antes del fin del nuevo slot
+                    (hora_inicio >= ? AND hora_inicio < ?)
+                    OR
+                    -- Caso 3: La cita existente empieza antes del fin del nuevo slot
                     (hora_inicio < ? AND hora_fin > ?)
                 )
             `;
 
-            const params = [id_usuario, fecha, hora_fin, hora_inicio];
+            const params = [id_usuario, fecha, hora_inicio, hora_inicio, hora_inicio, hora_fin, hora_fin, hora_inicio];
 
             if (exclude_id) {
                 sql += ' AND id != ?';
                 params.push(exclude_id);
             }
 
-            const [result] = await query(sql, params);
-            return result.count === 0;
+                                const [result] = await query(sql, params);
+                    const isAvailable = result.count === 0;
+                    
+                    return isAvailable;
         } catch (error) {
             console.error('Error al verificar disponibilidad:', error);
             throw new Error('Error al verificar disponibilidad');

@@ -31,7 +31,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--dark-bg);
     color: var(--text-light);
-    line-height: 1.6;
+    line-height: 1.4;
     overflow-x: hidden;
     min-height: 100vh;
 }
@@ -51,7 +51,7 @@ body {
     z-index: -1;
 }
 
-/* Booking Container */
+/* Booking Container - Más compacto */
 .booking-container {
     position: relative;
     z-index: 1;
@@ -59,20 +59,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 0;
+    padding: 1rem 0;
 }
 
-/* Logo Section */
+/* Logo Section - Más compacto */
 .logo-container {
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 55px;
+    height: 55px;
     background: var(--gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
     box-shadow: var(--shadow-light);
     animation: pulse 2s ease-in-out infinite;
 }
@@ -83,33 +83,33 @@ body {
 }
 
 .logo-icon {
-    font-size: 2rem;
+    font-size: 1.3rem;
     color: var(--dark-bg);
 }
 
 .brand-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--accent-color);
-    letter-spacing: 3px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
     text-transform: uppercase;
 }
 
 .brand-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-gray);
     font-weight: 300;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
-/* Booking Card */
+/* Booking Card - Más compacto */
 .booking-card {
     background: rgba(17, 17, 17, 0.95);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 3rem 2rem;
+    border-radius: 16px;
+    padding: 1.5rem 1.2rem;
     box-shadow: var(--shadow-dark);
     position: relative;
     overflow: hidden;
@@ -121,44 +121,44 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 3px;
     background: var(--gradient-primary);
 }
 
 .booking-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-light);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .booking-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-gray);
     font-weight: 300;
 }
 
-/* Form Sections */
+/* Form Sections - Más compactas */
 .form-section {
     background: rgba(26, 26, 26, 0.3);
-    border-radius: 15px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
     border: 1px solid var(--border-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .section-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--accent-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
     display: flex;
     align-items: center;
 }
 
-/* Form Styles */
+/* Form Styles - Más compactos */
 .booking-form {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .form-group {
@@ -173,19 +173,19 @@ body {
 
 .input-icon {
     position: absolute;
-    left: 1rem;
+    left: 0.8rem;
     z-index: 2;
     color: var(--accent-color);
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .form-control {
     background: rgba(26, 26, 26, 0.8);
     border: 2px solid var(--border-color);
-    border-radius: 50px;
-    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 40px;
+    padding: 0.6rem 0.6rem 0.6rem 2.3rem;
     color: var(--text-light);
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     width: 100%;
@@ -208,38 +208,38 @@ body {
 select.form-control {
     appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23d4af37' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 1rem center;
+    background-position: right 0.8rem center;
     background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-    padding-right: 3rem;
+    background-size: 1.2em 1.2em;
+    padding-right: 2.5rem;
 }
 
-/* Textarea Styles */
+/* Textarea Styles - Más compacto */
 textarea.form-control {
-    border-radius: 15px;
-    min-height: 100px;
+    border-radius: 12px;
+    min-height: 50px;
     resize: vertical;
 }
 
-/* Booking Summary */
+/* Booking Summary - Más compacto */
 .booking-summary {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid var(--accent-color);
-    border-radius: 15px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
 }
 
 .summary-card {
     background: rgba(26, 26, 26, 0.5);
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 8px;
+    padding: 0.6rem;
 }
 
 .summary-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 0.3rem 0;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -250,24 +250,26 @@ textarea.form-control {
 .summary-label {
     font-weight: 500;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .summary-value {
     font-weight: 600;
     color: var(--accent-color);
+    font-size: 0.9rem;
 }
 
-/* Button Styles */
+/* Button Styles - Más compacto */
 .btn-booking {
     background: var(--gradient-primary);
     border: none;
-    border-radius: 50px;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    border-radius: 40px;
+    padding: 0.7rem 1.3rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--dark-bg);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-light);
     position: relative;
@@ -292,12 +294,12 @@ textarea.form-control {
 .btn-booking.loading::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     top: 50%;
     left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
+    margin-left: -9px;
+    margin-top: -9px;
     border: 2px solid transparent;
     border-top: 2px solid var(--dark-bg);
     border-radius: 50%;
@@ -309,10 +311,11 @@ textarea.form-control {
     100% { transform: rotate(360deg); }
 }
 
-/* Links */
+/* Links - Más compactos */
 .booking-links p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .booking-links a {
@@ -334,6 +337,7 @@ textarea.form-control {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .back-home:hover {
@@ -341,35 +345,12 @@ textarea.form-control {
     transform: translateX(-5px);
 }
 
-/* Responsive Design */
+/* Responsive Design - Más compacto */
 @media (max-width: 768px) {
     .booking-container {
-        padding: 1rem 0;
+        padding: 0.5rem 0;
     }
     
-    .booking-card {
-        padding: 2rem 1.5rem;
-    }
-    
-    .brand-title {
-        font-size: 1.5rem;
-    }
-    
-    .booking-title {
-        font-size: 1.5rem;
-    }
-    
-    .logo-container {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .logo-icon {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
     .booking-card {
         padding: 1.5rem 1rem;
     }
@@ -382,20 +363,51 @@ textarea.form-control {
         font-size: 1.3rem;
     }
     
+    .logo-container {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .logo-icon {
+        font-size: 1.2rem;
+    }
+    
+    .form-section {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .booking-card {
+        padding: 1.2rem 0.8rem;
+    }
+    
+    .brand-title {
+        font-size: 1.1rem;
+    }
+    
+    .booking-title {
+        font-size: 1.1rem;
+    }
+    
     .form-control {
-        font-size: 0.9rem;
-        padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+        font-size: 0.85rem;
+        padding: 0.6rem 0.6rem 0.6rem 2.2rem;
     }
     
     .input-icon {
-        font-size: 1rem;
-        left: 0.8rem;
+        font-size: 0.9rem;
+        left: 0.7rem;
+    }
+    
+    .form-section {
+        padding: 0.7rem;
     }
 }
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -404,7 +416,7 @@ textarea.form-control {
 
 ::-webkit-scrollbar-thumb {
     background: var(--accent-color);
-    border-radius: 4px;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -435,169 +447,46 @@ textarea.form-control:focus {
     box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
 }
 
-/* Loading State */
-.btn-booking.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.btn-booking.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 50%;
-    left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
-    border: 2px solid transparent;
-    border-top: 2px solid var(--dark-bg);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Service Info Card */
-.service-info-card {
-    background: rgba(212, 175, 55, 0.05);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-top: 1rem;
-    animation: fadeIn 0.3s ease-in;
-}
-
-.service-info-card .row {
-    margin: 0;
-}
-
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-}
-
-.info-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.info-label {
-    font-weight: 600;
-    color: var(--accent-color);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-width: 80px;
-}
-
-.info-value {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    text-align: right;
-    flex: 1;
-    margin-left: 1rem;
-}
-
-/* Responsive para service info */
+/* Mejoras en el responsive design */
 @media (max-width: 768px) {
-    .service-info-card {
-        padding: 1rem;
-    }
-    
-    .info-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .info-label {
-        margin-bottom: 0.25rem;
-        min-width: auto;
-    }
-    
-    .info-value {
-        text-align: left;
-        margin-left: 0;
+    .btn-booking {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
     }
 }
 
-/* Estilos para el selector de barbero - Simplificado */
-
-/* Mejoras en el selector de barbero - Consistente con el diseño */
-#barbero {
-    background: rgba(26, 26, 26, 0.8);
-    border: 2px solid var(--border-color);
-    color: var(--text-light);
-    font-weight: 500;
-    transition: all 0.3s ease;
+@media (max-width: 576px) {
+    .btn-booking {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
 }
 
-#barbero:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
-    background: rgba(26, 26, 26, 0.9);
-}
-
-#barbero option {
-    background: var(--card-bg);
-    color: var(--text-light);
-    border: none;
-}
-
-#barbero option:hover {
-    background: var(--accent-color);
-    color: var(--dark-bg);
-}
-
-/* Estilos para el icono del barbero en el selector */
-.input-icon i.fa-user-tie {
-    color: var(--accent-color);
-}
-
-/* Transiciones suaves para el selector de barbero */
-
-/* Mejoras en la transición de servicios */
-.service-select-transition {
-    transition: all 0.3s ease;
-}
-
-/* Indicador de carga para servicios */
-.loading-services {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-/* Mensaje cuando no hay servicios para un barbero */
-.no-services-message {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--text-gray);
-    font-style: italic;
-    background: rgba(26, 26, 26, 0.5);
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-}
-
-/* Estilos para el resumen de la reserva - Consistente */
+/* Estilos para el resumen de la reserva */
 .booking-summary {
     background: rgba(212, 175, 55, 0.05);
     border: 1px solid var(--accent-color);
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.booking-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
 }
 
 .summary-card {
     background: rgba(26, 26, 26, 0.5);
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
     border: 1px solid var(--border-color);
 }
 
@@ -605,8 +494,16 @@ textarea.form-control:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
+    padding: 0.4rem 0;
     border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.summary-item:hover {
+    background: rgba(212, 175, 55, 0.05);
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    border-radius: 4px;
 }
 
 .summary-item:last-child {
@@ -616,30 +513,32 @@ textarea.form-control:focus {
 .summary-label {
     font-weight: 500;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .summary-value {
     font-weight: 600;
     color: var(--accent-color);
+    font-size: 0.9rem;
 }
 
-/* Mejoras en los botones y enlaces */
+/* Mejoras en el botón de reserva */
 .btn-booking {
     background: var(--gradient-primary);
     border: none;
-    border-radius: 50px;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    border-radius: 40px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--dark-bg);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-light);
     position: relative;
     overflow: hidden;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
 }
 
 .btn-booking:hover {
@@ -660,34 +559,30 @@ textarea.form-control:focus {
 .btn-booking.loading::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     top: 50%;
     left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
+    margin-left: -9px;
+    margin-top: -9px;
     border: 2px solid transparent;
     border-top: 2px solid var(--dark-bg);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* Mejoras en los enlaces */
 .booking-links {
     text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border-color);
 }
 
 .booking-links p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .booking-links a {
@@ -709,6 +604,7 @@ textarea.form-control:focus {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .back-home:hover {
@@ -718,58 +614,36 @@ textarea.form-control:focus {
 
 /* Mejoras en las alertas y mensajes */
 .alert {
-    border-radius: 10px;
+    border-radius: 8px;
     border: none;
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
+    padding: 0.8rem 1.2rem;
+    margin-top: 0.8rem;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .alert-success {
     background: rgba(40, 167, 69, 0.1);
     color: #28a745;
-    border-left: 4px solid #28a745;
+    border-left: 3px solid #28a745;
 }
 
 .alert-warning {
     background: rgba(255, 193, 7, 0.1);
     color: #ffc107;
-    border-left: 4px solid #ffc107;
+    border-left: 3px solid #ffc107;
 }
 
 .alert-danger {
     background: rgba(220, 53, 69, 0.1);
     color: #dc3545;
-    border-left: 4px solid #dc3545;
+    border-left: 3px solid #dc3545;
 }
 
 .alert-info {
     background: rgba(23, 162, 184, 0.1);
     color: #17a2b8;
-    border-left: 4px solid #17a2b8;
-}
-
-/* Mejoras en el responsive design */
-@media (max-width: 768px) {
-    .btn-booking {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-    }
-    
-    .form-section {
-        padding: 1.2rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .form-section {
-        padding: 1rem;
-    }
-    
-    .btn-booking {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
-    }
+    border-left: 3px solid #17a2b8;
 }
 
 /* Estilos adicionales para mejor consistencia */
@@ -804,10 +678,10 @@ textarea.form-control:focus {
     content: '';
     position: absolute;
     top: 50%;
-    right: 1rem;
-    width: 16px;
-    height: 16px;
-    margin-top: -8px;
+    right: 0.8rem;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
     border: 2px solid var(--accent-color);
     border-top: 2px solid transparent;
     border-radius: 50%;
@@ -822,13 +696,14 @@ textarea.form-control:focus {
 
 /* Estilos para mensajes de estado */
 .availability-message {
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
-    margin: 1rem 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    margin: 0.8rem 0;
     font-weight: 500;
     text-align: center;
-    border-left: 4px solid;
+    border-left: 3px solid;
     animation: slideInRight 0.3s ease-out;
+    font-size: 0.9rem;
 }
 
 .availability-message.success {
@@ -869,32 +744,32 @@ textarea.form-control:focus {
 /* Mejoras en el espaciado y alineación */
 .form-section {
     background: rgba(26, 26, 26, 0.3);
-    border-radius: 15px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
     border: 1px solid var(--border-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     transition: all 0.3s ease;
 }
 
 .form-section:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 3px 15px rgba(212, 175, 55, 0.1);
 }
 
 /* Mejoras en los iconos de las secciones */
 .section-title i {
     color: var(--accent-color);
-    margin-right: 0.5rem;
-    font-size: 1.1rem;
+    margin-right: 0.4rem;
+    font-size: 1rem;
 }
 
 /* Estilos para el resumen de la reserva */
 .booking-summary {
     background: rgba(212, 175, 55, 0.05);
     border: 1px solid var(--accent-color);
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
     position: relative;
     overflow: hidden;
 }
@@ -905,14 +780,14 @@ textarea.form-control:focus {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: var(--gradient-primary);
 }
 
 .summary-card {
     background: rgba(26, 26, 26, 0.5);
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
     border: 1px solid var(--border-color);
 }
 
@@ -920,16 +795,16 @@ textarea.form-control:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
+    padding: 0.4rem 0;
     border-bottom: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
 .summary-item:hover {
     background: rgba(212, 175, 55, 0.05);
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border-radius: 5px;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    border-radius: 4px;
 }
 
 .summary-item:last-child {
@@ -939,30 +814,32 @@ textarea.form-control:focus {
 .summary-label {
     font-weight: 500;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .summary-value {
     font-weight: 600;
     color: var(--accent-color);
+    font-size: 0.9rem;
 }
 
 /* Mejoras en el botón de reserva */
 .btn-booking {
     background: var(--gradient-primary);
     border: none;
-    border-radius: 50px;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    border-radius: 40px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--dark-bg);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-light);
     position: relative;
     overflow: hidden;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
 }
 
 .btn-booking:hover {
@@ -983,12 +860,12 @@ textarea.form-control:focus {
 .btn-booking.loading::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     top: 50%;
     left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
+    margin-left: -9px;
+    margin-top: -9px;
     border: 2px solid transparent;
     border-top: 2px solid var(--dark-bg);
     border-radius: 50%;
@@ -998,14 +875,15 @@ textarea.form-control:focus {
 /* Mejoras en los enlaces */
 .booking-links {
     text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border-color);
 }
 
 .booking-links p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .booking-links a {
@@ -1027,6 +905,7 @@ textarea.form-control:focus {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .back-home:hover {
@@ -1036,56 +915,57 @@ textarea.form-control:focus {
 
 /* Mejoras en las alertas y mensajes */
 .alert {
-    border-radius: 10px;
+    border-radius: 8px;
     border: none;
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
+    padding: 0.8rem 1.2rem;
+    margin-top: 0.8rem;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .alert-success {
     background: rgba(40, 167, 69, 0.1);
     color: #28a745;
-    border-left: 4px solid #28a745;
+    border-left: 3px solid #28a745;
 }
 
 .alert-warning {
     background: rgba(255, 193, 7, 0.1);
     color: #ffc107;
-    border-left: 4px solid #ffc107;
+    border-left: 3px solid #ffc107;
 }
 
 .alert-danger {
     background: rgba(220, 53, 69, 0.1);
     color: #dc3545;
-    border-left: 4px solid #dc3545;
+    border-left: 3px solid #dc3545;
 }
 
 .alert-info {
     background: rgba(23, 162, 184, 0.1);
     color: #17a2b8;
-    border-left: 4px solid #17a2b8;
+    border-left: 3px solid #17a2b8;
 }
 
 /* Mejoras en el responsive design */
 @media (max-width: 768px) {
     .btn-booking {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
     }
     
     .form-section {
-        padding: 1.2rem;
+        padding: 0.8rem;
     }
 }
 
 @media (max-width: 576px) {
     .form-section {
-        padding: 1rem;
+        padding: 0.7rem;
     }
     
     .btn-booking {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 }

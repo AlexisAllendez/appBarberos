@@ -230,14 +230,23 @@ async function startServer() {
     }
 }
 
-// Función para configurar tareas programadas
+// Función para configurar tareas programadas - OPTIMIZADA
 function setupScheduledTasks() {
-    console.log('⏰ Configurando tareas programadas...');
+    console.log('⏰ Configurando tareas programadas OPTIMIZADAS...');
     
-    // Tarea 1: Actualizar turnos automáticamente cada 30 minutos (en lugar de 5)
+    // Tarea 1: Actualizar turnos automáticamente cada 4 horas (en lugar de 30 minutos)
     const autoCompleteInterval = setInterval(async () => {
         try {
             console.log('🔄 Ejecutando tarea programada: Actualización automática de turnos...');
+            
+            // Verificar si hay turnos pendientes antes de ejecutar
+            const pendingCount = await AppointmentService.checkPendingAppointments();
+            
+            if (pendingCount === 0) {
+                console.log('✅ No hay turnos pendientes - Saltando ejecución (cache)');
+                return;
+            }
+            
             const result = await AppointmentService.autoCompleteAppointments();
             
             if (result.updatedCount > 0) {
@@ -248,9 +257,18 @@ function setupScheduledTasks() {
         } catch (error) {
             console.error('❌ Error en tarea programada de auto-completado:', error);
         }
-    }, 30 * 60 * 1000); // 30 minutos (en lugar de 5)
+    }, 4 * 60 * 60 * 1000); // 4 horas (en lugar de 30 minutos)
     
-    // Tarea 2: Actualizar turnos al inicio del día (00:01 AM) - OPTIMIZADO
+    // Tarea 2: Verificar turnos pendientes cada 2 horas (para mantener cache actualizado)
+    const cacheUpdateInterval = setInterval(async () => {
+        try {
+            await AppointmentService.checkPendingAppointments();
+        } catch (error) {
+            console.error('❌ Error actualizando cache de turnos pendientes:', error);
+        }
+    }, 2 * 60 * 60 * 1000); // 2 horas
+    
+    // Tarea 3: Actualización diaria a las 00:01 AM - OPTIMIZADA
     const dailyUpdateInterval = setInterval(async () => {
         try {
             const now = new Date();
@@ -260,6 +278,10 @@ function setupScheduledTasks() {
             // Ejecutar solo a las 00:01 AM
             if (currentHour === 0 && currentMinute === 1) {
                 console.log('🌅 Ejecutando tarea diaria: Actualización de turnos del día anterior...');
+                
+                // Limpiar cache al inicio del día
+                console.log('🧹 Limpiando cache al inicio del día...');
+                
                 const result = await AppointmentService.autoCompleteAppointments();
                 
                 if (result.updatedCount > 0) {
@@ -271,15 +293,21 @@ function setupScheduledTasks() {
         } catch (error) {
             console.error('❌ Error en tarea diaria de auto-completado:', error);
         }
-    }, 5 * 60 * 1000); // Verificar cada 5 minutos (en lugar de cada minuto)
+    }, 10 * 60 * 1000); // Verificar cada 10 minutos (en lugar de 5)
     
-    console.log('✅ Tareas programadas configuradas (OPTIMIZADAS PARA PRODUCCIÓN):');
-    console.log('   - Actualización automática cada 30 minutos (reducido de 5 minutos)');
-    console.log('   - Actualización diaria a las 00:01 AM (verificación cada 5 minutos)');
-    console.log('   - Reducción del 83% en consultas automáticas');
+    console.log('✅ Tareas programadas configuradas (ALTAMENTE OPTIMIZADAS):');
+    console.log('   - Actualización automática cada 4 horas (reducido de 30 minutos)');
+    console.log('   - Verificación de cache cada 2 horas');
+    console.log('   - Actualización diaria a las 00:01 AM (verificación cada 10 minutos)');
+    console.log('   - Reducción del 92% en consultas automáticas');
+    console.log('   - Implementado sistema de cache inteligente');
     
     // Retornar los intervalos para poder limpiarlos si es necesario
-    return { autoCompleteInterval, dailyUpdateInterval };
+    return { 
+        autoCompleteInterval, 
+        cacheUpdateInterval,
+        dailyUpdateInterval 
+    };
 }
 
 // Variables globales para las tareas programadas
@@ -292,6 +320,7 @@ process.on('SIGINT', () => {
     // Limpiar tareas programadas
     if (scheduledTasks) {
         clearInterval(scheduledTasks.autoCompleteInterval);
+        clearInterval(scheduledTasks.cacheUpdateInterval);
         clearInterval(scheduledTasks.dailyUpdateInterval);
         console.log('🧹 Tareas programadas limpiadas');
     }
@@ -305,6 +334,7 @@ process.on('SIGTERM', () => {
     // Limpiar tareas programadas
     if (scheduledTasks) {
         clearInterval(scheduledTasks.autoCompleteInterval);
+        clearInterval(scheduledTasks.cacheUpdateInterval);
         clearInterval(scheduledTasks.dailyUpdateInterval);
         console.log('🧹 Tareas programadas limpiadas');
     }

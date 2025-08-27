@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row justify-content-center align-items-center min-vh-100">
                 <div class="col-lg-8 col-md-10 col-sm-12">
-                    <!-- Logo Section -->
-                    <div class="text-center mb-5">
+                    <!-- Logo Section - Más compacto -->
+                    <div class="text-center mb-3">
                         <div class="logo-container">
                             <i class="fas fa-calendar-check logo-icon"></i>
                         </div>
@@ -33,17 +33,17 @@
                     
                     <!-- Booking Form -->
                     <div class="booking-card">
-                        <div class="card-header text-center mb-4">
+                        <div class="card-header text-center mb-3">
                             <h2 class="booking-title">
                                 <i class="fas fa-calendar-plus me-2"></i>
-                                Reserva tu Cita
+                                Reserva tu turno
                             </h2>
                             <p class="booking-subtitle">Selecciona el servicio y horario que prefieras</p>
                         </div>
                         
                         <form id="bookingForm" class="booking-form">
                             <!-- Información Personal -->
-                            <div class="form-section mb-4">
+                            <div class="form-section mb-3">
                                 <h4 class="section-title">
                                     <i class="fas fa-user me-2"></i>
                                     Información Personal
@@ -51,7 +51,7 @@
                                 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-user"></i>
@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-user"></i>
@@ -86,7 +86,7 @@
                                 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-envelope"></i>
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-phone"></i>
@@ -120,48 +120,48 @@
                                 </div>
                             </div>
                             
-                            <!-- Selección de Barbero -->
-                            <div class="form-section mb-4">
-                                <h4 class="section-title">
-                                    <i class="fas fa-user-tie me-2"></i>
-                                    Selecciona tu Barbero
-                                </h4>
-                                <div class="form-group mb-3">
-                                    <div class="input-group">
-                                        <span class="input-icon">
-                                            <i class="fas fa-user-tie"></i>
-                                        </span>
-                                        <select class="form-control" id="barbero" required>
-                                            <option value="">Cargando barberos...</option>
-                                        </select>
+                            <!-- Selección de Barbero y Servicio en la misma fila -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-section h-100">
+                                        <h4 class="section-title">
+                                            <i class="fas fa-user-tie me-2"></i>
+                                            Selecciona tu Barbero
+                                        </h4>
+                                        <div class="form-group mb-2">
+                                            <div class="input-group">
+                                                <span class="input-icon">
+                                                    <i class="fas fa-user-tie"></i>
+                                                </span>
+                                                <select class="form-control" id="barbero" required>
+                                                    <option value="">Cargando barberos...</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Selección de Servicio -->
-                            <div class="form-section mb-4">
-                                <h4 class="section-title">
-                                    <i class="fas fa-concierge-bell me-2"></i>
-                                    Servicio
-                                </h4>
-                                
-                                <div class="form-group mb-3">
-                                    <div class="input-group">
-                                        <span class="input-icon">
-                                            <i class="fas fa-cut"></i>
-                                        </span>
-                                        <select class="form-control" id="servicio" required>
-                                            <option value="">Cargando servicios...</option>
-                                        </select>
+                                <div class="col-md-6">
+                                    <div class="form-section h-100">
+                                        <h4 class="section-title">
+                                            <i class="fas fa-concierge-bell me-2"></i>
+                                            Servicio
+                                        </h4>
+                                        <div class="form-group mb-2">
+                                            <div class="input-group">
+                                                <span class="input-icon">
+                                                    <i class="fas fa-cut"></i>
+                                                </span>
+                                                <select class="form-control" id="servicio" required>
+                                                    <option value="">Cargando servicios...</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Información del servicio seleccionado -->
-                                <!-- REMOVIDO: Información innecesaria del servicio -->
                             </div>
                             
                             <!-- Selección de Fecha y Hora -->
-                            <div class="form-section mb-4">
+                            <div class="form-section mb-3">
                                 <h4 class="section-title">
                                     <i class="fas fa-clock me-2"></i>
                                     Fecha y Hora
@@ -169,7 +169,7 @@
                                 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-calendar"></i>
@@ -184,7 +184,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-2">
                                             <div class="input-group">
                                                 <span class="input-icon">
                                                     <i class="fas fa-clock"></i>
@@ -198,14 +198,14 @@
                                 </div>
                             </div>
                             
-                            <!-- Comentarios Adicionales -->
-                            <div class="form-section mb-4">
+                            <!-- Comentarios Adicionales - Más compacto -->
+                            <div class="form-section mb-3">
                                 <h4 class="section-title">
                                     <i class="fas fa-comment me-2"></i>
                                     Comentarios (Opcional)
                                 </h4>
                                 
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-2">
                                     <div class="input-group">
                                         <span class="input-icon">
                                             <i class="fas fa-edit"></i>
@@ -214,14 +214,14 @@
                                             class="form-control" 
                                             id="comentarios" 
                                             placeholder="Comentarios adicionales, preferencias especiales, etc."
-                                            rows="3"
+                                            rows="2"
                                         ></textarea>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Resumen de la Reserva -->
-                            <div class="booking-summary mb-4">
+                            <!-- Resumen de la Reserva - Más compacto -->
+                            <div class="booking-summary mb-3">
                                 <h4 class="section-title">
                                     <i class="fas fa-receipt me-2"></i>
                                     Resumen de la Reserva
@@ -254,20 +254,20 @@
                             </div>
                             
                             <!-- Botón de Reserva -->
-                            <button type="submit" class="btn btn-booking w-100 mb-4">
+                            <button type="submit" class="btn btn-booking w-100 mb-3">
                                 <i class="fas fa-calendar-check me-2"></i>
                                 Confirmar Reserva
                             </button>
                         </form>
                         
                         <!-- Enlaces de Navegación -->
-                        <div class="booking-links text-center mt-4">
+                        <div class="booking-links text-center mt-3">
                             <p>¿Necesitas cancelar una cita? <a href="/cancel">Hazlo aquí</a></p>
                         </div>
                     </div>
                     
                     <!-- Back to Home -->
-                    <div class="text-center mt-4">
+                    <div class="text-center mt-3">
                         <a href="/" class="back-home">
                             <i class="fas fa-arrow-left me-2"></i>
                             Volver al inicio

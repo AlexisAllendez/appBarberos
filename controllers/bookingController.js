@@ -9,13 +9,14 @@ class BookingController {
      * @param {Object} req - Request object
      * @param {Object} res - Response object
      */
-    static async createBooking(req, res) {
+        static async createBooking(req, res) {
         try {
             const {
                 nombre,
                 apellido,
                 email,
                 telefono,
+                barbero,
                 servicio,
                 fecha,
                 hora,
@@ -78,12 +79,13 @@ class BookingController {
     
 
             const config = await BookingController.getBarberConfig(id_usuario);
-            const serviceDuration = config.intervalo_turnos || 30;
+            
+            // CORREGIDO: Usar la duración real del servicio, no el intervalo de turnos
+            const serviceDuration = serviceInfo.duracion || 30;
             
             const horaInicio = new Date(`2000-01-01T${hora}`);
             const horaFin = new Date(horaInicio.getTime() + (serviceDuration * 60000));
             const horaFinStr = horaFin.toTimeString().slice(0, 5);
-            
             
 
             const isAvailable = await Appointment.checkAvailability(
@@ -345,7 +347,7 @@ class BookingController {
                     
                     if (servicio.length > 0) {
                         serviceDuration = servicio[0].duracion;
-                        console.log(`✅ Duración del servicio ${servicio_id}: ${serviceDuration} minutos`);
+            
                     } else {
                         console.warn(`⚠️  Servicio ${servicio_id} no encontrado, usando duración por defecto: 30 min`);
                     }
@@ -669,7 +671,7 @@ class BookingController {
                         const hasConflict = (slotStartTime < appointmentEnd && slotEndTime > appointmentStart);
                         
                         if (hasConflict) {
-                            console.log(`   ❌ Slot ${slotStart} - ${slotEndStr} CONFLICTA con cita ${appointment.hora_inicio} - ${appointment.hora_fin}`);
+    
                         }
                         
                         return hasConflict;
@@ -683,15 +685,15 @@ class BookingController {
                             duracion: serviceDuration,
                             tiempo_total: `${serviceDuration} min`
                         });
-                        console.log(`   ✅ Slot ${slotStart} - ${slotEndStr} DISPONIBLE`);
+        
                     } else {
-                        console.log(`   ❌ Slot ${slotStart} - ${slotEndStr} OCUPADO`);
+
                     }
                 }
 
                 // Avanzar al siguiente slot (duración del servicio + buffer)
-                // IMPORTANTE: Usar serviceDuration, NO bufferTime para la duración del slot
-                currentTime = new Date(slotEnd.getTime() + (bufferTime * 60000));
+                // IMPORTANTE: Avanzar desde el inicio del slot anterior + duración + buffer
+                currentTime = new Date(currentTime.getTime() + (serviceDuration * 60000) + (bufferTime * 60000));
             }
         });
 
