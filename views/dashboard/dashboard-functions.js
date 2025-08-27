@@ -396,7 +396,7 @@ window.viewClient = async function(id) {
 
 window.editClient = function(id) {
     // TODO: Implement edit client modal
-    console.log('Edit client:', id);
+    
 };
 
 window.deleteClient = async function(id) {
@@ -425,7 +425,7 @@ window.deleteClient = async function(id) {
 
 window.editService = function(id) {
     // TODO: Implement edit service modal
-    console.log('Edit service:', id);
+    
 };
 
 window.deleteService = async function(id) {
@@ -454,23 +454,23 @@ window.deleteService = async function(id) {
 
 window.changePage = function(page) {
     // TODO: Implement page change functionality
-    console.log('Change page:', page);
+    
 };
 
 // Utility functions
 function showSuccess(message) {
     // TODO: Implement success notification
-    console.log('Success:', message);
+    
 }
 
 function showAppointmentModal(appointment) {
     // TODO: Implement appointment modal
-    console.log('Show appointment modal:', appointment);
+    
 }
 
 function showClientModal(client) {
     // TODO: Implement client modal
-    console.log('Show client modal:', client);
+    
 }
 
 // Export functions for use in main script

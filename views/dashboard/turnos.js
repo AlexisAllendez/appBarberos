@@ -110,7 +110,7 @@ class TurnosManager {
 
     // Manejar clic en encabezado ordenable
     handleSort(field) {
-        console.log(`🔄 Ordenando por: ${field}`);
+
         
         if (this.sortConfig.field === field) {
             // Cambiar dirección si es el mismo campo
@@ -184,8 +184,6 @@ class TurnosManager {
         this.sortConfig.field = 'estado';
         this.sortConfig.direction = 'asc';
         
-        console.log('🔄 Reseteando ordenamiento a configuración por defecto (Estado)');
-        
         this.ordenarTurnos();
         this.renderTurnosTable();
         this.updateSortIndicators();
@@ -252,17 +250,12 @@ class TurnosManager {
                 ...this.currentFilters
             });
 
-            // Log de parámetros removido para consola limpia
+    
             const response = await fetch(`/dashboard/appointments?${params}`);
             
             if (response.ok) {
                 const data = await response.json();
-                // Log de API removido para consola limpia
-                
                 this.turnos = data.data || [];
-                // Log de turnos cargados removido para consola limpia
-                
-                // Debug removido para consola limpia
                 
                 // Ordenar turnos: primero por fecha/hora, luego por prioridad de estado
                 this.ordenarTurnos();
@@ -283,8 +276,6 @@ class TurnosManager {
 
     // Función para ordenar turnos por estado (PRINCIPAL) y fecha (SECUNDARIO)
     ordenarTurnos() {
-        // Log de ordenamiento removido para consola limpia
-        
         this.turnos.sort((a, b) => {
             let comparison = 0;
             
@@ -346,8 +337,6 @@ class TurnosManager {
             // Aplicar dirección de ordenamiento
             return this.sortConfig.direction === 'asc' ? comparison : -comparison;
         });
-        
-        // Logs de ordenamiento removidos para consola limpia
     }
 
     // Función auxiliar para parsear tiempo a minutos desde medianoche
@@ -408,8 +397,13 @@ class TurnosManager {
     }
 
     renderTurnosTable() {
+
+        
         const tbody = document.getElementById('turnosTableBody');
-        if (!tbody) return;
+        if (!tbody) {
+            console.error('❌ No se encontró el elemento turnosTableBody');
+            return;
+        }
         
         tbody.innerHTML = '';
 
@@ -425,9 +419,6 @@ class TurnosManager {
         }
 
         this.turnos.forEach((cita, index) => {
-            // Debug removido para consola limpia
-            
-            // Debug removido para consola limpia
             
             const row = document.createElement('tr');
             row.className = this.getRowClass(cita.estado);
@@ -489,6 +480,8 @@ class TurnosManager {
             `;
             tbody.appendChild(row);
         });
+        
+
     }
 
     // Función para obtener clase CSS de la fila según el estado
@@ -954,12 +947,31 @@ class TurnosManager {
 
     // Utilidades
     formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
+        if (!dateString) return '--';
+        
+        try {
+            // Parsear la fecha manualmente para evitar problemas de zona horaria
+            const [year, month, day] = dateString.split('-').map(Number);
+            
+            // Verificar que los componentes sean válidos
+            if (!year || !month || !day || month < 1 || month > 12 || day < 1 || day > 31) {
+                console.error('❌ Componentes de fecha inválidos:', { year, month, day });
+                return 'Fecha inválida';
+            }
+            
+            // SOLUCIÓN SIMPLE: Formatear la fecha directamente sin crear objetos Date
+            // Esto evita completamente los problemas de zona horaria
+            const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+            const mesNombre = meses[month - 1];
+            
+
+            
+            return `${day}/${month}/${year}`;
+            
+        } catch (error) {
+            console.error('❌ Error formateando fecha:', dateString, error);
+            return 'Error fecha';
+        }
     }
 
     formatTime(timeString) {
@@ -1205,20 +1217,10 @@ class TurnosManager {
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Completando turnos confirmados...';
             
-            console.log('🚀 Ejecutando completado automático de turnos confirmados...');
-            console.log('📊 Total de turnos cargados:', this.turnos.length);
-            console.log('🔍 Estados de turnos disponibles:', [...new Set(this.turnos.map(t => t.estado))]);
+            
             
             // Obtener solo turnos confirmados
             const confirmedTurnos = this.turnos.filter(turno => turno.estado === 'confirmado');
-            console.log('✅ Turnos confirmados encontrados:', confirmedTurnos.length);
-            console.log('📋 Detalles de turnos confirmados:', confirmedTurnos.map(t => ({
-                id: t.id,
-                cliente: `${t.cliente_nombre} ${t.cliente_apellido}`,
-                fecha: t.fecha,
-                hora: t.hora_inicio,
-                estado: t.estado
-            })));
             
             if (confirmedTurnos.length === 0) {
                 this.showNotification('ℹ️ No hay turnos confirmados para completar', 'info');
@@ -1230,13 +1232,13 @@ class TurnosManager {
             const confirmMessage = `¿Estás seguro de que quieres marcar como COMPLETADOS todos los ${confirmedTurnos.length} turnos confirmados?\n\nEsta acción:\n• Marcará TODOS los turnos confirmados como completados\n• No se puede deshacer\n• Se aplicará independientemente de la hora del turno`;
             
             if (!confirm(confirmMessage)) {
-                console.log('❌ Usuario canceló la operación');
+        
                 button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
                 button.disabled = false;
                 return;
             }
             
-            console.log('🔄 Usuario confirmó la operación, ejecutando completado automático...');
+    
             
             // Ejecutar completado automático de TODOS los turnos confirmados
             const response = await fetch('/api/appointments/complete-all-confirmed', { 
@@ -1245,32 +1247,17 @@ class TurnosManager {
             });
             
             const result = await response.json();
-            console.log('📡 Respuesta de la API:', result);
             
             if (result.success) {
                 const updatedCount = result.data.updatedCount || 0;
                 
                 // Mostrar notificación de éxito
                 this.showNotification(`✅ ¡Completado exitoso! ${updatedCount} turnos confirmados marcados como completados`, 'success');
-                console.log(`✅ Completado automático exitoso: ${updatedCount} turnos procesados`);
-                
-                // Mostrar detalles de los turnos completados
-                if (confirmedTurnos.length > 0) {
-                    const turnosInfo = confirmedTurnos.map(t => 
-                        `• ${t.cliente_nombre} ${t.cliente_apellido} - ${t.servicio_nombre} (${t.fecha} ${t.hora_inicio})`
-                    ).join('\n');
-                    console.log('📋 Turnos confirmados completados:\n' + turnosInfo);
-                }
-                
-                console.log('🔄 Actualizando datos y UI...');
                 
                 // Actualizar datos y UI
                 await this.updateAutoCompleteStats();
                 await this.loadTurnos();
                 this.updateStats();
-                
-                console.log('🔄 Datos actualizados después de completado automático');
-                console.log('📊 Nuevos estados de turnos:', [...new Set(this.turnos.map(t => t.estado))]);
                 
                 // Mostrar resumen después de 2 segundos
                 setTimeout(() => {
@@ -1278,9 +1265,6 @@ class TurnosManager {
                 }, 2000);
                 
                 // Cambiar el botón a estado "completado" temporalmente
-                console.log('🎨 Cambiando botón a estado "completado"...');
-                console.log('🔍 Estado anterior del botón:', button.className);
-                
                 button.innerHTML = '<i class="fas fa-check me-2"></i>¡Completado!';
                 button.className = 'btn btn-success btn-lg w-100';
                 
@@ -1294,31 +1278,8 @@ class TurnosManager {
                 // Forzar reflow para asegurar que el cambio se aplique
                 button.offsetHeight;
                 
-                console.log('🎨 Botón cambiado a estado "completado" (verde)');
-                console.log('🔍 Clases del botón después del cambio:', button.className);
-                console.log('🔍 HTML del botón después del cambio:', button.innerHTML);
-                console.log('🎨 Estilos inline aplicados:', {
-                    backgroundColor: button.style.backgroundColor,
-                    borderColor: button.style.borderColor,
-                    color: button.style.color
-                });
-                
-                // Verificar que el cambio se aplicó
-                setTimeout(() => {
-                    console.log('🔍 Verificación después de 100ms - Clases:', button.className);
-                    console.log('🔍 Verificación después de 100ms - HTML:', button.innerHTML);
-                    console.log('🔍 Verificación después de 100ms - Estilos inline:', {
-                        backgroundColor: button.style.backgroundColor,
-                        borderColor: button.style.borderColor,
-                        color: button.style.color
-                    });
-                }, 100);
-                
                 // Después de 3 segundos, restaurar el botón original
                 setTimeout(() => {
-                    console.log('🔄 Restaurando botón a estado original...');
-                    console.log('🔍 Estado actual del botón antes de restaurar:', button.className);
-                    
                     button.innerHTML = '<i class="fas fa-check-double me-2"></i>Completar Turnos Confirmados';
                     button.className = 'btn btn-warning btn-lg w-100';
                     
@@ -1333,10 +1294,6 @@ class TurnosManager {
                     
                     // Forzar reflow para asegurar que el cambio se aplique
                     button.offsetHeight;
-                    
-                    console.log('🔄 Botón restaurado a estado original');
-                    console.log('🔍 Clases del botón después de restaurar:', button.className);
-                    console.log('🔍 HTML del botón después de restaurar:', button.innerHTML);
                 }, 3000);
                 
             } else {
@@ -1362,9 +1319,7 @@ class TurnosManager {
         // ⚠️ FUNCIÓN DESHABILITADA PARA PRODUCCIÓN
         // El auto-completado ahora solo funciona manualmente para evitar consumo innecesario de recursos
         
-        console.log('🚫 Timer de auto-completado DESHABILITADO');
-        console.log('💡 El auto-completado solo funciona cuando se presiona el botón manualmente');
-        console.log('✅ Esto reduce el consumo de recursos en un 100% para esta funcionalidad');
+
         
         // CÓDIGO ORIGINAL COMENTADO:
         // setInterval(() => {
@@ -1376,20 +1331,13 @@ class TurnosManager {
         // console.log('   - Reducción del 90% en consultas automáticas');
     }
 
-    formatDate(dateString) {
-        if (!dateString) return '--';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR');
-    }
+    // Función formatDate eliminada (duplicada)
 }
 
-// Inicializar cuando el DOM esté listo y solo si estamos en la sección de turnos
+// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    // Solo inicializar si estamos en la sección de turnos
-    const turnosSection = document.getElementById('turnos');
-    if (turnosSection && turnosSection.classList.contains('active')) {
-        window.turnosManager = new TurnosManager();
-    }
+    
+    window.turnosManager = new TurnosManager();
 });
 
 // Inicializar cuando se cambie a la sección de turnos
@@ -1400,7 +1348,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Inicializar después de un pequeño delay para asegurar que la sección esté visible
             setTimeout(() => {
                 if (!window.turnosManager) {
+            
                     window.turnosManager = new TurnosManager();
+                } else {
+            
+                    window.turnosManager.loadTurnos();
                 }
             }, 100);
         });

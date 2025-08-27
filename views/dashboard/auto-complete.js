@@ -13,7 +13,7 @@ class AutoCompleteManager {
     async initializeAutoCompletePage() {
         if (this.isInitialized) return;
         
-        console.log('🚀 Inicializando página de auto-completado...');
+
         
         try {
             // Configurar event listeners
@@ -26,7 +26,7 @@ class AutoCompleteManager {
             this.setupAutoRefresh();
             
             this.isInitialized = true;
-            console.log('✅ Página de auto-completado inicializada');
+    
             
         } catch (error) {
             console.error('❌ Error inicializando página de auto-completado:', error);
@@ -96,11 +96,7 @@ class AutoCompleteManager {
             this.updateTimestamps();
         }, 5 * 60 * 1000);
         
-        console.log('🔄 Auto-refresh configurado (OPTIMIZADO):');
-        console.log('   - Estadísticas: cada 10 minutos');
-        console.log('   - Turnos pendientes: cada 15 minutos');
-        console.log('   - Timestamps: cada 5 minutos');
-        console.log('   - Reducción del 75% en actualizaciones automáticas');
+
     }
 
     /**
@@ -158,7 +154,7 @@ class AutoCompleteManager {
         // ⚠️ FUNCIÓN DESHABILITADA - Los timestamps ya no se muestran en la UI
         // El auto-completado funciona en modo manual, no hay próxima ejecución automática
         
-        console.log('🚫 Timestamps deshabilitados - Modo manual activo');
+
         
         // CÓDIGO ORIGINAL COMENTADO:
         // const lastExecutionEl = document.getElementById('lastExecution');

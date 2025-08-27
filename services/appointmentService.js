@@ -16,11 +16,11 @@ class AppointmentService {
      */
     static async autoCompleteAppointments() {
         try {
-            console.log('🔄 Iniciando actualización automática de turnos...');
+    
             
             // Verificar cache primero
             if (this.shouldUseCache()) {
-                console.log('📋 Usando cache - No hay turnos pendientes para actualizar');
+        
                 return {
                     success: true,
                     message: 'No hay turnos pendientes para actualizar (cache)',
@@ -55,7 +55,7 @@ class AppointmentService {
             if (appointments.length === 0) {
                 // Actualizar cache cuando no hay turnos pendientes
                 this.updateCache(0);
-                console.log('✅ No hay turnos pendientes para marcar como completados');
+        
                 return {
                     success: true,
                     message: 'No hay turnos pendientes para actualizar',
@@ -64,7 +64,7 @@ class AppointmentService {
                 };
             }
             
-            console.log(`📋 Encontrados ${appointments.length} turnos para marcar como completados`);
+    
             
             // ACTUALIZACIÓN EN LOTE: Usar una sola consulta UPDATE para múltiples turnos
             const appointmentIds = appointments.map(a => a.id);
@@ -81,7 +81,7 @@ class AppointmentService {
             // Actualizar cache
             this.updateCache(0);
             
-            console.log(`🎯 Proceso completado: ${appointments.length} turnos actualizados en lote`);
+    
             
             return {
                 success: true,
@@ -166,7 +166,7 @@ class AppointmentService {
      */
     static async completeAllConfirmedAppointments() {
         try {
-            console.log('🚀 Iniciando completado manual de TODOS los turnos confirmados...');
+    
             
             // CONSULTA OPTIMIZADA: Solo obtener IDs
             const selectSql = `
@@ -179,7 +179,7 @@ class AppointmentService {
             const appointments = await query(selectSql);
             
             if (appointments.length === 0) {
-                console.log('✅ No hay turnos confirmados para completar');
+        
                 return {
                     success: true,
                     message: 'No hay turnos confirmados para completar',
@@ -188,7 +188,7 @@ class AppointmentService {
                 };
             }
             
-            console.log(`📋 Encontrados ${appointments.length} turnos confirmados para completar`);
+    
             
             // ACTUALIZACIÓN EN LOTE
             const appointmentIds = appointments.map(a => a.id);
@@ -204,7 +204,7 @@ class AppointmentService {
             // Actualizar cache
             this.updateCache(0);
             
-            console.log(`🎯 Proceso completado: ${appointments.length} turnos confirmados marcados como completados`);
+    
             
             return {
                 success: true,

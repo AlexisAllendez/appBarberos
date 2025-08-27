@@ -111,49 +111,7 @@ async function getDashboardStats(req, res) {
             LIMIT 5
         `, [userId]);
 
-        // Consulta de depuración: ver todas las fechas de turnos del usuario
-        debug('Consultando fechas de turnos para depuración...');
-        const debugDates = await query(`
-            SELECT 
-                fecha,
-                DATE_FORMAT(fecha, '%Y-%m-%d') as fecha_formateada,
-                CURDATE() as fecha_actual,
-                COUNT(*) as total_turnos
-            FROM turnos 
-            WHERE id_usuario = ? 
-            AND fecha >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-            GROUP BY fecha
-            ORDER BY fecha DESC
-        `, [userId]);
-        debug('Fechas de turnos (últimos 7 días):', debugDates);
 
-        // Verificar específicamente si hay turnos para hoy
-        const todayCheck = await query(`
-            SELECT 
-                CURDATE() as fecha_actual,
-                COUNT(*) as total_hoy,
-                SUM(CASE WHEN estado = 'completado' THEN 1 ELSE 0 END) as completados_hoy,
-                SUM(CASE WHEN estado = 'reservado' THEN 1 ELSE 0 END) as reservados_hoy,
-                SUM(CASE WHEN estado = 'confirmado' THEN 1 ELSE 0 END) as confirmados_hoy
-            FROM turnos 
-            WHERE id_usuario = ? AND fecha = CURDATE()
-        `, [userId]);
-
-
-        // Verificar si hay turnos con fechas nulas o problemáticas
-        const problematicDates = await query(`
-            SELECT 
-                id, fecha, estado, id_usuario
-            FROM turnos 
-            WHERE id_usuario = ? 
-            AND (fecha IS NULL OR fecha < '2020-01-01')
-            LIMIT 5
-        `, [userId]);
-        if (problematicDates.length > 0) {
-    
-        }
-
-        // Log de depuración
 
 
         if (!res.headersSent) {
@@ -366,13 +324,7 @@ async function getAllAppointments(req, res) {
             JOIN servicios s ON t.id_servicio = s.id
             WHERE ${whereClause}
             ORDER BY 
-                CASE 
-                    WHEN t.estado = 'pendiente' THEN 1
-                    WHEN t.estado = 'confirmado' THEN 2
-                    ELSE 3
-                END ASC,
-                t.fecha DESC, 
-                t.hora_inicio DESC
+                t.id DESC
             LIMIT ? OFFSET ?
         `;
 
@@ -408,17 +360,13 @@ async function getAllAppointments(req, res) {
             JOIN servicios s ON t.id_servicio = s.id
             WHERE ${whereClause}
             ORDER BY 
-                CASE 
-                    WHEN t.estado = 'pendiente' THEN 1
-                    WHEN t.estado = 'confirmado' THEN 2
-                    ELSE 3
-                END ASC,
-                t.fecha DESC, 
-                t.hora_inicio DESC
+                t.id DESC
             LIMIT ? OFFSET ?
         `, finalParams);
 
         // Debug: Mostrar los resultados ordenados
+
+        
 
 
         // Obtener total de registros para paginación
@@ -762,60 +710,66 @@ async function getAllClients(req, res) {
 
     // Calcular rango de fechas según el período
     function calculateDateRange(period, startDate, endDate) {
+        // SOLUCIÓN SIMPLE: Usar la fecha actual del sistema
         const now = new Date();
+        
         let start, end;
+        
+
         
         switch (period) {
             case 'today':
-                // Hoy: desde 00:00:00 hasta 23:59:59
-                start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+                // Hoy: solo la fecha, sin horas (evita problemas de zona horaria)
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 break;
                 
             case 'yesterday':
-                // Ayer: desde 00:00:00 hasta 23:59:59
-                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59, 999);
+                // Ayer: solo la fecha, sin horas
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
                 break;
                 
             case 'week':
-                // Esta semana: desde lunes 00:00:00 hasta domingo 23:59:59
+                // Esta semana: desde lunes hasta domingo (solo fechas)
                 const dayOfWeek = now.getDay();
                 const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // 0 = domingo, 1 = lunes
-                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysToSubtract, 0, 0, 0, 0);
-                end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6, 23, 59, 59, 999);
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysToSubtract);
+                end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
                 break;
                 
             case 'month':
-                // Este mes: desde el día 1 00:00:00 hasta el último día 23:59:59
-                start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+                // Este mes: desde el día 1 hasta el último día (solo fechas)
+                start = new Date(now.getFullYear(), now.getMonth(), 1);
+                end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
                 break;
                 
             case 'quarter':
-                // Este trimestre: desde el primer mes del trimestre hasta el último
+                // Este trimestre: desde el primer mes del trimestre hasta el último (solo fechas)
                 const quarter = Math.floor(now.getMonth() / 3);
-                start = new Date(now.getFullYear(), quarter * 3, 1, 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), (quarter + 1) * 3, 0, 23, 59, 59, 999);
+                start = new Date(now.getFullYear(), quarter * 3, 1);
+                end = new Date(now.getFullYear(), (quarter + 1) * 3, 0);
                 break;
                 
             case 'year':
-                // Este año: desde 1 de enero 00:00:00 hasta 31 de diciembre 23:59:59
-                start = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+                // Este año: desde 1 de enero hasta 31 de diciembre (solo fechas)
+                start = new Date(now.getFullYear(), 0, 1);
+                end = new Date(now.getFullYear(), 11, 31);
                 break;
                 
             case 'custom':
-                // Fechas personalizadas: desde 00:00:00 hasta 23:59:59
-                start = new Date(startDate + 'T00:00:00');
-                end = new Date(endDate + 'T23:59:59');
+                // Fechas personalizadas: solo fechas
+                start = new Date(startDate);
+                end = new Date(endDate);
                 break;
                 
             default:
-                // Por defecto: este mes
-                start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
-                end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+                // Por defecto: este mes (solo fechas)
+                start = new Date(now.getFullYear(), now.getMonth(), 1);
+                end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
         }
+        
+
         
         return { start, end };
     }
@@ -841,7 +795,7 @@ async function getAllClients(req, res) {
             const startStr = start.toISOString().slice(0, 19).replace('T', ' ');
             const endStr = end.toISOString().slice(0, 19).replace('T', ' ');
             
-
+            
             
             // Consulta para métricas básicas filtrada por usuario
             const metricsResult = await query(`
@@ -854,12 +808,14 @@ async function getAllClients(req, res) {
                     COUNT(CASE WHEN estado = 'no_show' THEN 1 END) as noShowTurnos
                 FROM turnos 
                 WHERE id_usuario = ? 
-                AND fecha >= DATE(?) 
-                AND fecha <= DATE(?)
+                AND fecha >= ? 
+                AND fecha <= ?
                 AND estado NOT IN ('cancelado', 'no_show')
-            `, [userId, startStr, endStr]);
+            `, [userId, startStr.split(' ')[0], endStr.split(' ')[0]]);
             
             const metrics = metricsResult[0];
+            
+
             
             // Calcular métricas derivadas
             const totalRevenue = parseFloat(metrics.totalRevenue) || 0;
@@ -1058,13 +1014,7 @@ async function getClientDetails(req, res) {
             JOIN servicios s ON t.id_servicio = s.id
             WHERE t.id_cliente = ? AND t.id_usuario = ?
             ORDER BY 
-                CASE 
-                    WHEN t.estado = 'pendiente' THEN 1
-                    WHEN t.estado = 'confirmado' THEN 2
-                    ELSE 3
-                END ASC,
-                t.fecha DESC, 
-                t.hora_inicio DESC
+                t.id DESC
             LIMIT 20
         `, [id, userId]);
 

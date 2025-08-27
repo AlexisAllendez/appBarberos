@@ -7,7 +7,7 @@ class AppointmentController {
      */
     static async runAutoComplete(req, res) {
         try {
-            console.log('🚀 Solicitud manual de actualización automática de turnos');
+    
             
             const result = await AppointmentService.autoCompleteAppointments();
             
@@ -33,7 +33,7 @@ class AppointmentController {
      */
     static async completeAllConfirmed(req, res) {
         try {
-            console.log('🚀 Solicitud manual de completado de TODOS los turnos confirmados');
+    
             
             const result = await AppointmentService.completeAllConfirmedAppointments();
             

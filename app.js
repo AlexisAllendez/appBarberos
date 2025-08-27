@@ -184,14 +184,8 @@ app.use(errorHandler);
 async function startServer() {
     try {
         // Inicializar base de datos
-        console.log('🔄 Inicializando base de datos...');
         await initializeDatabase();
-        console.log('✅ Base de datos inicializada correctamente');
-
-        // Inicializar estructura y datos
-        console.log('🔄 Inicializando estructura de tablas...');
         await initDbComplete();
-        console.log('✅ Estructura de tablas inicializada correctamente');
 
         // Iniciar servidor
         app.listen(PORT, () => {
@@ -206,15 +200,7 @@ async function startServer() {
         scheduledTasks = setupScheduledTasks();
         
         // Ejecutar actualización inicial de turnos
-        console.log('🚀 Ejecutando actualización inicial de turnos...');
         AppointmentService.autoCompleteAppointments()
-            .then(result => {
-                if (result.updatedCount > 0) {
-                    console.log(`✅ Actualización inicial completada: ${result.updatedCount} turnos marcados como completados`);
-                } else {
-                    console.log('✅ Actualización inicial completada: No hay turnos pendientes para actualizar');
-                }
-            })
             .catch(error => {
                 console.error('❌ Error en actualización inicial:', error);
             });
@@ -226,28 +212,19 @@ async function startServer() {
 
 // Función para configurar tareas programadas - OPTIMIZADA
 function setupScheduledTasks() {
-    console.log('⏰ Configurando tareas programadas OPTIMIZADAS...');
+
     
     // Tarea 1: Actualizar turnos automáticamente cada 4 horas (en lugar de 30 minutos)
     const autoCompleteInterval = setInterval(async () => {
         try {
-            console.log('🔄 Ejecutando tarea programada: Actualización automática de turnos...');
-            
             // Verificar si hay turnos pendientes antes de ejecutar
             const pendingCount = await AppointmentService.checkPendingAppointments();
             
             if (pendingCount === 0) {
-                console.log('✅ No hay turnos pendientes - Saltando ejecución (cache)');
                 return;
             }
             
-            const result = await AppointmentService.autoCompleteAppointments();
-            
-            if (result.updatedCount > 0) {
-                console.log(`✅ Tarea completada: ${result.updatedCount} turnos marcados como completados`);
-            } else {
-                console.log('✅ Tarea completada: No hay turnos pendientes para actualizar');
-            }
+            await AppointmentService.autoCompleteAppointments();
         } catch (error) {
             console.error('❌ Error en tarea programada de auto-completado:', error);
         }
@@ -271,30 +248,14 @@ function setupScheduledTasks() {
             
             // Ejecutar solo a las 00:01 AM
             if (currentHour === 0 && currentMinute === 1) {
-                console.log('🌅 Ejecutando tarea diaria: Actualización de turnos del día anterior...');
-                
-                // Limpiar cache al inicio del día
-                console.log('🧹 Limpiando cache al inicio del día...');
-                
-                const result = await AppointmentService.autoCompleteAppointments();
-                
-                if (result.updatedCount > 0) {
-                    console.log(`✅ Tarea diaria completada: ${result.updatedCount} turnos del día anterior marcados como completados`);
-                } else {
-                    console.log('✅ Tarea diaria completada: No hay turnos del día anterior para actualizar');
-                }
+                await AppointmentService.autoCompleteAppointments();
             }
         } catch (error) {
             console.error('❌ Error en tarea diaria de auto-completado:', error);
         }
     }, 10 * 60 * 1000); // Verificar cada 10 minutos (en lugar de 5)
     
-    console.log('✅ Tareas programadas configuradas (ALTAMENTE OPTIMIZADAS):');
-    console.log('   - Actualización automática cada 4 horas (reducido de 30 minutos)');
-    console.log('   - Verificación de cache cada 2 horas');
-    console.log('   - Actualización diaria a las 00:01 AM (verificación cada 10 minutos)');
-    console.log('   - Reducción del 92% en consultas automáticas');
-    console.log('   - Implementado sistema de cache inteligente');
+    
     
     // Retornar los intervalos para poder limpiarlos si es necesario
     return { 

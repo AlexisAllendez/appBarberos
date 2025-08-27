@@ -85,17 +85,6 @@ async function processBooking(req, res) {
         const confirmationCode = Math.random().toString(36).substring(2, 8).toUpperCase();
         
         // Simular guardado en base de datos
-        console.log('Nueva reserva:', {
-            nombre,
-            apellido,
-            email,
-            telefono,
-            servicio,
-            fecha,
-            hora,
-            comentarios,
-            confirmationCode
-        });
 
         // Aquí se enviaría el email de confirmación
         // await sendConfirmationEmail(email, confirmationCode, { nombre, apellido, servicio, fecha, hora });
@@ -158,11 +147,6 @@ async function processCancel(req, res) {
 
         // Aquí iría la lógica para buscar y cancelar en la base de datos
         // Por ahora, simulamos el proceso
-        
-        console.log('Cancelación solicitada:', {
-            confirmationCode,
-            email
-        });
 
         // Simular búsqueda y cancelación
         // const appointment = await findAppointmentByCode(confirmationCode, email);
