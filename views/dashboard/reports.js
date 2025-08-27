@@ -38,7 +38,6 @@ function configurarEventListeners() {
     if (reportPeriod) {
         reportPeriod.addEventListener('change', function() {
             const period = this.value;
-            console.log('🔄 Período cambiado a:', period);
             
             // Mostrar/ocultar campos de fecha personalizada
             const customDateRange = document.getElementById('customDateRange');
@@ -104,7 +103,7 @@ async function cargarReporte() {
         }
         
         // Hacer petición al servidor
-        const response = await fetch(`/api/reports/general?${params}`);
+        const response = await fetch(`/dashboard/reports/general?${params}`);
         const result = await response.json();
         
         if (result.success) {

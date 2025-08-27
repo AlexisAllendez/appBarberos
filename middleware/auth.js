@@ -113,9 +113,9 @@ function requireOwnership(req, res, next) {
     return next();
 }
 
-// Middleware para logging de requests
+// Middleware para logging de requests (deshabilitado para consola limpia)
 function requestLogger(req, res, next) {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
+    // console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
     return next();
 }
 

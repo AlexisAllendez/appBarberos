@@ -16,6 +16,11 @@ class TurnosManager {
             direction: 'asc' // Dirección por defecto: ascendente
         };
         
+        // Validar que las propiedades sean arrays
+        if (!Array.isArray(this.clientes)) this.clientes = [];
+        if (!Array.isArray(this.servicios)) this.servicios = [];
+        if (!Array.isArray(this.turnos)) this.turnos = [];
+        
         this.init();
     }
 
@@ -198,14 +203,36 @@ class TurnosManager {
 
             if (clientesRes.ok) {
                 const clientesData = await clientesRes.json();
-                this.clientes = clientesData.data || [];
+                
+                // Validar que data.clients existe y es un array
+                if (clientesData.data && clientesData.data.clients && Array.isArray(clientesData.data.clients)) {
+                    this.clientes = clientesData.data.clients;
+                } else if (clientesData.data && Array.isArray(clientesData.data)) {
+                    this.clientes = clientesData.data;
+                } else {
+                    this.clientes = [];
+                }
+                
                 this.populateClientesSelect();
+            } else {
+                this.clientes = [];
             }
 
             if (serviciosRes.ok) {
                 const serviciosData = await serviciosRes.json();
-                this.servicios = serviciosData.data || [];
+                
+                // Validar que data.services existe y es un array
+                if (serviciosData.data && serviciosData.data.services && Array.isArray(serviciosData.data.services)) {
+                    this.servicios = serviciosData.data.services;
+                } else if (serviciosData.data && Array.isArray(serviciosData.data)) {
+                    this.servicios = [];
+                } else {
+                    this.servicios = [];
+                }
+                
                 this.populateServiciosSelect();
+            } else {
+                this.servicios = [];
             }
         } catch (error) {
             console.error('Error cargando datos iniciales:', error);
@@ -606,6 +633,12 @@ class TurnosManager {
         
         select.innerHTML = '<option value="">Seleccionar cliente...</option>';
         
+        // Validar que this.clientes sea un array antes de usar forEach
+        if (!Array.isArray(this.clientes)) {
+            this.clientes = [];
+            return;
+        }
+        
         this.clientes.forEach(cliente => {
             const option = document.createElement('option');
             option.value = cliente.id;
@@ -619,6 +652,12 @@ class TurnosManager {
         if (!select) return;
         
         select.innerHTML = '<option value="">Seleccionar servicio...</option>';
+        
+        // Validar que this.servicios sea un array antes de usar forEach
+        if (!Array.isArray(this.servicios)) {
+            this.servicios = [];
+            return;
+        }
         
         this.servicios.forEach(servicio => {
             const option = document.createElement('option');

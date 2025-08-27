@@ -24,9 +24,16 @@ router.delete('/appointments/:id', dashboardController.deleteAppointment);
 
 // Rutas de clientes
 router.get('/clients', dashboardController.getAllClients);
+router.get('/clients/stats', dashboardController.getClientStats);
 router.get('/clients/:id', dashboardController.getClientDetails);
 router.put('/clients/:id', dashboardController.updateClient);
 router.delete('/clients/:id', dashboardController.deleteClient);
+
+// Ruta de debug para diagnosticar problemas con clientes
+router.get('/clients-debug', dashboardController.debugClientData);
+
+// Rutas de reportes
+router.get('/reports/general', dashboardController.getGeneralReport);
 
 // Rutas de servicios
 router.get('/services', dashboardController.getAllServices);

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
 
             // Show overview by default
-            showSection('overview');
+            await showSection('overview');
 
         } catch (error) {
             console.error('Error initializing dashboard:', error);
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             // Hacer dashboardData disponible globalmente
             window.dashboardData = dashboardData;
-            console.log('⚠️ Usando datos por defecto');
+    
             updateDashboardUI();
         }
     }
@@ -196,9 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!dashboardData || !dashboardData.stats || !dashboardData.stats.today) {
             console.warn('⚠️ Datos de estadísticas no disponibles');
-            console.log('  - dashboardData existe:', !!dashboardData);
-            console.log('  - dashboardData.stats existe:', !!(dashboardData && dashboardData.stats));
-            console.log('  - dashboardData.stats.today existe:', !!(dashboardData && dashboardData.stats && dashboardData.stats.today));
+            
             return;
         }
         
@@ -321,10 +319,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupEventListeners() {
         // Navigation
         navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const section = link.getAttribute('data-section');
-                showSection(section);
+                await showSection(section);
                 
                 // Update active nav link
                 navLinks.forEach(l => l.classList.remove('active'));
@@ -343,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Show section
-    function showSection(sectionName) {
+    async function showSection(sectionName) {
         // Hide all sections
         dashboardSections.forEach(section => {
             section.classList.remove('active');
@@ -355,41 +353,47 @@ document.addEventListener('DOMContentLoaded', function() {
         if (targetSection) {
             targetSection.classList.add('active');
             
-                    // Special handling for admin section
-        if (sectionName === 'admin') {
-            // Show admin section and load data
-            targetSection.style.display = 'block';
-            loadAdminSection();
-        } else {
-            // Hide admin section when showing other sections
-            const adminSection = document.getElementById('admin');
-            if (adminSection) {
-                adminSection.style.display = 'none';
+            // Special handling for admin section
+            if (sectionName === 'admin') {
+                // Verificar que el usuario sea admin antes de mostrar la sección
+                if (currentUser && currentUser.rol === 'admin') {
+                    targetSection.style.display = 'block';
+                    await loadAdminSection();
+                } else {
+                    // Si no es admin, redirigir a overview
+                    await showSection('overview');
+                    return;
+                }
+            } else {
+                // Hide admin section when showing other sections
+                const adminSection = document.getElementById('admin');
+                if (adminSection) {
+                    adminSection.style.display = 'none';
+                }
+                
+                // Load section data
+                switch (sectionName) {
+                    case 'appointments':
+                        loadAppointments();
+                        break;
+                    case 'clients':
+                        loadClients();
+                        break;
+                    case 'services':
+                        loadServices();
+                        break;
+                    case 'schedule':
+                        loadSchedule();
+                        break;
+                    case 'reports':
+                        loadReports();
+                        // Actualizar métricas de reportes cuando se cambie a esa sección
+                        setTimeout(() => {
+                            updateReportMetrics();
+                        }, 100);
+                        break;
+                }
             }
-            
-            // Load section data
-            switch (sectionName) {
-                case 'appointments':
-                    loadAppointments();
-                    break;
-                case 'clients':
-                    loadClients();
-                    break;
-                case 'services':
-                    loadServices();
-                    break;
-                case 'schedule':
-                    loadSchedule();
-                    break;
-                case 'reports':
-                    loadReports();
-                    // Actualizar métricas de reportes cuando se cambie a esa sección
-                    setTimeout(() => {
-                        updateReportMetrics();
-                    }, 100);
-                    break;
-            }
-        }
         }
     }
 
@@ -482,8 +486,8 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const searchTerm = document.getElementById('clientSearchInput')?.value || '';
             const url = searchTerm ? 
-                `/api/clients?search=${encodeURIComponent(searchTerm)}` : 
-                '/api/clients';
+                `/dashboard/clients?search=${encodeURIComponent(searchTerm)}` : 
+                '/dashboard/clients';
             
             const response = await fetch(url, {
                 method: 'GET',
@@ -492,10 +496,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 const data = await response.json();
+                
                 if (data.success) {
-                    renderClientsTable(data.data.clients, data.data.pagination);
-                    loadClientStats();
+                    if (data.data && data.data.clients) {
+                        renderClientsTable(data.data.clients, data.data.pagination);
+                        loadClientStats();
+                    } else {
+                        console.error('Estructura de datos incorrecta:', data.data);
+                        showError('Error en la estructura de datos recibidos');
+                    }
                 } else {
+                    console.error('Error en la respuesta:', data.message);
                     showError('Error al cargar los clientes');
                 }
             } else {
@@ -514,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalSpan = document.getElementById('clientsTotal');
 
         if (!tbody) {
-            console.warn('⚠️ Elemento clientsTableBody no encontrado');
+            console.warn('Elemento clientsTableBody no encontrado');
             return;
         }
 
@@ -627,7 +638,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load client statistics
     async function loadClientStats() {
         try {
-            const response = await fetch('/api/clients/stats', {
+            const response = await fetch('/dashboard/clients/stats', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -794,7 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            const url = clientId ? `/api/clients/${clientId}` : '/api/clients';
+            const url = clientId ? `/dashboard/clients/${clientId}` : '/dashboard/clients';
             const method = clientId ? 'PUT' : 'POST';
 
             const response = await fetch(url, {
@@ -832,7 +843,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // View client details
     async function viewClient(id) {
         try {
-            const response = await fetch(`/api/clients/${id}`, {
+            const response = await fetch(`/dashboard/clients/${id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -919,7 +930,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Edit client
     async function editClient(id) {
         try {
-            const response = await fetch(`/api/clients/${id}`, {
+            const response = await fetch(`/dashboard/clients/${id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -947,7 +958,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            const response = await fetch(`/api/clients/${id}`, {
+            const response = await fetch(`/dashboard/clients/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -973,7 +984,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Change clients page
     function changeClientsPage(page) {
         // TODO: Implement pagination for clients
-        console.log('Change clients page:', page);
+
     }
 
     // Global functions for client management
@@ -1089,14 +1100,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Edit service function
     function editService(serviceId) {
-        console.log('Editando servicio:', serviceId);
+
         // TODO: Implementar edición de servicio
         showInfo('Función de edición de servicio en desarrollo');
     }
 
     // Delete service function
     function deleteService(serviceId) {
-        console.log('Eliminando servicio:', serviceId);
+
         // TODO: Implementar eliminación de servicio
         showInfo('Función de eliminación de servicio en desarrollo');
     }
@@ -1121,20 +1132,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load admin section
-    function loadAdminSection() {
+    async function loadAdminSection() {
         // Verificar si el usuario es admin
         if (currentUser && currentUser.rol === 'admin') {
-            // Inicializar el panel de administración si no está inicializado
-            if (typeof AdminPanel !== 'undefined' && !window.adminPanel) {
-                window.adminPanel = new AdminPanel();
-            } else if (typeof AdminPanel !== 'undefined' && window.adminPanel) {
-                // Si ya existe, recargar los datos
-                window.adminPanel.loadAdminData();
+            try {
+                // Cargar dinámicamente admin.js solo si no está cargado
+                if (typeof AdminPanel === 'undefined') {
+                    await loadAdminScript();
+                }
+                
+                // Inicializar el panel de administración si no está inicializado
+                if (typeof AdminPanel !== 'undefined' && !window.adminPanel) {
+                    window.adminPanel = new AdminPanel();
+                } else if (typeof AdminPanel !== 'undefined' && window.adminPanel) {
+                    // Si ya existe, recargar los datos
+                    window.adminPanel.loadAdminData();
+                }
+            } catch (error) {
+                console.error('Error cargando sección de administración:', error);
+                showError('Error cargando panel de administración');
             }
         } else {
             // Si no es admin, redirigir a overview
-            showSection('overview');
+            await showSection('overview');
         }
+    }
+
+    // Función para cargar dinámicamente el script de administración
+    async function loadAdminScript() {
+        return new Promise((resolve, reject) => {
+            // Verificar si ya está cargado
+            if (typeof AdminPanel !== 'undefined') {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = '/views/dashboard/admin.js';
+            script.onload = () => {
+        
+                resolve();
+            };
+            script.onerror = () => {
+                reject(new Error('Error cargando script de administración'));
+            };
+            document.head.appendChild(script);
+        });
     }
 
     // Global functions for actions
@@ -1204,7 +1247,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.editService = function(id) {
         // TODO: Implement edit service modal
-        console.log('Edit service:', id);
+
     };
 
     window.deleteService = async function(id) {
@@ -1233,7 +1276,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.changePage = function(page, loadFunction) {
         // TODO: Implement page change functionality
-        console.log('Change page:', page, loadFunction);
+
     };
 
     // Utility functions
@@ -1260,7 +1303,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showAppointmentModal(appointment) {
         // TODO: Implement appointment modal
-        console.log('Show appointment modal:', appointment);
+
     }
 
     // Handle logout
@@ -1426,7 +1469,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Los nuevos reportes no usan updateMetrics, así que no hacemos nada aquí
-        console.log('ℹ️ Reportes simples no requieren actualización desde dashboard');
+
     }
 
     // ===== GLOBAL FUNCTIONS FOR CLIENT MANAGEMENT =====

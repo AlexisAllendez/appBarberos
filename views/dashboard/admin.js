@@ -7,6 +7,12 @@ class AdminPanel {
             throw new Error('Acceso denegado: Se requiere rol de administrador');
         }
         
+        // Verificar que estamos en el contexto correcto
+        if (typeof window.currentUser === 'undefined' || window.currentUser.rol !== 'admin') {
+            console.warn('AdminPanel: Usuario no autorizado o no autenticado');
+            throw new Error('Usuario no autorizado');
+        }
+        
         // Log de inicialización removido para consola limpia
         this.initializeEventListeners();
         this.loadAdminData();
@@ -14,8 +20,21 @@ class AdminPanel {
 
     // ✅ FUNCIÓN DE UTILIDAD PARA VERIFICAR ROL
     isUserAdmin() {
+        // Verificar tanto localStorage como la variable global
         const userRole = localStorage.getItem('userRole');
-        return userRole === 'admin';
+        const globalUser = window.currentUser;
+        
+        // Verificar que el usuario esté autenticado y sea admin
+        if (!globalUser || globalUser.rol !== 'admin') {
+            return false;
+        }
+        
+        // Verificar que coincida con localStorage
+        if (userRole !== 'admin') {
+            return false;
+        }
+        
+        return true;
     }
 
     initializeEventListeners() {
@@ -53,6 +72,12 @@ class AdminPanel {
             console.warn('AdminPanel: Acceso denegado a loadAdminData');
             return;
         }
+        
+        // Verificación adicional de seguridad
+        if (typeof window.currentUser === 'undefined' || window.currentUser.rol !== 'admin') {
+            console.warn('AdminPanel: Usuario no autorizado en loadAdminData');
+            return;
+        }
 
         try {
             // Cargar lista de barberos
@@ -75,6 +100,12 @@ class AdminPanel {
         // ✅ VERIFICAR ROL ANTES DE CARGAR EMPLEADOS
         if (!this.isUserAdmin()) {
             console.warn('AdminPanel: Acceso denegado a loadEmployees');
+            return;
+        }
+        
+        // Verificación adicional de seguridad
+        if (typeof window.currentUser === 'undefined' || window.currentUser.rol !== 'admin') {
+            console.warn('AdminPanel: Usuario no autorizado en loadEmployees');
             return;
         }
 

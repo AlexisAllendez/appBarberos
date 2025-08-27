@@ -218,7 +218,7 @@ class Client {
                        COUNT(t.id) as total_citas,
                        MAX(t.fecha) as ultima_cita
                 FROM clientes c
-                LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+                INNER JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
                 GROUP BY c.id
                 ORDER BY c.nombre ASC, c.apellido ASC
                 LIMIT ? OFFSET ?
@@ -241,12 +241,14 @@ class Client {
     static async getFrequentClients(id_usuario, limit = 10) {
         try {
             const sql = `
-                SELECT cf.*
-                FROM clientes_frecuentes cf
-                JOIN turnos t ON cf.id = t.id_cliente
-                WHERE t.id_usuario = ?
-                GROUP BY cf.id
-                ORDER BY cf.total_citas DESC, cf.ultima_cita DESC
+                SELECT DISTINCT c.*, 
+                       COUNT(t.id) as total_citas,
+                       MAX(t.fecha) as ultima_cita
+                FROM clientes c
+                LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+                WHERE t.id IS NOT NULL
+                GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas
+                ORDER BY total_citas DESC, ultima_cita DESC
                 LIMIT ?
             `;
 
@@ -267,12 +269,14 @@ class Client {
     static async getNewClients(id_usuario, limit = 10) {
         try {
             const sql = `
-                SELECT cn.*
-                FROM clientes_nuevos cn
-                JOIN turnos t ON cn.id = t.id_cliente
-                WHERE t.id_usuario = ?
-                GROUP BY cn.id
-                ORDER BY cn.primera_cita DESC
+                SELECT DISTINCT c.*, 
+                       COUNT(t.id) as total_citas,
+                       MIN(t.fecha) as primera_cita
+                FROM clientes c
+                LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+                WHERE t.id IS NOT NULL
+                GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas
+                ORDER BY primera_cita DESC
                 LIMIT ?
             `;
 
@@ -293,11 +297,13 @@ class Client {
      */
     static async searchByName(id_usuario, searchTerm, limit = 20) {
         try {
+            console.log('🔍 Buscando clientes por nombre para usuario:', id_usuario, 'término:', searchTerm);
+            
             const sql = `
                 SELECT DISTINCT c.*, 
                        COUNT(t.id) as total_citas
                 FROM clientes c
-                LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+                INNER JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
                 WHERE (c.nombre LIKE ? OR c.apellido LIKE ? OR CONCAT(c.nombre, ' ', c.apellido) LIKE ?)
                 GROUP BY c.id
                 ORDER BY c.nombre ASC, c.apellido ASC
@@ -308,6 +314,7 @@ class Client {
             const clients = await query(sql, [
                 id_usuario, searchPattern, searchPattern, searchPattern, limit
             ]);
+            
 
             return clients;
         } catch (error) {
@@ -329,19 +336,21 @@ class Client {
                     COUNT(DISTINCT CASE WHEN t.fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN c.id END) as clientes_nuevos,
                     COUNT(DISTINCT CASE WHEN t.fecha >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN c.id END) as clientes_semana,
                     COUNT(DISTINCT CASE WHEN t.fecha = CURDATE() THEN c.id END) as clientes_hoy,
-                    AVG(client_stats.total_citas) as promedio_citas_por_cliente
+                    COALESCE(AVG(t.total_citas), 0) as promedio_citas_por_cliente
                 FROM clientes c
-                LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
-                LEFT JOIN (
-                    SELECT c2.id, COUNT(t2.id) as total_citas
-                    FROM clientes c2
-                    JOIN turnos t2 ON c2.id = t2.id_cliente
-                    WHERE t2.id_usuario = ?
-                    GROUP BY c2.id
-                ) client_stats ON c.id = client_stats.id
+                INNER JOIN (
+                    SELECT 
+                        id_cliente,
+                        id_usuario,
+                        fecha,
+                        COUNT(*) as total_citas
+                    FROM turnos 
+                    WHERE id_usuario = ?
+                    GROUP BY id_cliente, id_usuario, fecha
+                ) t ON c.id = t.id_cliente
             `;
 
-            const [stats] = await query(sql, [id_usuario, id_usuario]);
+            const [stats] = await query(sql, [id_usuario]);
             return stats;
         } catch (error) {
             console.error('Error al obtener estadísticas de clientes:', error);

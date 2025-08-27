@@ -1,6 +1,6 @@
 const { query } = require('../config/db');
 const path = require('path');
-const { stats, debug } = require('../config/simple-logger');
+
 
 // Renderizar dashboard
 async function renderDashboard(req, res) {
@@ -20,10 +20,8 @@ async function getDashboardStats(req, res) {
         const userId = req.user.id;
         
         // Usar consistentemente funciones de MySQL para evitar problemas de zona horaria
-        console.log('🔍 Obteniendo estadísticas para usuario:', userId);
 
         // Estadísticas de hoy
-        console.log('🔍 Consultando estadísticas de hoy para usuario:', userId);
         const todayStats = await query(`
             SELECT 
                 COUNT(*) as total_turnos,
@@ -35,7 +33,7 @@ async function getDashboardStats(req, res) {
             FROM turnos 
             WHERE id_usuario = ? AND fecha = CURDATE()
         `, [userId]);
-        stats('Resultado de estadísticas de hoy:', todayStats);
+
 
         // Estadísticas de la semana
         const weekStats = await query(`
@@ -140,7 +138,7 @@ async function getDashboardStats(req, res) {
             FROM turnos 
             WHERE id_usuario = ? AND fecha = CURDATE()
         `, [userId]);
-        console.log('✅ Verificación específica de hoy:', todayCheck[0]);
+
 
         // Verificar si hay turnos con fechas nulas o problemáticas
         const problematicDates = await query(`
@@ -152,17 +150,11 @@ async function getDashboardStats(req, res) {
             LIMIT 5
         `, [userId]);
         if (problematicDates.length > 0) {
-            console.log('⚠️ Turnos con fechas problemáticas encontrados:', problematicDates);
+    
         }
 
         // Log de depuración
-        stats('Estadísticas obtenidas:');
-        stats('  - Hoy:', todayStats[0]);
-        stats('  - Semana:', weekStats[0]);
-        stats('  - Mes:', monthStats[0]);
-        stats('  - Próximos turnos:', upcomingTurnos.length);
-        stats('  - Servicios populares:', popularServices.length);
-        stats('  - Top clientes:', topClients.length);
+
 
         if (!res.headersSent) {
             res.json({
@@ -348,10 +340,7 @@ async function getAllAppointments(req, res) {
         const whereClause = whereConditions.join(' AND ');
 
         // Debug: Ver qué parámetros se están pasando
-        console.log('Debug - Parámetros de consulta:');
-        console.log('params:', params);
-        console.log('limit:', limit, 'offset:', offset);
-        console.log('whereClause:', whereClause);
+
         
         // Debug: Mostrar la consulta SQL completa
         const debugSQL = `
@@ -386,15 +375,14 @@ async function getAllAppointments(req, res) {
                 t.hora_inicio DESC
             LIMIT ? OFFSET ?
         `;
-        console.log('Debug - SQL Query:', debugSQL);
+
         
         // Asegurar que limit y offset sean números
         const limitNum = parseInt(limit) || 20;
         const offsetNum = parseInt(offset) || 0;
         
         const finalParams = [...params, limitNum, offsetNum];
-        console.log('Parámetros finales:', finalParams);
-        console.log('Tipos de parámetros:', finalParams.map(p => typeof p));
+
 
         // Obtener citas
         const appointments = await query(`
@@ -431,10 +419,7 @@ async function getAllAppointments(req, res) {
         `, finalParams);
 
         // Debug: Mostrar los resultados ordenados
-        console.log('Debug - Resultados ordenados:');
-        appointments.forEach((appointment, index) => {
-            console.log(`${index + 1}. ID: ${appointment.id}, Estado: ${appointment.estado}, Fecha: ${appointment.fecha}, Hora: ${appointment.hora_inicio}`);
-        });
+
 
         // Obtener total de registros para paginación
         const totalResult = await query(`
@@ -639,77 +624,375 @@ async function deleteAppointment(req, res) {
 async function getAllClients(req, res) {
     try {
         const userId = req.user.id;
+        
         const { 
             search, 
             page = 1,
             limit = 20
         } = req.query;
 
-        let whereConditions = ['t.id_usuario = ?'];
-        let params = [userId];
-        let offset = (page - 1) * limit;
+        let clients;
+        let total;
 
         if (search) {
-            whereConditions.push('(c.nombre LIKE ? OR c.apellido LIKE ? OR c.telefono LIKE ? OR c.email LIKE ?)');
-            const searchTerm = `%${search}%`;
-            params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+            // Usar el método del modelo para búsqueda
+            const Client = require('../models/Client');
+            clients = await Client.searchByName(userId, search, parseInt(limit));
+            total = clients.length;
+        } else {
+            // Usar el método del modelo para obtener todos los clientes
+            const Client = require('../models/Client');
+            clients = await Client.findByBarber(userId, parseInt(limit), (page - 1) * limit);
+            
+            // Obtener total de clientes para paginación
+            const totalResult = await Client.findByBarber(userId, 1000, 0);
+            total = totalResult.length;
         }
-
-        const whereClause = whereConditions.join(' AND ');
-
-        // Obtener clientes con estadísticas - usar JOIN con turnos para filtrar por usuario
-        const clients = await query(`
-            SELECT 
-                c.id,
-                c.nombre,
-                c.apellido,
-                c.telefono,
-                c.email,
-                c.notas,
-                COUNT(t.id) as total_citas,
-                SUM(CASE WHEN t.estado = 'completado' THEN t.precio_final ELSE 0 END) as total_gastado,
-                MAX(t.fecha) as ultima_cita
-            FROM clientes c
-            INNER JOIN turnos t ON c.id = t.id_cliente
-            WHERE ${whereClause}
-            GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas
-            ORDER BY c.nombre ASC, c.apellido ASC
-            LIMIT ? OFFSET ?
-        `, [...params, parseInt(limit), parseInt(offset)]);
-
-        // Obtener total de registros para paginación
-        const totalResult = await query(`
-            SELECT COUNT(DISTINCT c.id) as total
-            FROM clientes c
-            INNER JOIN turnos t ON c.id = t.id_cliente
-            WHERE ${whereClause}
-        `, params);
-
-        const total = totalResult[0].total;
 
         if (!res.headersSent) {
             res.json({
                 success: true,
-                data: clients,
-                pagination: {
-                    page: parseInt(page),
-                    limit: parseInt(limit),
-                    total,
-                    pages: Math.ceil(total / limit)
+                data: {
+                    clients: clients,
+                    pagination: {
+                        page: parseInt(page),
+                        limit: parseInt(limit),
+                        total,
+                        pages: Math.ceil(total / limit)
+                    }
                 }
             });
         }
 
-    } catch (error) {
-        console.error('Error obteniendo clientes:', error);
-        if (!res.headersSent) {
+            } catch (error) {
+            console.error('Error obteniendo clientes:', error);
+            if (!res.headersSent) {
+                res.status(500).json({
+                    success: false,
+                    message: 'Error interno del servidor'
+                });
+            }
+        }
+    }
+
+    // Función de prueba para diagnosticar problemas
+    async function debugClientData(req, res) {
+        try {
+            const userId = req.user.id;
+            
+            // Verificar si hay turnos para este usuario
+            const turnos = await query(`
+                SELECT COUNT(*) as total_turnos 
+                FROM turnos 
+                WHERE id_usuario = ?
+            `, [userId]);
+            
+            // Verificar si hay clientes en general
+            const clientes = await query(`
+                SELECT COUNT(*) as total_clientes 
+                FROM clientes
+            `);
+            
+            // Verificar clientes con turnos para este usuario
+            const clientesConTurnos = await query(`
+                SELECT COUNT(DISTINCT c.id) as clientes_con_turnos
+                FROM clientes c
+                INNER JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+            `, [userId]);
+            
+            res.json({
+                success: true,
+                debug: {
+                    userId,
+                    totalTurnos: turnos[0].total_turnos,
+                    totalClientes: clientes[0].total_clientes,
+                    clientesConTurnos: clientesConTurnos[0].clientes_con_turnos
+                }
+            });
+            
+        } catch (error) {
+            console.error('DEBUG Error:', error);
             res.status(500).json({
                 success: false,
-                message: 'Error interno del servidor'
+                message: 'Error en debug',
+                error: error.message
             });
         }
     }
-}
+
+    // Obtener reporte general filtrado por usuario
+    async function getGeneralReport(req, res) {
+        try {
+            const userId = req.user.id;
+            const { period, startDate, endDate } = req.query;
+            
+            // Determinar fechas según el período
+            const { start, end } = calculateDateRange(period, startDate, endDate);
+            
+
+            
+            // Obtener métricas del período filtradas por usuario
+            const metrics = await getMetricsForPeriod(userId, start, end);
+            
+            // Obtener datos para gráficos filtrados por usuario
+            const charts = await getChartData(userId, start, end);
+            
+            // Obtener datos para tablas filtrados por usuario
+            const tables = await getTableData(userId, start, end);
+            
+            res.json({
+                success: true,
+                data: {
+                    period: { start, end, label: getPeriodLabel(period) },
+                    metrics,
+                    charts,
+                    tables
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error generando reporte:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error interno del servidor',
+                error: error.message
+            });
+        }
+    }
+
+    // Calcular rango de fechas según el período
+    function calculateDateRange(period, startDate, endDate) {
+        const now = new Date();
+        let start, end;
+        
+        switch (period) {
+            case 'today':
+                // Hoy: desde 00:00:00 hasta 23:59:59
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+                break;
+                
+            case 'yesterday':
+                // Ayer: desde 00:00:00 hasta 23:59:59
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59, 999);
+                break;
+                
+            case 'week':
+                // Esta semana: desde lunes 00:00:00 hasta domingo 23:59:59
+                const dayOfWeek = now.getDay();
+                const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // 0 = domingo, 1 = lunes
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysToSubtract, 0, 0, 0, 0);
+                end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6, 23, 59, 59, 999);
+                break;
+                
+            case 'month':
+                // Este mes: desde el día 1 00:00:00 hasta el último día 23:59:59
+                start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+                break;
+                
+            case 'quarter':
+                // Este trimestre: desde el primer mes del trimestre hasta el último
+                const quarter = Math.floor(now.getMonth() / 3);
+                start = new Date(now.getFullYear(), quarter * 3, 1, 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), (quarter + 1) * 3, 0, 23, 59, 59, 999);
+                break;
+                
+            case 'year':
+                // Este año: desde 1 de enero 00:00:00 hasta 31 de diciembre 23:59:59
+                start = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+                break;
+                
+            case 'custom':
+                // Fechas personalizadas: desde 00:00:00 hasta 23:59:59
+                start = new Date(startDate + 'T00:00:00');
+                end = new Date(endDate + 'T23:59:59');
+                break;
+                
+            default:
+                // Por defecto: este mes
+                start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+        }
+        
+        return { start, end };
+    }
+
+    // Obtener etiqueta del período
+    function getPeriodLabel(period) {
+        const labels = {
+            today: 'Hoy',
+            yesterday: 'Ayer',
+            week: 'Esta Semana',
+            month: 'Este Mes',
+            quarter: 'Este Trimestre',
+            year: 'Este Año',
+            custom: 'Personalizado'
+        };
+        return labels[period] || 'Período';
+    }
+
+    // Obtener métricas para el período filtradas por usuario
+    async function getMetricsForPeriod(userId, start, end) {
+        try {
+            // Formatear fechas para MySQL (YYYY-MM-DD HH:MM:SS)
+            const startStr = start.toISOString().slice(0, 19).replace('T', ' ');
+            const endStr = end.toISOString().slice(0, 19).replace('T', ' ');
+            
+
+            
+            // Consulta para métricas básicas filtrada por usuario
+            const metricsResult = await query(`
+                SELECT 
+                    COUNT(CASE WHEN estado = 'completado' THEN 1 END) as totalTurnos,
+                    SUM(CASE WHEN estado = 'completado' THEN 1 ELSE 0 END) as completedTurnos,
+                    SUM(CASE WHEN estado IN ('reservado', 'en_proceso') THEN 1 ELSE 0 END) as pendingTurnos,
+                    SUM(CASE WHEN estado = 'completado' THEN precio_final ELSE 0 END) as totalRevenue,
+                    COUNT(CASE WHEN estado = 'cancelado' THEN 1 END) as cancelledTurnos,
+                    COUNT(CASE WHEN estado = 'no_show' THEN 1 END) as noShowTurnos
+                FROM turnos 
+                WHERE id_usuario = ? 
+                AND fecha >= DATE(?) 
+                AND fecha <= DATE(?)
+                AND estado NOT IN ('cancelado', 'no_show')
+            `, [userId, startStr, endStr]);
+            
+            const metrics = metricsResult[0];
+            
+            // Calcular métricas derivadas
+            const totalRevenue = parseFloat(metrics.totalRevenue) || 0;
+            const completedTurnos = parseInt(metrics.completedTurnos) || 0;
+            const pendingTurnos = parseInt(metrics.pendingTurnos) || 0;
+            const cancelledTurnos = parseInt(metrics.cancelledTurnos) || 0;
+            const noShowTurnos = parseInt(metrics.noShowTurnos) || 0;
+            
+            const promedioPorTurno = completedTurnos > 0 ? totalRevenue / completedTurnos : 0;
+            const tasaCompletado = (completedTurnos + pendingTurnos) > 0 ? 
+                (completedTurnos / (completedTurnos + pendingTurnos)) * 100 : 0;
+            const tasaCancelacion = (completedTurnos + pendingTurnos + cancelledTurnos) > 0 ? 
+                (cancelledTurnos / (completedTurnos + pendingTurnos + cancelledTurnos)) * 100 : 0;
+            
+            const horasTrabajadas = completedTurnos * 0.75;
+            const ingresosPorHora = horasTrabajadas > 0 ? totalRevenue / horasTrabajadas : 0;
+            
+            return {
+                totalTurnos: completedTurnos,
+                completedTurnos: completedTurnos,
+                pendingTurnos: pendingTurnos,
+                totalRevenue: totalRevenue,
+                promedioPorTurno: promedioPorTurno,
+                ingresosPorHora: ingresosPorHora,
+                tasaCompletado: Math.round(tasaCompletado * 100) / 100,
+                tasaCancelacion: Math.round(tasaCancelacion * 100) / 100,
+                turnosCancelados: cancelledTurnos,
+                noShows: noShowTurnos
+            };
+            
+        } catch (error) {
+            console.error('Error obteniendo métricas:', error);
+            return {
+                totalTurnos: 0, completedTurnos: 0, pendingTurnos: 0, totalRevenue: 0,
+                promedioPorTurno: 0, ingresosPorHora: 0, tasaCompletado: 0, tasaCancelacion: 0,
+                turnosCancelados: 0, noShows: 0
+            };
+        }
+    }
+
+    // Obtener datos para gráficos filtrados por usuario
+    async function getChartData(userId, start, end) {
+        try {
+            // Formatear fechas para MySQL
+            const startStr = start.toISOString().slice(0, 19).replace('T', ' ');
+            const endStr = end.toISOString().slice(0, 19).replace('T', ' ');
+            
+            // Datos para gráfico de ingresos por período filtrados por usuario
+            const revenueData = await query(`
+                SELECT 
+                    fecha,
+                    SUM(CASE WHEN estado = 'completado' THEN precio_final ELSE 0 END) as ingresos,
+                    COUNT(CASE WHEN estado = 'completado' THEN 1 END) as turnos
+                FROM turnos 
+                WHERE id_usuario = ? 
+                AND fecha >= DATE(?) 
+                AND fecha <= DATE(?)
+                AND estado NOT IN ('cancelado', 'no_show')
+                GROUP BY fecha
+                ORDER BY fecha
+            `, [userId, startStr, endStr]);
+            
+            return {
+                revenueByPeriod: revenueData
+            };
+            
+        } catch (error) {
+            console.error('Error obteniendo datos de gráficos:', error);
+            return { revenueByPeriod: [] };
+        }
+    }
+
+    // Obtener datos para tablas filtrados por usuario
+    async function getTableData(userId, start, end) {
+        try {
+            // Formatear fechas para MySQL
+            const startStr = start.toISOString().slice(0, 19).replace('T', ' ');
+            const endStr = end.toISOString().slice(0, 19).replace('T', ' ');
+            
+            // Top servicios del período filtrados por usuario
+            const topServices = await query(`
+                SELECT 
+                    s.nombre as servicio,
+                    COUNT(t.id) as total_turnos,
+                    SUM(CASE WHEN t.estado = 'completado' THEN t.precio_final ELSE 0 END) as ingresos
+                FROM servicios s
+                INNER JOIN turnos t ON s.id = t.id_servicio
+                WHERE t.id_usuario = ? 
+                AND t.fecha >= DATE(?) 
+                AND t.fecha <= DATE(?)
+                AND t.estado NOT IN ('cancelado', 'no_show')
+                GROUP BY s.id, s.nombre
+                ORDER BY ingresos DESC
+                LIMIT 5
+            `, [userId, startStr, endStr]);
+            
+            return {
+                topServices: topServices
+            };
+            
+        } catch (error) {
+            console.error('Error obteniendo datos de tablas:', error);
+            return { topServices: [] };
+        }
+    }
+
+    // Obtener estadísticas de clientes
+    async function getClientStats(req, res) {
+        try {
+            const userId = req.user.id;
+            
+            // Usar el modelo Client para obtener estadísticas
+            const Client = require('../models/Client');
+            const stats = await Client.getStats(userId);
+            
+            res.json({
+                success: true,
+                data: {
+                    total: stats.total_clientes || 0,
+                    nuevos: stats.clientes_nuevos || 0,
+                    frecuentes: stats.clientes_semana || 0,
+                    activos: stats.clientes_hoy || 0
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error obteniendo estadísticas de clientes:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error al obtener estadísticas de clientes'
+            });
+        }
+    }
 
 // Obtener detalles de un cliente específico
 async function getClientDetails(req, res) {
@@ -717,8 +1000,22 @@ async function getClientDetails(req, res) {
         const userId = req.user.id;
         const { id } = req.params;
 
-        // Obtener información del cliente - verificar que tenga turnos con este usuario
-        const client = await query(`
+        // Obtener información del cliente usando el modelo
+        const Client = require('../models/Client');
+        const client = await Client.findById(id);
+        
+        if (!client) {
+            if (!res.headersSent) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Cliente no encontrado'
+                });
+            }
+            return;
+        }
+
+        // Verificar que el cliente tenga citas con este usuario
+        const clientWithUser = await query(`
             SELECT 
                 c.id,
                 c.nombre,
@@ -730,16 +1027,16 @@ async function getClientDetails(req, res) {
                 SUM(CASE WHEN t.estado = 'completado' THEN t.precio_final ELSE 0 END) as total_gastado,
                 MAX(t.fecha) as ultima_cita
             FROM clientes c
-            INNER JOIN turnos t ON c.id = t.id_cliente
-            WHERE c.id = ? AND t.id_usuario = ?
+            LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+            WHERE c.id = ?
             GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas
-        `, [id, userId]);
+        `, [userId, id]);
 
-        if (client.length === 0) {
+        if (clientWithUser.length === 0 || clientWithUser[0].total_citas === 0) {
             if (!res.headersSent) {
                 return res.status(404).json({
                     success: false,
-                    message: 'Cliente no encontrado'
+                    message: 'Cliente no encontrado o sin citas con este usuario'
                 });
             }
             return;
@@ -787,7 +1084,8 @@ async function getClientDetails(req, res) {
             res.json({
                 success: true,
                 data: {
-                    ...client[0],
+                    ...client,
+                    ...clientWithUser[0],
                     appointments,
                     stats: stats[0]
                 }
@@ -826,10 +1124,10 @@ async function updateClient(req, res) {
         // Verificar que el cliente tiene turnos con este usuario
         const client = await query(`
             SELECT c.id FROM clientes c
-            INNER JOIN turnos t ON c.id = t.id_cliente
-            WHERE c.id = ? AND t.id_usuario = ?
+            LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+            WHERE c.id = ? AND t.id IS NOT NULL
             LIMIT 1
-        `, [id, userId]);
+        `, [userId, id]);
 
         if (client.length === 0) {
             if (!res.headersSent) {
@@ -875,10 +1173,10 @@ async function deleteClient(req, res) {
         // Verificar que el cliente tiene turnos con este usuario
         const client = await query(`
             SELECT c.id FROM clientes c
-            INNER JOIN turnos t ON c.id = t.id_cliente
-            WHERE c.id = ? AND t.id_usuario = ?
+            LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
+            WHERE c.id = ? AND t.id IS NOT NULL
             LIMIT 1
-        `, [id, userId]);
+        `, [userId, id]);
 
         if (client.length === 0) {
             if (!res.headersSent) {
@@ -1290,7 +1588,7 @@ async function deleteService(req, res) {
         `, [id, userId]);
 
         if (historicalAppointments[0].total > 0) {
-            console.log(`⚠️  Eliminando servicio con ${historicalAppointments[0].total} cita(s) histórica(s)`);
+    
         }
 
         // Eliminar servicio
@@ -1672,9 +1970,12 @@ module.exports = {
     completeAppointment,
     deleteAppointment,
     getAllClients,
+    getClientStats,
     getClientDetails,
     updateClient,
     deleteClient,
+    debugClientData,
+    getGeneralReport,
     getAllServices,
     getServiceDetails,
     createService,
