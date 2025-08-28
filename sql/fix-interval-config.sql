@@ -20,3 +20,4 @@ WHERE intervalo_turnos = 5;
 
 -- Mostrar mensaje de confirmación
 SELECT 'Configuración corregida: intervalo_turnos cambiado de 30 a 5 minutos' as mensaje;
+
