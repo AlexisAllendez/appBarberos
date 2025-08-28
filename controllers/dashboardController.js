@@ -61,7 +61,7 @@ async function getDashboardStats(req, res) {
         const upcomingTurnos = await query(`
             SELECT 
                 t.id,
-                t.fecha,
+                DATE_FORMAT(t.fecha, '%Y-%m-%d') as fecha,
                 t.hora_inicio,
                 t.hora_fin,
                 t.estado,
@@ -79,6 +79,12 @@ async function getDashboardStats(req, res) {
             ORDER BY t.fecha ASC, t.hora_inicio ASC
             LIMIT 10
         `, [userId]);
+
+        // Debug: mostrar las fechas de los próximos turnos
+        console.log('🔍 Próximos turnos encontrados:', upcomingTurnos.length);
+        upcomingTurnos.forEach(turno => {
+            console.log('🔍 Turno ID:', turno.id, 'Fecha:', turno.fecha, 'Tipo fecha:', typeof turno.fecha);
+        });
 
         // Servicios más populares
         const popularServices = await query(`

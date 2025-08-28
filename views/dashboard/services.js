@@ -248,6 +248,7 @@ class ServicesManager {
         document.getElementById('serviceNombre').value = servicio.nombre;
         document.getElementById('servicePrecio').value = servicio.precio;
         document.getElementById('servicePrecioAnterior').value = servicio.precio_anterior || '';
+        document.getElementById('serviceDuracion').value = servicio.duracion || '30';
 
         document.getElementById('serviceEstado').value = servicio.estado;
         document.getElementById('serviceDescripcion').value = servicio.descripcion || '';
@@ -262,6 +263,7 @@ class ServicesManager {
         document.getElementById('serviceNombre').value = '';
         document.getElementById('servicePrecio').value = '';
         document.getElementById('servicePrecioAnterior').value = '';
+        document.getElementById('serviceDuracion').value = '30';
 
         document.getElementById('serviceEstado').value = 'activo';
         document.getElementById('serviceDescripcion').value = '';
@@ -351,6 +353,11 @@ class ServicesManager {
         // Llenar información del servicio
         document.getElementById('viewServiceNombre').textContent = servicio.nombre;
         document.getElementById('viewServicePrecio').textContent = formatPrice(servicio.precio);
+        
+        // Mostrar duración del servicio
+        const duracion = servicio.duracion || 30;
+        const duracionText = this.formatDuration(duracion);
+        document.getElementById('viewServiceDuracion').textContent = duracionText;
 
         document.getElementById('viewServiceEstado').innerHTML = `
             <span class="badge ${servicio.estado === 'activo' ? 'bg-success' : 'bg-secondary'}">
@@ -576,6 +583,30 @@ class ServicesManager {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    formatDuration(minutes) {
+        if (minutes < 60) {
+            return `${minutes} minutos`;
+        } else if (minutes === 60) {
+            return '1 hora';
+        } else if (minutes < 120) {
+            const horas = Math.floor(minutes / 60);
+            const minutosRestantes = minutes % 60;
+            if (minutosRestantes === 0) {
+                return `${horas} hora${horas > 1 ? 's' : ''}`;
+            } else {
+                return `${horas} hora${horas > 1 ? 's' : ''} ${minutosRestantes} min`;
+            }
+        } else {
+            const horas = Math.floor(minutes / 60);
+            const minutosRestantes = minutes % 60;
+            if (minutosRestantes === 0) {
+                return `${horas} horas`;
+            } else {
+                return `${horas} horas ${minutosRestantes} min`;
+            }
+        }
     }
 }
 

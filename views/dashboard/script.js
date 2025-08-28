@@ -255,8 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         container.innerHTML = appointments.map(appointment => {
+            // Debug: mostrar la fecha original y formateada
+            console.log('🔍 Fecha original:', appointment.fecha, 'Tipo:', typeof appointment.fecha);
             const time = formatTime(appointment.hora_inicio);
             const date = formatDate(appointment.fecha);
+            console.log('🔍 Fecha formateada:', date);
             const statusClass = getStatusClass(appointment.estado);
             const statusText = getStatusText(appointment.estado);
             
@@ -1328,19 +1331,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Utility functions
     function formatTime(timeString) {
-        const time = new Date(`2000-01-01T${timeString}`);
-        return time.toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+        if (!timeString) return '--';
+        // Formatear la hora directamente sin crear objetos Date
+        // Esto evita problemas de zona horaria
+        return timeString.substring(0, 5);
     }
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES', { 
-            day: '2-digit', 
-            month: '2-digit' 
-        });
+        if (!dateString) return '--';
+        
+        try {
+            // Parsear la fecha manualmente para evitar problemas de zona horaria
+            const [year, month, day] = dateString.split('-').map(Number);
+            
+            // Verificar que los componentes sean válidos
+            if (!year || !month || !day || month < 1 || month > 12 || day < 1 || day > 31) {
+                console.error('❌ Componentes de fecha inválidos:', { year, month, day });
+                return 'Fecha inválida';
+            }
+            
+            // Formatear la fecha directamente sin crear objetos Date
+            // Esto evita completamente los problemas de zona horaria
+            return `${day}/${month}/${year}`;
+            
+        } catch (error) {
+            console.error('❌ Error formateando fecha:', dateString, error);
+            return 'Error fecha';
+        }
     }
 
     function getStatusClass(status) {

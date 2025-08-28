@@ -399,6 +399,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = scheduleId ? 'Editar Horario' : `Configurar ${dayName}`;
         const horario = scheduleId ? workingHours.find(h => h.id == scheduleId) : null;
         showModal(title, getScheduleModalContent(scheduleId, dayName, horario));
+        
+        // Si es una edición, configurar el checkbox de pausa
+        if (scheduleId && horario) {
+            setTimeout(() => {
+                const hasBreakCheckbox = document.getElementById('scheduleHasBreak');
+                const breakInputs = document.querySelectorAll('#scheduleBreakStart, #scheduleBreakEnd');
+                
+                if (hasBreakCheckbox) {
+                    breakInputs.forEach(input => {
+                        input.disabled = !hasBreakCheckbox.checked;
+                    });
+                }
+            }, 100);
+        }
     }
 
     // Show add special day modal
@@ -431,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         return `
-            <form id="scheduleForm">
+            <form id="scheduleForm" ${scheduleId ? `data-schedule-id="${scheduleId}"` : ''}>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="scheduleDay" class="form-label">Día de la semana</label>
@@ -625,9 +639,14 @@ document.addEventListener('DOMContentLoaded', function() {
             estado: document.getElementById('scheduleStatus').value
         };
 
+        // Determinar si es una edición o creación
+        const scheduleId = document.getElementById('scheduleForm').getAttribute('data-schedule-id');
+        const url = scheduleId ? `/api/schedule/working-hours/${scheduleId}` : '/api/schedule/working-hours';
+        const method = scheduleId ? 'PUT' : 'POST';
+
         try {
-            const response = await fetch('/api/schedule/working-hours', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -638,7 +657,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const result = await response.json();
                 if (result.success) {
-                    showSuccessMessage('Horario guardado exitosamente');
+                    showSuccessMessage(scheduleId ? 'Horario actualizado exitosamente' : 'Horario guardado exitosamente');
                     closeModal();
                     // Recargar datos
                     await loadWorkingHours();
