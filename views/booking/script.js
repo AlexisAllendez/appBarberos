@@ -341,6 +341,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             
             if (result.success) {
+                // Debug: mostrar información de la respuesta
+                console.log('🔍 Respuesta del backend:', result);
+                console.log('🔍 Slots recibidos:', result.data);
+                console.log('🔍 Cantidad de slots:', result.data.length);
+                
                 horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
                 
                 if (result.data.length > 0) {
@@ -348,7 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         updateServiceBarberInfo(result.barbero);
                     }
                     
-                    result.data.forEach(slot => {
+                    result.data.forEach((slot, index) => {
+                        console.log(`🔍 Slot ${index + 1}: ${slot.hora_inicio} - ${slot.hora_fin} (duración: ${slot.duracion} min)`);
                         const option = document.createElement('option');
                         option.value = slot.hora_inicio;
                         option.textContent = slot.hora_inicio;

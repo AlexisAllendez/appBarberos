@@ -282,6 +282,13 @@ class BookingController {
     static async getAvailableSlots(req, res) {
         try {
             const { fecha, servicio_id, exclude_id, barbero_id } = req.query;
+            
+            // Debug: mostrar parámetros recibidos
+            console.log('🔍 getAvailableSlots - Parámetros recibidos:');
+            console.log('  - fecha:', fecha);
+            console.log('  - servicio_id:', servicio_id);
+            console.log('  - exclude_id:', exclude_id);
+            console.log('  - barbero_id:', barbero_id);
 
             if (!fecha) {
                 return res.status(400).json({
@@ -336,6 +343,7 @@ class BookingController {
             }
 
             const config = await BookingController.getBarberConfig(id_usuario);
+            console.log('🔍 Configuración del barbero obtenida:', config);
             
             // Obtener la duración real del servicio desde la base de datos
             let serviceDuration = 30; // Duración por defecto
@@ -347,7 +355,7 @@ class BookingController {
                     
                     if (servicio.length > 0) {
                         serviceDuration = servicio[0].duracion;
-            
+                        console.log(`✅ Duración del servicio ${servicio_id}: ${serviceDuration} minutos`);
                     } else {
                         console.warn(`⚠️  Servicio ${servicio_id} no encontrado, usando duración por defecto: 30 min`);
                     }
@@ -355,10 +363,19 @@ class BookingController {
                     console.error('Error al obtener duración del servicio:', error);
                     serviceDuration = 30; // Usar duración por defecto en caso de error
                 }
+            } else {
+                console.log(`⚠️  No se recibió servicio_id, usando duración por defecto: ${serviceDuration} minutos`);
             }
             
-            // El intervalo ya no se usa para la duración del servicio, solo para el buffer
-            let interval = config.intervalo_turnos || 5; // Buffer entre turnos
+            // El intervalo se usa SOLO para el buffer entre turnos consecutivos
+            // NO para la duración del servicio. Por ejemplo:
+            // - Si intervalo_turnos = 5: habrá 5 minutos de limpieza/preparación entre turnos
+            // - Si intervalo_turnos = 0: no habrá buffer, los turnos serán consecutivos
+            let interval = config.intervalo_turnos || 5; // Buffer entre turnos en minutos
+            
+            // Debug: mostrar configuración
+            console.log('🔍 Configuración del barbero:', config);
+            console.log('🔍 Intervalo configurado:', interval, 'minutos');
             
 
     
@@ -634,6 +651,13 @@ class BookingController {
     static generateSmartSlots(workingHours, existingAppointments, serviceDuration, config) {
         const slots = [];
         const bufferTime = config?.bufferTime || 5; // Buffer configurable entre turnos consecutivos
+        
+        // Debug: mostrar parámetros de entrada
+        console.log('🔍 generateSmartSlots - Parámetros:');
+        console.log('  - serviceDuration:', serviceDuration, 'minutos');
+        console.log('  - bufferTime:', bufferTime, 'minutos');
+        console.log('  - workingHours:', workingHours);
+        console.log('  - existingAppointments:', existingAppointments.length);
 
         workingHours.forEach(workHour => {
             const startTime = new Date(`2000-01-01T${workHour.hora_inicio}`);
@@ -649,8 +673,12 @@ class BookingController {
                 const slotEnd = new Date(currentTime.getTime() + (serviceDuration * 60000));
                 const slotEndStr = slotEnd.toTimeString().slice(0, 5);
 
+                // Debug: mostrar información del slot actual
+                console.log(`🔍 Slot actual: ${slotStart} - ${slotEndStr} (duración: ${serviceDuration} min)`);
+
                 // Verificar que el slot no se extienda más allá del horario laboral
                 if (slotEnd > endTime) {
+                    console.log(`🔍 Slot se extiende más allá del horario laboral, terminando`);
                     break;
                 }
 
@@ -693,9 +721,15 @@ class BookingController {
 
                 // Avanzar al siguiente slot (duración del servicio + buffer)
                 // IMPORTANTE: Avanzar desde el inicio del slot anterior + duración + buffer
-                currentTime = new Date(currentTime.getTime() + (serviceDuration * 60000) + (bufferTime * 60000));
+                const nextTime = new Date(currentTime.getTime() + (serviceDuration * 60000) + (bufferTime * 60000));
+                console.log(`🔍 Avanzando de ${currentTime.toTimeString().slice(0, 5)} a ${nextTime.toTimeString().slice(0, 5)} (incremento: ${serviceDuration + bufferTime} min)`);
+                currentTime = nextTime;
             }
         });
+        
+        // Debug: mostrar slots generados
+        console.log(`🔍 Total de slots generados: ${slots.length}`);
+        console.log('🔍 Slots:', slots);
 
         return slots;
     }
@@ -780,7 +814,7 @@ class BookingController {
             
             // Configuración por defecto si no existe
             return config || {
-                intervalo_turnos: 30,
+                intervalo_turnos: 5, // Buffer de 5 minutos entre turnos
                 anticipacion_reserva: 1440,
                 max_reservas_dia: 20,
                 permitir_reservas_mismo_dia: true,
@@ -794,7 +828,7 @@ class BookingController {
             console.error('Error al obtener configuración del barbero:', error);
             // Retornar configuración por defecto
             return {
-                intervalo_turnos: 30,
+                intervalo_turnos: 5, // Buffer de 5 minutos entre turnos
                 anticipacion_reserva: 1440,
                 max_reservas_dia: 20,
                 permitir_reservas_mismo_dia: true,

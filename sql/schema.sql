@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS metricas_diarias (
 CREATE TABLE IF NOT EXISTS configuracion_barbero (
   id INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL UNIQUE,
-  intervalo_turnos INT DEFAULT 30,
+  intervalo_turnos INT DEFAULT 5,
   anticipacion_reserva INT DEFAULT 1440,
   max_reservas_dia INT DEFAULT 20,
   permitir_reservas_mismo_dia BOOLEAN DEFAULT TRUE,

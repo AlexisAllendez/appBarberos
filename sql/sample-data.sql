@@ -29,7 +29,7 @@ INSERT INTO horarios_laborales (id_usuario, dia_semana, hora_inicio, hora_fin, p
 (2, 'sabado', '09:00:00', '16:00:00', NULL, NULL);
 
 -- Insertar configuración por defecto
-INSERT INTO configuracion_barbero (id_usuario) VALUES (2);
+INSERT INTO configuracion_barbero (id_usuario, intervalo_turnos) VALUES (2, 5);
 
 -- Insertar cliente de ejemplo
 INSERT INTO clientes (nombre, apellido, email, telefono) VALUES 
