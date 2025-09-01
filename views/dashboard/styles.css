@@ -1,0 +1,2450 @@
+/* Dashboard Styles */
+:root {
+    --dark-bg: #0a0a0a;
+    --darker-bg: #050505;
+    --accent-color: #d4af37;
+    --accent-hover: #b8941f;
+    --text-light: #ffffff;
+    --text-gray: #a0a0a0;
+    --text-dark: #666666;
+    --border-color: #333333;
+    --card-bg: #111111;
+    --card-hover: #1a1a1a;
+    --overlay-bg: rgba(0, 0, 0, 0.8);
+    --gradient-primary: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    --gradient-dark: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+    --shadow-light: 0 10px 30px rgba(212, 175, 55, 0.2);
+    --shadow-dark: 0 20px 40px rgba(0, 0, 0, 0.5);
+    
+    /* Colores de estado */
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #17a2b8;
+    
+    /* Variables específicas del dashboard */
+    --navbar-bg: var(--darker-bg);
+    --body-bg: var(--dark-bg);
+    --sidebar-bg: var(--card-bg);
+    
+    /* Variables para formularios y dropdowns */
+    --bg-primary: var(--card-bg);
+    --bg-hover: var(--card-hover);
+    
+    /* Colores mejorados para estados de turnos */
+    --estado-reservado: #ffc107;
+    --estado-confirmado: #28a745;
+    --estado-en-proceso: #17a2b8;
+    --estado-completado: #6c757d;
+    --estado-cancelado: #dc3545;
+    --estado-no-show: #343a40;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--body-bg);
+    color: var(--text-light);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    box-shadow: var(--shadow-dark);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent-color) !important;
+}
+
+.navbar-brand i {
+    color: var(--accent-color);
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 0.25rem;
+}
+
+.nav-link:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--accent-color) !important;
+}
+
+.nav-link.active {
+    background: var(--accent-color);
+    color: var(--dark-bg) !important;
+    font-weight: 600;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: var(--text-light) !important;
+}
+
+.dropdown-item {
+    color: var(--text-light) !important;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background: var(--card-hover) !important;
+    color: var(--accent-color) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--border-color);
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem 0;
+    min-height: calc(100vh - 80px);
+}
+
+.container-fluid {
+    padding: 0 2rem;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.section-title i {
+    color: var(--accent-color);
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    display: none;
+}
+
+.dashboard-section.active {
+    display: block;
+}
+
+/* Stats Cards */
+.stat-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow-dark);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-light);
+    background: var(--card-hover);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    background: var(--gradient-primary);
+}
+
+.stat-icon i {
+    font-size: 1.5rem;
+    color: var(--dark-bg);
+}
+
+.stat-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text-light);
+}
+
+.stat-content p {
+    color: var(--text-gray);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 15px;
+    box-shadow: var(--shadow-dark);
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    color: var(--text-light) !important;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-light);
+}
+
+.card-header {
+    background: rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    border-radius: 15px 15px 0 0;
+}
+
+.card-title {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Lista de Turnos */
+.turnos-list {
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.turno-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+}
+
+.turno-item:hover {
+    background: var(--card-hover);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-light);
+}
+
+.turno-time {
+    background: var(--gradient-primary);
+    color: var(--dark-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-right: 1rem;
+    min-width: 100px;
+    text-align: center;
+}
+
+.turno-info {
+    flex: 1;
+}
+
+.turno-client {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.turno-service {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+.turno-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-reserved {
+    background: rgba(52, 152, 219, 0.2);
+    color: #17a2b8;
+}
+
+.status-confirmed {
+    background: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+}
+
+.status-completed {
+    background: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+}
+
+.status-cancelled {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+/* Popular Services */
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.service-item:last-child {
+    border-bottom: none;
+}
+
+.service-name {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.service-stats {
+    text-align: right;
+}
+
+.service-count {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.service-revenue {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--overlay-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-spinner {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-dark);
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    color: var(--accent-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 0 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .turno-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .turno-time {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        min-width: auto;
+    }
+    
+    /* Ajustes para la vista de horarios en tablets */
+    .week-day {
+        padding: 0.6rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Configuración General - Optimizada para columna más pequeña */
+.config-form .form-label {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.config-form .form-select,
+.config-form .form-control {
+    background: var(--card-hover);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.config-form .form-select:focus,
+.config-form .form-control:focus {
+    background: var(--card-hover);
+    border-color: var(--accent-color);
+    color: var(--text-light);
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+}
+
+.config-form .form-text {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin-top: 0.25rem;
+}
+
+.config-form .form-check-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.config-form .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+.config-form .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--card-bg);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard-section.active {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Utility Classes */
+.text-muted {
+    color: var(--text-gray) !important;
+}
+
+.bg-primary {
+    background: var(--accent-color) !important;
+}
+
+.bg-success {
+    background: var(--success-color) !important;
+}
+
+.bg-warning {
+    background: var(--warning-color) !important;
+}
+
+.bg-info {
+    background: var(--info-color) !important;
+}
+
+.bg-danger {
+    background: var(--danger-color) !important;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger-color);
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+    border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+    background: rgba(23, 162, 184, 0.1);
+    color: var(--info-color);
+    border-left: 4px solid var(--info-color);
+}
+
+/* =====================================================
+   ESTILOS ESPECÍFICOS PARA GESTIÓN DE HORARIOS
+   ===================================================== */
+
+/* Form Controls */
+.form-label {
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-light) !important;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background: var(--card-bg) !important;
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    color: var(--text-light) !important;
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-gray) !important;
+    opacity: 1;
+}
+
+.form-check-input {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+}
+
+.form-check-input:checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.form-check-label {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--dark-bg);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+}
+
+.btn-success {
+    background: var(--success-color);
+    color: var(--text-light);
+}
+
+.btn-success:hover {
+    background: #229954;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: var(--warning-color);
+    color: var(--text-light);
+}
+
+.btn-warning:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    color: var(--text-light);
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-color);
+    color: var(--dark-bg);
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+    background: transparent;
+    border: 2px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-outline-danger:hover {
+    background: var(--danger-color);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Weekly Overview */
+.weekly-overview {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Asegurar que en pantallas grandes todos los días se vean */
+@media (min-width: 1400px) {
+    .weekly-overview {
+        gap: 1rem;
+    }
+    
+    .week-day {
+        padding: 1rem;
+    }
+    
+    .day-name {
+        font-size: 1rem;
+    }
+    
+    .day-status {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
+    }
+    
+    .day-hours {
+        font-size: 0.9rem;
+    }
+    
+    /* Ajustes para horarios en pantallas grandes */
+    .time-display {
+        gap: 0.3rem;
+        padding: 0.3rem 0;
+    }
+    
+    .time-start,
+    .time-end {
+        font-size: 0.9rem;
+    }
+    
+    .time-separator {
+        font-size: 0.75rem;
+        margin: 0.15rem 0;
+    }
+}
+
+.week-day {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.75rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.week-day:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+/* Mejorar la experiencia de scroll en dispositivos móviles */
+.weekly-overview::-webkit-scrollbar {
+    height: 6px;
+}
+
+.weekly-overview::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.weekly-overview::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.weekly-overview::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+.day-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.day-name {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.day-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.day-status.active {
+    background: rgba(39, 174, 96, 0.2);
+    color: var(--success-color);
+}
+
+.day-status.inactive {
+    background: rgba(231, 76, 60, 0.2);
+    color: var(--danger-color);
+}
+
+.day-hours {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Estilos para la visualización de horarios en dos líneas */
+.time-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.25rem 0;
+}
+
+.time-start {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.time-separator {
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    line-height: 1;
+    margin: 0.1rem 0;
+}
+
+.time-end {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* Estilos para la nueva vista de horarios */
+.time-range {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+/* Vista compacta para horarios */
+.time-range.compact {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-start,
+.time-end {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.time-label {
+    font-weight: 600;
+    color: var(--text-gray);
+    min-width: 30px;
+    font-size: 0.7rem;
+}
+
+.time-value {
+    font-weight: 700;
+    color: var(--text-light);
+    background: var(--card-hover);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+}
+
+.time-separator {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0.1rem 0;
+    line-height: 1;
+}
+
+.time-range.closed {
+    color: var(--text-gray);
+    font-style: italic;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+.time-range.closed i {
+    color: var(--danger-color);
+    font-size: 1rem;
+}
+
+/* Tables - Diseño Moderno y Atractivo */
+.table {
+    color: var(--text-light);
+    background: var(--card-bg) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table th {
+    background: linear-gradient(135deg, var(--card-hover) 0%, var(--card-bg) 100%);
+    color: var(--accent-color);
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent-color);
+    padding: 1.25rem 1rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.table th:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color) 0%, var(--accent-hover) 50%, transparent 100%);
+    border-radius: 0 0 2px 2px;
+}
+
+.table td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+    background: transparent;
+    color: var(--text-light);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.table tbody tr {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--card-bg);
+    position: relative;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+}
+
+/* Efecto hover moderno y atractivo */
+.table tbody tr:hover {
+    background: linear-gradient(135deg, 
+        rgba(212, 175, 55, 0.12) 0%, 
+        rgba(212, 175, 55, 0.08) 50%, 
+        rgba(212, 175, 55, 0.04) 100%) !important;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 
+        0 8px 25px rgba(212, 175, 55, 0.15),
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent-color);
+    border-radius: 0 8px 8px 0;
+    z-index: 1;
+}
+
+.table tbody tr:hover td {
+    color: var(--text-light);
+    background: transparent;
+    transform: translateX(8px);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto de borde izquierdo con color según estado */
+.table tbody tr.estado-reservado {
+    border-left: 4px solid var(--estado-reservado);
+}
+
+.table tbody tr.estado-confirmado {
+    border-left: 4px solid var(--estado-confirmado);
+}
+
+.table tbody tr.estado-en_proceso {
+    border-left: 4px solid var(--estado-en-proceso);
+}
+
+.table tbody tr.estado-completado {
+    border-left: 4px solid var(--estado-completado);
+}
+
+.table tbody tr.estado-cancelado {
+    border-left: 4px solid var(--estado-cancelado);
+}
+
+.table tbody tr.estado-no_show {
+    border-left: 4px solid var(--estado-no-show);
+}
+
+/* Hover específico para cada estado */
+.table tbody tr.estado-reservado:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 193, 7, 0.15) 0%, 
+        rgba(255, 193, 7, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(255, 193, 7, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr.estado-confirmado:hover {
+    background: linear-gradient(135deg, 
+        rgba(40, 167, 69, 0.15) 0%, 
+        rgba(40, 167, 69, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(40, 167, 69, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr.estado-en_proceso:hover {
+    background: linear-gradient(135deg, 
+        rgba(23, 162, 184, 0.15) 0%, 
+        rgba(23, 162, 184, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(23, 162, 184, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr.estado-completado:hover {
+    background: linear-gradient(135deg, 
+        rgba(108, 117, 125, 0.15) 0%, 
+        rgba(108, 117, 125, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(108, 117, 125, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr.estado-cancelado:hover {
+    background: linear-gradient(135deg, 
+        rgba(220, 53, 69, 0.15) 0%, 
+        rgba(220, 53, 69, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(220, 53, 69, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr.estado-no_show:hover {
+    background: linear-gradient(135deg, 
+        rgba(52, 58, 64, 0.15) 0%, 
+        rgba(52, 58, 64, 0.08) 100%) !important;
+    box-shadow: 
+        0 8px 25px rgba(52, 58, 64, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto de selección activa */
+.table tbody tr:active {
+    transform: translateY(0) scale(0.98);
+    transition: all 0.1s ease;
+}
+
+/* Contenedor de tabla responsivo mejorado */
+.table-responsive {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+/* Estilos para celdas específicas */
+.table td strong {
+    color: var(--text-light);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.table td small {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Mejoras para badges de estado */
+.table .badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.table .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Botones de acción en la tabla */
+.table .btn-group-sm .btn {
+    border-radius: 8px;
+    margin: 0 0.125rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.table .btn-group-sm .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Mensaje de "no hay datos" */
+.table tbody tr td[colspan] {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-gray);
+    font-style: italic;
+}
+
+.table tbody tr td[colspan] p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Animación de entrada para las filas */
+@keyframes fadeInRow {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table tbody tr {
+    animation: fadeInRow 0.6s ease forwards;
+}
+
+/* Retraso escalonado para las filas */
+.table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+.table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+.table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+.table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+/* Scrollbar personalizado para la tabla */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--card-bg);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .table th {
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .table tbody tr:hover {
+        transform: translateY(-1px) scale(1.005);
+    }
+    
+    .table tbody tr:hover td {
+        transform: translateX(4px);
+    }
+    
+    .btn-group-sm {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .btn-group-sm .btn {
+        margin: 0;
+        border-radius: 6px !important;
+    }
+}
+
+/* ========================================
+   ESTILOS PARA TABLA DE TURNOS MEJORADA
+   ======================================== */
+
+/* Colores mejorados para badges de estado */
+.badge.bg-warning.text-dark {
+    background-color: var(--estado-reservado) !important;
+    color: #000 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.badge.bg-success.text-white {
+    background-color: var(--estado-confirmado) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge.bg-info.text-white {
+    background-color: var(--estado-en-proceso) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge.bg-secondary.text-white {
+    background-color: var(--estado-completado) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge.bg-danger.text-white {
+    background-color: var(--estado-cancelado) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge.bg-dark.text-white {
+    background-color: var(--estado-no-show) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Colores de fondo para filas según estado */
+.table-warning {
+    background-color: rgba(255, 193, 7, 0.05) !important;
+}
+
+.table-success {
+    background-color: rgba(40, 167, 69, 0.05) !important;
+}
+
+.table-info {
+    background-color: rgba(23, 162, 184, 0.05) !important;
+}
+
+.table-secondary {
+    background-color: rgba(108, 117, 125, 0.05) !important;
+}
+
+.table-danger {
+    background-color: rgba(220, 53, 69, 0.05) !important;
+}
+
+.table-dark {
+    background-color: rgba(52, 58, 64, 0.05) !important;
+}
+
+/* Hover effects para las filas - DISEÑO MODERNO Y ATRACTIVO */
+.table-warning:hover {
+    background: linear-gradient(135deg, #2d2400 0%, #3d2f00 100%) !important;
+    border-left: 4px solid #ffc107 !important;
+    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.table-success:hover {
+    background: linear-gradient(135deg, #0d2e1a 0%, #1a4a2a 100%) !important;
+    border-left: 4px solid #28a745 !important;
+    box-shadow: 0 4px 20px rgba(40, 167, 69, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.table-info:hover {
+    background: linear-gradient(135deg, #0a1e24 0%, #1a2f3a 100%) !important;
+    border-left: 4px solid #17a2b8 !important;
+    box-shadow: 0 4px 20px rgba(23, 162, 184, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.table-secondary:hover {
+    background: linear-gradient(135deg, #1a1d20 0%, #2a2f35 100%) !important;
+    border-left: 4px solid #6c757d !important;
+    box-shadow: 0 4px 20px rgba(108, 117, 125, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.table-danger:hover {
+    background: linear-gradient(135deg, #2d0a0a 0%, #3d1a1a 100%) !important;
+    border-left: 4px solid #dc3545 !important;
+    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.table-dark:hover {
+    background: linear-gradient(135deg, #1a1d20 0%, #2a2f35 100%) !important;
+    border-left: 4px solid #343a40 !important;
+    box-shadow: 0 4px 20px rgba(52, 58, 64, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+/* Hover general para todas las filas - DISEÑO MODERNO */
+#turnosTable tbody tr:hover {
+    background: linear-gradient(135deg, #1a1500 0%, #2a1f00 100%) !important;
+    border-left: 4px solid var(--accent-color) !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+/* Efecto de brillo sutil en hover */
+#turnosTable tbody tr:hover::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%) !important;
+    pointer-events: none !important;
+    animation: shimmer 2s infinite !important;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Mejoras en el contenido durante hover - ESTILO MODERNO */
+#turnosTable tbody tr:hover td {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+#turnosTable tbody tr:hover strong {
+    color: var(--accent-color) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+#turnosTable tbody tr:hover small {
+    color: var(--accent-color) !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+#turnosTable tbody tr:hover .text-muted {
+    color: #e0e0e0 !important;
+    opacity: 0.9 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Efectos modernos para badges y botones */
+#turnosTable tbody tr:hover .badge {
+    transform: scale(1.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+#turnosTable tbody tr:hover .btn-group .btn {
+    transform: scale(1.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Efecto de borde superior sutil */
+#turnosTable tbody tr:hover::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%) !important;
+    opacity: 0.6 !important;
+}
+
+/* Mejoras en la tabla general */
+#turnosTable {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#turnosTable thead th {
+    background: var(--card-bg);
+    color: var(--accent-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-color);
+    padding: 1rem 0.75rem;
+}
+
+#turnosTable tbody td {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive para la tabla de turnos */
+@media (max-width: 768px) {
+    #turnosTable thead th,
+    #turnosTable tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+} 
+
+/* ========================================
+   HOVER MODERNO PARA FILAS DE TABLA DE TURNOS
+   ======================================== */
+
+/* Hover effects para las filas - DISEÑO MODERNO Y COLORIDO */
+.table-warning:hover {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffd23f 100%) !important;
+    color: #000 !important;
+    border-left: 6px solid #ff4757 !important;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+.table-success:hover {
+    background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 50%, #5f27cd 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #00d2d3 !important;
+    box-shadow: 0 8px 25px rgba(0, 210, 211, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+.table-info:hover {
+    background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #30336b 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #4834d4 !important;
+    box-shadow: 0 8px 25px rgba(72, 52, 212, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+.table-secondary:hover {
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #fd79a8 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #6c5ce7 !important;
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+.table-danger:hover {
+    background: linear-gradient(135deg, #e84393 0%, #fd79a8 50%, #fdcb6e 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #e84393 !important;
+    box-shadow: 0 8px 25px rgba(232, 67, 147, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+.table-dark:hover {
+    background: linear-gradient(135deg, #2d3436 0%, #636e72 50%, #b2bec3 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #2d3436 !important;
+    box-shadow: 0 8px 25px rgba(45, 52, 54, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+/* Hover general para todas las filas - DISEÑO MODERNO Y COLORIDO */
+#turnosTable tbody tr:hover {
+    background: linear-gradient(135deg, #ff9ff3 0%, #f368e0 50%, #c44569 100%) !important;
+    color: #fff !important;
+    border-left: 6px solid #ff9ff3 !important;
+    box-shadow: 0 8px 25px rgba(255, 159, 243, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    border-radius: 8px !important;
+}
+
+/* Efecto de brillo intenso en hover */
+#turnosTable tbody tr:hover::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%) !important;
+    pointer-events: none !important;
+    animation: shimmer-intense 1.5s infinite !important;
+    border-radius: 8px !important;
+}
+
+@keyframes shimmer-intense {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Mejoras en el contenido durante hover - ESTILO MODERNO Y COLORIDO */
+#turnosTable tbody tr:hover td {
+    color: #fff !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    font-size: 1.05em !important;
+}
+
+#turnosTable tbody tr:hover strong {
+    color: #fff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    font-size: 1.1em !important;
+}
+
+#turnosTable tbody tr:hover small {
+    color: #fff !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+#turnosTable tbody tr:hover .text-muted {
+    color: #fff !important;
+    opacity: 1 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    font-weight: 500 !important;
+}
+
+/* Efectos modernos para badges y botones - MUY COLORIDOS */
+#turnosTable tbody tr:hover .badge {
+    transform: scale(1.15) rotate(5deg) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    filter: brightness(1.2) !important;
+}
+
+#turnosTable tbody tr:hover .btn-group .btn {
+    transform: scale(1.1) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    filter: brightness(1.2) !important;
+}
+
+/* Efecto de borde superior muy llamativo */
+#turnosTable tbody tr:hover::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, #ff6b35, #f7931e, #ffd23f, #00d2d3, #54a0ff, #5f27cd, #6c5ce7, #a29bfe, #fd79a8, #e84393, #fdcb6e) !important;
+    background-size: 200% 100% !important;
+    animation: rainbow-border 2s linear infinite !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+@keyframes rainbow-border {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Efecto de pulso en hover */
+#turnosTable tbody tr:hover {
+    animation: pulse-glow 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes pulse-glow {
+    from { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1); }
+    to { box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.2); }
+} 
+
+/* ========================================
+   HOVER OPTIMIZADO PARA FILAS DE TABLA DE TURNOS
+   ======================================== */
+
+/* Hover effects para las filas - OPTIMIZADO Y LEGIBLE */
+.table-warning:hover {
+    background: #2d2400 !important;
+    color: #ffffff !important;
+    border-left: 4px solid #ffc107 !important;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.table-success:hover {
+    background: #0d2e1a !important;
+    color: #ffffff !important;
+    border-left: 4px solid #28a745 !important;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.table-info:hover {
+    background: #0a1e24 !important;
+    color: #ffffff !important;
+    border-left: 4px solid #17a2b8 !important;
+    box-shadow: 0 2px 8px rgba(23, 162, 184, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.table-secondary:hover {
+    background: #1a1d20 !important;
+    color: #ffffff !important;
+    border-left: 4px solid #6c757d !important;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.table-danger:hover {
+    background: #2d0a0a !important;
+    color: #ffffff !important;
+    border-left: 4px solid #dc3545 !important;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.table-dark:hover {
+    background: #1a1d20 !important;
+    color: #ffffff !important;
+    border-left: 4px solid #343a40 !important;
+    box-shadow: 0 2px 8px rgba(52, 58, 64, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover general para todas las filas - OPTIMIZADO */
+#turnosTable tbody tr:hover {
+    background: #1a1500 !important;
+    color: #ffffff !important;
+    border-left: 4px solid var(--accent-color) !important;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Mejoras en el contenido durante hover - OPTIMIZADO Y LEGIBLE */
+#turnosTable tbody tr:hover td {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+    font-size: inherit !important;
+}
+
+#turnosTable tbody tr:hover strong {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+    font-size: inherit !important;
+}
+
+#turnosTable tbody tr:hover small {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+}
+
+#turnosTable tbody tr:hover .text-muted {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    font-weight: 500 !important;
+}
+
+/* Efectos simples para badges y botones - OPTIMIZADO */
+#turnosTable tbody tr:hover .badge {
+    transform: scale(1.05) !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    filter: none !important;
+}
+
+#turnosTable tbody tr:hover .btn-group .btn {
+    transform: scale(1.02) !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    filter: none !important;
+} 
+
+/* ========================================
+   HOVER SIMPLE PARA FILAS DE TABLA DE TURNOS
+   ======================================== */
+
+/* Hover effects para las filas - SOLO BORDES AMARILLOS */
+.table-warning:hover,
+.table-success:hover,
+.table-info:hover,
+.table-secondary:hover,
+.table-danger:hover,
+.table-dark:hover,
+#turnosTable tbody tr:hover {
+    border-left: 4px solid var(--accent-color) !important;
+    border-right: 2px solid var(--accent-color) !important;
+    border-top: 1px solid var(--accent-color) !important;
+    border-bottom: 1px solid var(--accent-color) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* El contenido mantiene su color original para máxima legibilidad */
+#turnosTable tbody tr:hover td,
+#turnosTable tbody tr:hover strong,
+#turnosTable tbody tr:hover small,
+#turnosTable tbody tr:hover .text-muted {
+    color: inherit !important;
+    font-weight: inherit !important;
+    text-shadow: none !important;
+    font-size: inherit !important;
+}
+
+/* Solo un escalado sutil para los badges y botones */
+#turnosTable tbody tr:hover .badge {
+    transform: scale(1.02) !important;
+    transition: all 0.2s ease !important;
+}
+
+#turnosTable tbody tr:hover .btn-group .btn {
+    transform: scale(1.01) !important;
+    transition: all 0.2s ease !important;
+} 
+
+/* ========================================
+   ESTILOS PARA BADGES Y ELEMENTOS ADICIONALES
+   ======================================== */
+
+/* Badges */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.bg-success {
+    background: var(--success-color) !important;
+}
+
+.bg-secondary {
+    background: var(--text-gray) !important;
+}
+
+.bg-danger {
+    background: var(--danger-color) !important;
+}
+
+.bg-info {
+    background: var(--info-color) !important;
+}
+
+.bg-warning {
+    background: var(--warning-color) !important;
+}
+
+.bg-primary {
+    background: var(--accent-color) !important;
+}
+
+/* Special Day Cards */
+.special-day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.special-day-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.special-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.special-day-date {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.special-day-content h6 {
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.special-day-content p {
+    color: var(--text-gray);
+    margin-bottom: 1rem;
+}
+
+.special-day-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* Responsive adjustments for schedule section */
+@media (max-width: 1200px) {
+    .weekly-overview {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+    
+    /* Configuración más compacta en pantallas medianas */
+    .config-form .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .config-form .form-select,
+    .config-form .form-control {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .config-form .btn-primary {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .weekly-overview {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .day-name {
+        font-size: 0.8rem;
+    }
+    
+    .day-status {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.4rem;
+    }
+    
+    .day-hours {
+        font-size: 0.75rem;
+    }
+    
+    /* Ajustes para horarios en tablets */
+    .time-display {
+        gap: 0.15rem;
+        padding: 0.2rem 0;
+    }
+    
+    .time-start,
+    .time-end {
+        font-size: 0.8rem;
+    }
+    
+    .time-separator {
+        font-size: 0.65rem;
+        margin: 0.05rem 0;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .special-day-card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn-sm {
+        padding: 0.375rem 0.75rem;
+    }
+    
+    /* Configuración más compacta en tablets */
+    .config-form .form-label {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .config-form .form-select,
+    .config-form .form-control {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.65rem;
+    }
+    
+    .config-form .form-text {
+        font-size: 0.75rem;
+    }
+    
+    .config-form .form-check-label {
+        font-size: 0.8rem;
+    }
+    
+    .config-form .btn-primary {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .weekly-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.4rem;
+    }
+    
+    .day-name {
+        font-size: 0.75rem;
+    }
+    
+    .day-status {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.3rem;
+    }
+    
+    .day-hours {
+        font-size: 0.7rem;
+    }
+    
+    /* Ajustes para horarios en móviles */
+    .time-display {
+        gap: 0.1rem;
+        padding: 0.15rem 0;
+    }
+    
+    .time-start,
+    .time-end {
+        font-size: 0.75rem;
+    }
+    
+    .time-separator {
+        font-size: 0.6rem;
+        margin: 0.05rem 0;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .special-day-actions {
+        flex-direction: column;
+    }
+    
+    .special-day-actions .btn {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Configuración más compacta en móviles */
+    .config-form .form-label {
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .config-form .form-select,
+    .config-form .form-control {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .config-form .form-text {
+        font-size: 0.7rem;
+    }
+    
+    .config-form .form-check-label {
+        font-size: 0.75rem;
+    }
+    
+    .config-form .btn-primary {
+        padding: 0.45rem 0.875rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Estilos específicos para gestión de citas */
+.btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-group-sm .btn i {
+    font-size: 0.75rem;
+}
+
+/* Estados de citas con colores específicos */
+.badge.bg-primary {
+    background-color: #3b82f6 !important;
+}
+
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.badge.bg-warning {
+    background-color: #f59e0b !important;
+    color: #000 !important;
+}
+
+.badge.bg-info {
+    background-color: #059669 !important;
+}
+
+.badge.bg-danger {
+    background-color: #ef4444 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6b7280 !important;
+}
+
+/* Animaciones para notificaciones */
+.alert {
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Tarjetas y tablas con fondo oscuro */
+.card, .modal-content, .table, .table-responsive, .dropdown-menu {
+    background: var(--card-bg) !important;
+    color: var(--text-light) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Inputs y selects con fondo oscuro */
+.form-control, .form-select, .form-control:focus, .form-select:focus {
+    background: var(--card-bg) !important;
+    color: var(--text-light) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.form-control::placeholder {
+    color: var(--text-gray) !important;
+    opacity: 1;
+}
+
+/* Modal header y footer con fondo oscuro */
+.modal-header, .modal-footer {
+    background: var(--card-bg) !important;
+    color: var(--text-light) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* Botón de cierre de modal */
+.btn-close {
+    filter: invert(1) grayscale(1);
+}
+
+/* Dropdowns y menús */
+.dropdown-menu {
+    background: var(--card-bg) !important;
+    color: var(--text-light) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.dropdown-item {
+    color: var(--text-light) !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background: var(--card-hover) !important;
+    color: var(--accent-color) !important;
+}
+
+/* Estilos específicos para options de select */
+.form-select option {
+    background: var(--card-bg);
+    color: var(--text-light);
+    padding: 0.5rem;
+}
+
+/* Toast notifications */
+.toast-container {
+    z-index: 9999;
+}
+
+.toast {
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4e73df;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 
+
+/* ========================================
+   ENCABEZADOS ORDENABLES DE TABLA
+   ======================================== */
+
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.sortable-header:hover {
+    background-color: var(--card-hover);
+    color: var(--accent-color);
+}
+
+.sortable-header:hover .fa-sort {
+    color: var(--accent-color) !important;
+}
+
+.sortable-header.asc .fa-sort {
+    color: var(--success-color) !important;
+}
+
+.sortable-header.desc .fa-sort {
+    color: var(--warning-color) !important;
+}
+
+.sortable-header.asc .fa-sort::before {
+    content: "\f0de"; /* fa-sort-up */
+}
+
+.sortable-header.desc .fa-sort::before {
+    content: "\f0dd"; /* fa-sort-down */
+}
+
+.sortable-header .fa-sort {
+    transition: all 0.2s ease;
+    font-size: 0.8em;
+}
+
+/* Indicador de ordenamiento activo */
+.sortable-header.active {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--card-hover) 100%);
+    color: white;
+    font-weight: 700;
+}
+
+.sortable-header.active .fa-sort {
+    color: white !important;
+} 
+
+/* ========================================
+   COLUMNA DE TELÉFONO Y MEJORAS DE TABLA
+   ======================================== */
+
+/* Columna de teléfono */
+.phone-column {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.phone-column strong {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Columna de fecha y hora */
+.datetime-column {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.datetime-column strong {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.datetime-column small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Responsive para columnas */
+@media (max-width: 768px) {
+    .phone-column strong {
+        font-size: 0.85rem;
+    }
+    
+    .datetime-column strong {
+        font-size: 0.85rem;
+    }
+    
+    .datetime-column small {
+        font-size: 0.75rem;
+    }
+} 
+
+/* ========================================
+   ESTILOS ESPECÍFICOS PARA BOTÓN DE COMPLETADO
+   ======================================== */
+
+/* Botón de completado automático - Estado normal */
+#btnAutoComplete.btn-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #212529 !important;
+    transition: all 0.3s ease;
+}
+
+#btnAutoComplete.btn-warning:hover {
+    background-color: #e0a800 !important;
+    border-color: #d39e00 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+
+/* Botón de completado automático - Estado de éxito */
+#btnAutoComplete.btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+    transition: all 0.3s ease;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+#btnAutoComplete.btn-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    transform: scale(1.05) translateY(-2px);
+}
+
+/* Botón de completado automático - Estado deshabilitado */
+#btnAutoComplete:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Animación de transición para cambios de estado */
+#btnAutoComplete {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de pulso cuando está completado */
+@keyframes pulse-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#btnAutoComplete.btn-success {
+    animation: pulse-success 2s ease-in-out !important;
+} 
+
+/* ========================================
+   ESTILOS FORZADOS PARA BOTÓN DE COMPLETADO
+   ======================================== */
+
+/* Forzar estilos del botón de completado - ALTA PRIORIDAD */
+#btnAutoComplete.btn-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #212529 !important;
+    transition: all 0.3s ease !important;
+}
+
+#btnAutoComplete.btn-warning:hover {
+    background-color: #e0a800 !important;
+    border-color: #d39e00 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4) !important;
+}
+
+/* Forzar estilos del botón de completado - ESTADO DE ÉXITO */
+#btnAutoComplete.btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4) !important;
+}
+
+#btnAutoComplete.btn-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    transform: scale(1.05) translateY(-2px) !important;
+}
+
+/* Estilos adicionales para asegurar que funcione */
+#btnAutoComplete.btn-success i {
+    color: white !important;
+}
+
+#btnAutoComplete.btn-success:focus {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+}
+
+/* Override de cualquier otro estilo que pueda interferir */
+#btnAutoComplete.btn-success,
+#btnAutoComplete.btn-success:active,
+#btnAutoComplete.btn-success:focus,
+#btnAutoComplete.btn-success:hover {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+}
+
+/* Estilos para el estado deshabilitado */
+#btnAutoComplete:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* Animación de transición para cambios de estado */
+#btnAutoComplete {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Efecto de pulso cuando está completado */
+@keyframes pulse-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#btnAutoComplete.btn-success {
+    animation: pulse-success 2s ease-in-out !important;
+}
