@@ -1,0 +1,480 @@
+/* ========================================
+   MEJORAS RESPONSIVE PARA TABLA DE SERVICIOS
+   ======================================== */
+
+/* Estilos específicos para móviles */
+@media (max-width: 768px) {
+    
+    /* Contenedor de la tabla */
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card-bg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Ocultar encabezados en móviles */
+    #tablaServicios thead {
+        display: none;
+    }
+    
+    /* Convertir filas en tarjetas */
+    #tablaServicios tbody tr {
+        display: block;
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    #tablaServicios tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+    }
+    
+    /* Convertir celdas en bloques */
+    #tablaServicios tbody td {
+        display: block;
+        border: none;
+        padding: 0.5rem 0;
+        text-align: left;
+        position: relative;
+    }
+    
+    /* Agregar etiquetas antes de cada celda */
+    #tablaServicios tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos específicos para cada columna */
+    #tablaServicios tbody td:nth-child(1):before { content: "✂️ Servicio"; }
+    #tablaServicios tbody td:nth-child(2):before { content: "📝 Descripción"; }
+    #tablaServicios tbody td:nth-child(3):before { content: "💰 Precio"; }
+    #tablaServicios tbody td:nth-child(4):before { content: "⏱️ Duración"; }
+    #tablaServicios tbody td:nth-child(5):before { content: "📊 Reservas"; }
+    #tablaServicios tbody td:nth-child(6):before { content: "🏷️ Estado"; }
+    #tablaServicios tbody td:nth-child(7):before { content: "⚙️ Acciones"; }
+    
+    /* Estilos para el contenido de las celdas */
+    #tablaServicios tbody td div {
+        margin: 0;
+    }
+    
+    #tablaServicios tbody td strong {
+        font-size: 1rem;
+        color: var(--text-light);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    #tablaServicios tbody td small {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+    
+    /* Estilos especiales para precio */
+    #tablaServicios tbody td:nth-child(3) {
+        color: var(--success-color);
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    /* Estilos especiales para descripción */
+    #tablaServicios tbody td:nth-child(2) {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-style: italic;
+    }
+    
+    /* Estilos para badges de estado */
+    #tablaServicios tbody td .badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos para botones de acciones */
+    #tablaServicios tbody td .btn-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+    
+    #tablaServicios tbody td .btn-group .btn {
+        flex: 1;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    #tablaServicios tbody td .btn-group .btn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Estilos para duración */
+    #tablaServicios tbody td:nth-child(4) {
+        font-size: 1rem;
+        color: var(--info-color);
+        font-weight: 600;
+    }
+    
+    /* Estilos para reservas */
+    #tablaServicios tbody td:nth-child(5) {
+        font-size: 1rem;
+        color: var(--primary-color);
+    }
+    
+    /* Separador visual entre elementos */
+    #tablaServicios tbody td:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.75rem;
+    }
+    
+    /* Estado vacío */
+    #tablaServicios tbody tr td[colspan="7"] {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-muted);
+    }
+    
+    #tablaServicios tbody tr td[colspan="7"] p {
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    /* Estado vacío con icono */
+    #tablaServicios tbody tr td[colspan="7"] i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    
+    /* Reducir padding en tablets */
+    #tablaServicios thead th,
+    #tablaServicios tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Hacer botones más pequeños */
+    #tablaServicios tbody td .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #tablaServicios tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #tablaServicios tbody td small {
+        font-size: 0.75rem;
+    }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    
+    /* Reducir padding en móviles pequeños */
+    #tablaServicios tbody tr {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #tablaServicios tbody td {
+        padding: 0.4rem 0;
+    }
+    
+    /* Hacer botones más compactos */
+    #tablaServicios tbody td .btn-group {
+        gap: 0.25rem;
+    }
+    
+    #tablaServicios tbody td .btn-group .btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #tablaServicios tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #tablaServicios tbody td small {
+        font-size: 0.7rem;
+    }
+    
+    /* Etiquetas más pequeñas */
+    #tablaServicios tbody td:before {
+        font-size: 0.7rem;
+    }
+}
+
+/* ========================================
+   MEJORAS VISUALES ADICIONALES
+   ======================================== */
+
+/* Animación de entrada para las filas */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#tablaServicios tbody tr {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Efecto de pulso para servicios activos */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estados que requieren atención */
+#tablaServicios tbody tr.servicio-activo .badge {
+    animation: pulse 2s infinite;
+}
+
+/* Mejoras para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    #tablaServicios tbody tr,
+    #tablaServicios tbody td .btn-group .btn {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Modo oscuro mejorado */
+@media (prefers-color-scheme: dark) {
+    #tablaServicios tbody tr {
+        background: rgba(30, 30, 30, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    #tablaServicios tbody tr:hover {
+        background: rgba(40, 40, 40, 0.9);
+        border-color: var(--accent-color);
+    }
+}
+
+/* ========================================
+   ESTADOS ESPECÍFICOS MEJORADOS
+   ======================================== */
+
+/* Servicio activo */
+#tablaServicios tbody tr.servicio-activo {
+    border-left: 4px solid #28a745;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+}
+
+/* Servicio inactivo */
+#tablaServicios tbody tr.servicio-inactivo {
+    border-left: 4px solid #6c757d;
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
+    opacity: 0.8;
+}
+
+/* Servicio popular */
+#tablaServicios tbody tr.servicio-popular {
+    border-left: 4px solid #ffc107;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+}
+
+/* Servicio premium */
+#tablaServicios tbody tr.servicio-premium {
+    border-left: 4px solid #dc3545;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+}
+
+/* Servicio nuevo */
+#tablaServicios tbody tr.servicio-nuevo {
+    border-left: 4px solid #17a2b8;
+    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
+}
+
+/* ========================================
+   ESTILOS ESPECÍFICOS PARA SERVICIOS
+   ======================================== */
+
+/* Información del servicio destacada */
+#tablaServicios tbody td:nth-child(1) strong {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Descripción del servicio */
+#tablaServicios tbody td:nth-child(2) {
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Precio del servicio */
+#tablaServicios tbody td:nth-child(3) strong {
+    color: var(--success-color);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* Duración del servicio */
+#tablaServicios tbody td:nth-child(4) {
+    color: var(--info-color);
+    font-weight: 600;
+}
+
+/* Estadísticas de reservas */
+#tablaServicios tbody td:nth-child(5) strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Estado del servicio */
+#tablaServicios tbody td:nth-child(6) .badge {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Botones de acción - Estilo igual que tabla de turnos */
+#tablaServicios tbody td .btn-group .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Efectos modernos para badges y botones - Igual que tabla de turnos */
+#tablaServicios tbody tr:hover .badge {
+    transform: scale(1.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+#tablaServicios tbody tr:hover .btn-group .btn {
+    transform: scale(1.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ========================================
+   MEJORAS PARA PAGINACIÓN
+   ======================================== */
+
+/* Paginación responsive */
+@media (max-width: 768px) {
+    .d-flex.justify-content-center {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .pagination {
+        justify-content: center;
+    }
+    
+    .pagination .page-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
+   ESTILOS PARA ESTADÍSTICAS
+   ======================================== */
+
+/* Estadísticas de servicios en móviles */
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .stat-card .stat-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card .stat-content p {
+        font-size: 0.8rem;
+    }
+}
+
+/* ========================================
+   ESTILOS PARA DESCUENTOS Y PRECIOS
+   ======================================== */
+
+/* Precio anterior (descuento) */
+#tablaServicios tbody td .old-price {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* Indicador de descuento */
+#tablaServicios tbody td .discount-indicator {
+    background: var(--success-color);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+/* ========================================
+   ESTILOS PARA DESCRIPCIONES LARGAS
+   ======================================== */
+
+/* Truncar descripciones largas */
+#tablaServicios tbody td .service-description-truncate {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* En móviles, mostrar descripción completa */
+@media (max-width: 768px) {
+    #tablaServicios tbody td .service-description-truncate {
+        white-space: normal;
+        line-height: 1.4;
+        max-height: none;
+    }
+}

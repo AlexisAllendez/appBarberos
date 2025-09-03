@@ -57,8 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para cargar servicios de respaldo cuando no hay barberos disponibles
     function loadFallbackServices() {
-        console.log('🔄 Cargando servicios de respaldo...');
-        
         // Mostrar mensaje informativo
         showAvailabilityMessage('Cargando servicios de respaldo...', 'info');
         
@@ -121,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateServiceBarberInfo(barbero) {
         // Función simplificada - solo para compatibilidad
         // Los elementos de información del servicio han sido removidos
-        console.log('Barbero seleccionado:', barbero);
     }
 
     function cleanProfessionalInfo() {
@@ -137,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     const summaryItem = element.closest('.summary-item');
                     if (summaryItem) {
                         summaryItem.remove();
-                        console.log('🧹 Información innecesaria removida:', text.trim());
                     }
                 }
             });
@@ -155,16 +151,38 @@ document.addEventListener('DOMContentLoaded', function() {
             ${message}
         `;
         
-        const horaInputGroup = horaSelect.closest('.input-group');
-        const horaFormGroup = horaInputGroup.parentElement;
-        horaFormGroup.appendChild(messageDiv);
+        // Buscar el contenedor apropiado para insertar el mensaje
+        let targetContainer = null;
         
-        const timeout = type === 'info' ? 8000 : 10000;
-        setTimeout(() => {
-            if (messageDiv.parentNode) {
-                messageDiv.remove();
+        // Intentar encontrar la sección de horarios primero
+        const timeSlotsSection = document.querySelector('.time-slots-section');
+        if (timeSlotsSection) {
+            targetContainer = timeSlotsSection;
+        } else {
+            // Fallback: buscar el contenedor del input de hora
+            const horaInputGroup = horaSelect?.closest('.input-group');
+            if (horaInputGroup && horaInputGroup.parentElement) {
+                targetContainer = horaInputGroup.parentElement;
+            } else {
+                // Fallback: buscar el formulario
+                targetContainer = document.querySelector('.booking-form') || document.getElementById('bookingForm');
             }
-        }, timeout);
+        }
+        
+        // Solo insertar si encontramos un contenedor válido
+        if (targetContainer) {
+            targetContainer.appendChild(messageDiv);
+            
+            const timeout = type === 'info' ? 8000 : 10000;
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, timeout);
+        } else {
+            // Si no encontramos contenedor, solo logear el mensaje sin error
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
     }
     
     function getMonthName(monthNumber) {
@@ -194,7 +212,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const selectedService = serviceSelect.value;
         const selectedDate = fechaInput.value;
-        const selectedTime = horaSelect.value;
+        // Obtener el horario seleccionado de la nueva interfaz o del input oculto
+        let selectedTime = '';
+        if (window.timeSlotsGrid && window.timeSlotsGrid.getSelectedTime) {
+            selectedTime = window.timeSlotsGrid.getSelectedTime();
+        } else if (horaSelect) {
+            selectedTime = horaSelect.value;
+        }
         
         // Actualizar resumen de servicio
         const summaryServicio = document.getElementById('summaryServicio');
@@ -250,7 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
         updateServiceInfo();
     });
     fechaInput.addEventListener('change', updateSummary);
-    horaSelect.addEventListener('change', updateSummary);
+    // Solo agregar event listener si horaSelect existe (compatibilidad con nueva interfaz)
+    if (horaSelect) {
+        horaSelect.addEventListener('change', updateSummary);
+    }
     
     // Event listener para cargar horarios cuando cambie la fecha
     fechaInput.addEventListener('change', function() {
@@ -288,7 +315,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadServicesForBarber(selectedBarberId);
                 
                 fechaInput.value = '';
-                horaSelect.innerHTML = '<option value="">Selecciona fecha primero</option>';
+                if (horaSelect) {
+                    horaSelect.innerHTML = '<option value="">Selecciona fecha primero</option>';
+                }
                 
                 serviceSelect.classList.remove('loading-services');
                 
@@ -310,21 +339,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     async function loadAvailableSlots(fecha, servicioId = null) {
         try {
-            console.log(`🔍 loadAvailableSlots llamado con fecha: ${fecha}, servicioId: ${servicioId}`);
-            console.log(`🔍 selectedBarberId actual: ${selectedBarberId}`);
-            console.log(`🔍 Tipo de selectedBarberId: ${typeof selectedBarberId}`);
-            console.log(`🔍 Valor del select barbero: ${barberoSelect.value}`);
+            // Verificar si estamos usando la nueva interfaz de cuadrícula
+            if (window.timeSlotsGrid && typeof window.timeSlotsGrid.loadTimeSlots === 'function') {
+                // Usar la nueva interfaz de cuadrícula
+                window.timeSlotsGrid.loadTimeSlots();
+                return;
+            }
             
+            // Código original para la interfaz de dropdown (fallback)
             // Usar la función de validación global
             if (!validateBarberSelection()) {
                 showAvailabilityMessage('Por favor, selecciona un barbero válido primero', 'warning');
-                horaSelect.innerHTML = '<option value="">Selecciona un barbero primero</option>';
+                if (horaSelect) {
+                    horaSelect.innerHTML = '<option value="">Selecciona un barbero primero</option>';
+                }
                 return;
             }
             
             const selectedBarber = barberosData.find(b => b.id == selectedBarberId);
             const nombreCompleto = `${selectedBarber.nombre || ''} ${selectedBarber.apellido || ''}`.trim();
-            console.log(`✅ Barbero validado: ${nombreCompleto} (ID: ${selectedBarber.id})`);
             
             const params = new URLSearchParams({ fecha });
             
@@ -335,52 +368,50 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.append('servicio_id', servicioId);
             }
             
-
-            
             const response = await fetch(`/api/booking/slots?${params}`);
             const result = await response.json();
             
             if (result.success) {
-                // Debug: mostrar información de la respuesta
-                console.log('🔍 Respuesta del backend:', result);
-                console.log('🔍 Slots recibidos:', result.data);
-                console.log('🔍 Cantidad de slots:', result.data.length);
-                
-                horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
-                
-                if (result.data.length > 0) {
-                    if (result.barbero) {
-                        updateServiceBarberInfo(result.barbero);
-                    }
+                if (horaSelect) {
+                    horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
                     
-                    result.data.forEach((slot, index) => {
-                        console.log(`🔍 Slot ${index + 1}: ${slot.hora_inicio} - ${slot.hora_fin} (duración: ${slot.duracion} min)`);
-                        const option = document.createElement('option');
-                        option.value = slot.hora_inicio;
-                        option.textContent = slot.hora_inicio;
-                        option.setAttribute('data-end-time', slot.hora_fin);
-                        horaSelect.appendChild(option);
-                    });
-                    
-                    showAvailabilityMessage(`${result.data.length} horarios disponibles`);
-                } else {
-                    const message = result.message || 'No hay horarios disponibles para esta fecha';
-                    showAvailabilityMessage(message, 'warning');
-                    horaSelect.innerHTML = '<option value="">No hay horarios disponibles</option>';
-                    
-                    if (result.barbero) {
-                        updateServiceBarberInfo(result.barbero);
+                    if (result.data.length > 0) {
+                        if (result.barbero) {
+                            updateServiceBarberInfo(result.barbero);
+                        }
+                        
+                        result.data.forEach((slot, index) => {
+                            const option = document.createElement('option');
+                            option.value = slot.hora_inicio;
+                            option.textContent = slot.hora_inicio;
+                            option.setAttribute('data-end-time', slot.hora_fin);
+                            horaSelect.appendChild(option);
+                        });
+                        
+                        showAvailabilityMessage(`${result.data.length} horarios disponibles`);
+                    } else {
+                        const message = result.message || 'No hay horarios disponibles para esta fecha';
+                        showAvailabilityMessage(message, 'warning');
+                        horaSelect.innerHTML = '<option value="">No hay horarios disponibles</option>';
+                        
+                        if (result.barbero) {
+                            updateServiceBarberInfo(result.barbero);
+                        }
                     }
                 }
             } else {
                 console.error('Error al cargar horarios:', result.message);
                 showAvailabilityMessage(result.message || 'Error al cargar horarios', 'error');
-                horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+                if (horaSelect) {
+                    horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+                }
             }
         } catch (error) {
             console.error('Error al cargar horarios:', error);
             showAvailabilityMessage('Error de conexión al cargar horarios', 'error');
-            horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+            if (horaSelect) {
+                horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+            }
         }
     }
     
@@ -401,7 +432,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateServiceInfo() {
         // Función simplificada - solo para compatibilidad
         // Los elementos de información del servicio han sido removidos
-        console.log('Servicio seleccionado:', serviceSelect.value);
     }
     
     function validateForm() {
@@ -412,7 +442,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const barbero = barberoSelect.value;
         const servicio = serviceSelect.value;
         const fecha = fechaInput.value;
-        const hora = horaSelect.value;
+        // Obtener el horario seleccionado de la nueva interfaz o del input oculto
+        let hora = '';
+        if (window.timeSlotsGrid && window.timeSlotsGrid.getSelectedTime) {
+            hora = window.timeSlotsGrid.getSelectedTime();
+        } else if (horaSelect) {
+            hora = horaSelect.value;
+        }
         
         if (!nombre) {
             showError('Por favor ingresa tu nombre');
@@ -527,7 +563,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 barbero: barberoSelect.value, // Agregar el barbero seleccionado
                 servicio: serviceSelect.value,
                 fecha: fechaInput.value,
-                hora: horaSelect.value,
+                // Obtener el horario seleccionado de la nueva interfaz o del input oculto
+                hora: window.timeSlotsGrid && window.timeSlotsGrid.getSelectedTime ? 
+                      window.timeSlotsGrid.getSelectedTime() : 
+                      (horaSelect ? horaSelect.value : ''),
                 comentarios: document.getElementById('comentarios').value.trim()
             };
             

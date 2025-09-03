@@ -1,0 +1,428 @@
+/* ========================================
+   MEJORAS RESPONSIVE PARA TABLA DE CLIENTES
+   ======================================== */
+
+/* Estilos específicos para móviles */
+@media (max-width: 768px) {
+    
+    /* Contenedor de la tabla */
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card-bg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Ocultar encabezados en móviles */
+    #clientsTable thead {
+        display: none;
+    }
+    
+    /* Convertir filas en tarjetas */
+    #clientsTable tbody tr {
+        display: block;
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    #clientsTable tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+    }
+    
+    /* Convertir celdas en bloques */
+    #clientsTable tbody td {
+        display: block;
+        border: none;
+        padding: 0.5rem 0;
+        text-align: left;
+        position: relative;
+    }
+    
+    /* Agregar etiquetas antes de cada celda */
+    #clientsTable tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos específicos para cada columna */
+    #clientsTable tbody td:nth-child(1):before { content: "👤 Nombre"; }
+    #clientsTable tbody td:nth-child(2):before { content: "📞 Teléfono"; }
+    #clientsTable tbody td:nth-child(3):before { content: "📧 Email"; }
+    #clientsTable tbody td:nth-child(4):before { content: "📊 Total Turnos"; }
+    #clientsTable tbody td:nth-child(5):before { content: "📅 Último Turno"; }
+    #clientsTable tbody td:nth-child(6):before { content: "🏷️ Estado"; }
+    #clientsTable tbody td:nth-child(7):before { content: "⚙️ Acciones"; }
+    
+    /* Estilos para el contenido de las celdas */
+    #clientsTable tbody td div {
+        margin: 0;
+    }
+    
+    #clientsTable tbody td strong {
+        font-size: 1rem;
+        color: var(--text-light);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    #clientsTable tbody td small {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+    
+    /* Estilos especiales para teléfono */
+    #clientsTable tbody td:nth-child(2) {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    /* Estilos especiales para email */
+    #clientsTable tbody td:nth-child(3) {
+        color: var(--info-color);
+        font-size: 0.9rem;
+    }
+    
+    /* Estilos para badges de estado */
+    #clientsTable tbody td .badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos para botones de acciones */
+    #clientsTable tbody td .btn-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+    
+    #clientsTable tbody td .btn-group .btn {
+        flex: 1;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    #clientsTable tbody td .btn-group .btn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Estilos para total de turnos */
+    #clientsTable tbody td:nth-child(4) {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    /* Estilos para último turno */
+    #clientsTable tbody td:nth-child(5) {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    /* Separador visual entre elementos */
+    #clientsTable tbody td:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.75rem;
+    }
+    
+    /* Estado vacío */
+    #clientsTable tbody tr td[colspan="7"] {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-muted);
+    }
+    
+    #clientsTable tbody tr td[colspan="7"] p {
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    /* Estado vacío con icono */
+    #clientsTable tbody tr td[colspan="7"] i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    
+    /* Reducir padding en tablets */
+    #clientsTable thead th,
+    #clientsTable tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Hacer botones más pequeños */
+    #clientsTable tbody td .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #clientsTable tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #clientsTable tbody td small {
+        font-size: 0.75rem;
+    }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    
+    /* Reducir padding en móviles pequeños */
+    #clientsTable tbody tr {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #clientsTable tbody td {
+        padding: 0.4rem 0;
+    }
+    
+    /* Hacer botones más compactos */
+    #clientsTable tbody td .btn-group {
+        gap: 0.25rem;
+    }
+    
+    #clientsTable tbody td .btn-group .btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #clientsTable tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #clientsTable tbody td small {
+        font-size: 0.7rem;
+    }
+    
+    /* Etiquetas más pequeñas */
+    #clientsTable tbody td:before {
+        font-size: 0.7rem;
+    }
+}
+
+/* ========================================
+   MEJORAS VISUALES ADICIONALES
+   ======================================== */
+
+/* Animación de entrada para las filas */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#clientsTable tbody tr {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Efecto de pulso para clientes activos */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estados que requieren atención */
+#clientsTable tbody tr.cliente-activo .badge {
+    animation: pulse 2s infinite;
+}
+
+/* Mejoras para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    #clientsTable tbody tr,
+    #clientsTable tbody td .btn-group .btn {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Modo oscuro mejorado */
+@media (prefers-color-scheme: dark) {
+    #clientsTable tbody tr {
+        background: rgba(30, 30, 30, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    #clientsTable tbody tr:hover {
+        background: rgba(40, 40, 40, 0.9);
+        border-color: var(--accent-color);
+    }
+}
+
+/* ========================================
+   ESTADOS ESPECÍFICOS MEJORADOS
+   ======================================== */
+
+/* Cliente activo */
+#clientsTable tbody tr.cliente-activo {
+    border-left: 4px solid #28a745;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+}
+
+/* Cliente inactivo */
+#clientsTable tbody tr.cliente-inactivo {
+    border-left: 4px solid #6c757d;
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
+    opacity: 0.8;
+}
+
+/* Cliente nuevo */
+#clientsTable tbody tr.cliente-nuevo {
+    border-left: 4px solid #17a2b8;
+    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
+}
+
+/* Cliente frecuente */
+#clientsTable tbody tr.cliente-frecuente {
+    border-left: 4px solid #ffc107;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+}
+
+/* Cliente VIP */
+#clientsTable tbody tr.cliente-vip {
+    border-left: 4px solid #dc3545;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+}
+
+/* ========================================
+   ESTILOS ESPECÍFICOS PARA CLIENTES
+   ======================================== */
+
+/* Información de contacto destacada */
+#clientsTable tbody td:nth-child(2) strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#clientsTable tbody td:nth-child(3) strong {
+    color: var(--info-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Estadísticas del cliente */
+#clientsTable tbody td:nth-child(4) .badge {
+    background: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Último turno con formato especial */
+#clientsTable tbody td:nth-child(5) {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* Estado del cliente */
+#clientsTable tbody td:nth-child(6) .badge {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Botones de acción - Estilo igual que tabla de turnos */
+#clientsTable tbody td .btn-group .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Efectos modernos para badges y botones - Igual que tabla de turnos */
+#clientsTable tbody tr:hover .badge {
+    transform: scale(1.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+#clientsTable tbody tr:hover .btn-group .btn {
+    transform: scale(1.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ========================================
+   MEJORAS PARA PAGINACIÓN
+   ======================================== */
+
+/* Paginación responsive */
+@media (max-width: 768px) {
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .pagination {
+        justify-content: center;
+    }
+    
+    .pagination .page-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
+   ESTILOS PARA ESTADÍSTICAS
+   ======================================== */
+
+/* Estadísticas de clientes en móviles */
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .stat-card .stat-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card .stat-content p {
+        font-size: 0.8rem;
+    }
+}

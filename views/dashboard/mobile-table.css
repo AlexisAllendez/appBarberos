@@ -1,0 +1,317 @@
+/* ========================================
+   MEJORAS RESPONSIVE PARA TABLA DE TURNOS
+   ======================================== */
+
+/* Estilos específicos para móviles */
+@media (max-width: 768px) {
+    
+    /* Contenedor de la tabla */
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card-bg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Ocultar encabezados en móviles */
+    #tablaTurnos thead {
+        display: none;
+    }
+    
+    /* Convertir filas en tarjetas */
+    #tablaTurnos tbody tr {
+        display: block;
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    #tablaTurnos tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+    }
+    
+    /* Convertir celdas en bloques */
+    #tablaTurnos tbody td {
+        display: block;
+        border: none;
+        padding: 0.5rem 0;
+        text-align: left;
+        position: relative;
+    }
+    
+    /* Agregar etiquetas antes de cada celda */
+    #tablaTurnos tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos específicos para cada columna */
+    #tablaTurnos tbody td:nth-child(1):before { content: "👤 Cliente"; }
+    #tablaTurnos tbody td:nth-child(2):before { content: "✂️ Servicio"; }
+    #tablaTurnos tbody td:nth-child(3):before { content: "📅 Fecha y Hora"; }
+    #tablaTurnos tbody td:nth-child(4):before { content: "📞 Teléfono"; }
+    #tablaTurnos tbody td:nth-child(5):before { content: "🏷️ Estado"; }
+    #tablaTurnos tbody td:nth-child(6):before { content: "💰 Precio"; }
+    #tablaTurnos tbody td:nth-child(7):before { content: "⚙️ Acciones"; }
+    
+    /* Estilos para el contenido de las celdas */
+    #tablaTurnos tbody td div {
+        margin: 0;
+    }
+    
+    #tablaTurnos tbody td strong {
+        font-size: 1rem;
+        color: var(--text-light);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    #tablaTurnos tbody td small {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+    
+    /* Estilos especiales para teléfono */
+    #tablaTurnos tbody td.phone-column {
+        text-align: left;
+    }
+    
+    #tablaTurnos tbody td.phone-column strong {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+    }
+    
+    /* Estilos para badges de estado */
+    #tablaTurnos tbody td .badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilos para botones de acciones */
+    #tablaTurnos tbody td .btn-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+    
+    #tablaTurnos tbody td .btn-group .btn {
+        flex: 1;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    #tablaTurnos tbody td .btn-group .btn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Estilos para precio */
+    #tablaTurnos tbody td:nth-child(6) {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--success-color);
+    }
+    
+    /* Separador visual entre elementos */
+    #tablaTurnos tbody td:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.75rem;
+    }
+    
+    /* Estado vacío */
+    #tablaTurnos tbody tr td[colspan="7"] {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-muted);
+    }
+    
+    #tablaTurnos tbody tr td[colspan="7"] p {
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    
+    /* Reducir padding en tablets */
+    #tablaTurnos thead th,
+    #tablaTurnos tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Hacer botones más pequeños */
+    #tablaTurnos tbody td .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #tablaTurnos tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #tablaTurnos tbody td small {
+        font-size: 0.75rem;
+    }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    
+    /* Reducir padding en móviles pequeños */
+    #tablaTurnos tbody tr {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #tablaTurnos tbody td {
+        padding: 0.4rem 0;
+    }
+    
+    /* Hacer botones más compactos */
+    #tablaTurnos tbody td .btn-group {
+        gap: 0.25rem;
+    }
+    
+    #tablaTurnos tbody td .btn-group .btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    /* Reducir tamaño de texto */
+    #tablaTurnos tbody td strong {
+        font-size: 0.9rem;
+    }
+    
+    #tablaTurnos tbody td small {
+        font-size: 0.7rem;
+    }
+    
+    /* Etiquetas más pequeñas */
+    #tablaTurnos tbody td:before {
+        font-size: 0.7rem;
+    }
+}
+
+/* ========================================
+   MEJORAS VISUALES ADICIONALES
+   ======================================== */
+
+/* Animación de entrada para las filas */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#tablaTurnos tbody tr {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Efecto de pulso para estados importantes */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estados que requieren atención */
+#tablaTurnos tbody tr.estado-reservado .badge,
+#tablaTurnos tbody tr.estado-en_proceso .badge {
+    animation: pulse 2s infinite;
+}
+
+/* Mejoras para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    #tablaTurnos tbody tr,
+    #tablaTurnos tbody td .btn-group .btn {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Modo oscuro mejorado */
+@media (prefers-color-scheme: dark) {
+    #tablaTurnos tbody tr {
+        background: rgba(30, 30, 30, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    #tablaTurnos tbody tr:hover {
+        background: rgba(40, 40, 40, 0.9);
+        border-color: var(--accent-color);
+    }
+}
+
+/* ========================================
+   ESTADOS ESPECÍFICOS MEJORADOS
+   ======================================== */
+
+/* Estado reservado */
+#tablaTurnos tbody tr.estado-reservado {
+    border-left: 4px solid #ffc107;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+}
+
+/* Estado confirmado */
+#tablaTurnos tbody tr.estado-confirmado {
+    border-left: 4px solid #17a2b8;
+    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
+}
+
+/* Estado en proceso */
+#tablaTurnos tbody tr.estado-en_proceso {
+    border-left: 4px solid #fd7e14;
+    background: linear-gradient(135deg, rgba(253, 126, 20, 0.1) 0%, rgba(253, 126, 20, 0.05) 100%);
+}
+
+/* Estado completado */
+#tablaTurnos tbody tr.estado-completado {
+    border-left: 4px solid #28a745;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+}
+
+/* Estado cancelado */
+#tablaTurnos tbody tr.estado-cancelado {
+    border-left: 4px solid #dc3545;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+    opacity: 0.7;
+}
+
+/* Estado no show */
+#tablaTurnos tbody tr.estado-no_show {
+    border-left: 4px solid #6c757d;
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
+    opacity: 0.8;
+}

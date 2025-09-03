@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Tabla de Servicios Móvil</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/views/dashboard/styles.css">
+    <!-- Mobile Services Table CSS -->
+    <link rel="stylesheet" href="/views/dashboard/mobile-services-table.css">
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="background-pattern"></div>
+    
+    <!-- Demo Container -->
+    <div class="dashboard-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h1 class="brand-title">ALEXIS ALLENDEZ</h1>
+                        <p class="brand-subtitle">Demo - Tabla de Servicios Optimizada para Móviles</p>
+                    </div>
+                    
+                    <!-- Demo Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-concierge-bell me-2"></i>
+                                Lista de Servicios
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="tablaServicios">
+                                    <thead>
+                                        <tr>
+                                            <th>Servicio</th>
+                                            <th>Descripción</th>
+                                            <th>Precio</th>
+                                            <th>Duración</th>
+                                            <th>Reservas</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="serviciosTableBody">
+                                        <!-- Servicio 1 - Activo -->
+                                        <tr class="servicio-activo">
+                                            <td>
+                                                <strong>Corte Clásico</strong>
+                                                <br>
+                                                <small class="text-success">
+                                                    <i class="fas fa-tag me-1"></i>Descuento: $25 → $20
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <div class="service-description-truncate" title="Corte tradicional con acabado profesional">
+                                                    Corte tradicional con acabado profesional
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>$20</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">30 min</span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>45</strong>
+                                                    <br>
+                                                    <small class="text-muted">38 completadas</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    Activo
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary" title="Ver servicio">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-warning" title="Editar servicio">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Eliminar servicio">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Servicio 2 - Nuevo -->
+                                        <tr class="servicio-nuevo">
+                                            <td>
+                                                <strong>Barba Estilizada</strong>
+                                            </td>
+                                            <td>
+                                                <div class="service-description-truncate" title="Diseño y mantenimiento de barba">
+                                                    Diseño y mantenimiento de barba
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>$15</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">20 min</span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>12</strong>
+                                                    <br>
+                                                    <small class="text-muted">10 completadas</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    Nuevo
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary" title="Ver servicio">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-warning" title="Editar servicio">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Eliminar servicio">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Servicio 3 - Popular -->
+                                        <tr class="servicio-popular">
+                                            <td>
+                                                <strong>Corte + Barba</strong>
+                                            </td>
+                                            <td>
+                                                <div class="service-description-truncate" title="Combo completo de corte y barba">
+                                                    Combo completo de corte y barba
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>$30</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">45 min</span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>78</strong>
+                                                    <br>
+                                                    <small class="text-muted">72 completadas</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning">
+                                                    Popular
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary" title="Ver servicio">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-warning" title="Editar servicio">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Eliminar servicio">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Servicio 4 - Premium -->
+                                        <tr class="servicio-premium">
+                                            <td>
+                                                <strong>Tratamiento Premium</strong>
+                                            </td>
+                                            <td>
+                                                <div class="service-description-truncate" title="Tratamiento completo con productos premium">
+                                                    Tratamiento completo con productos premium
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>$50</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">60 min</span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>23</strong>
+                                                    <br>
+                                                    <small class="text-muted">20 completadas</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    Premium
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary" title="Ver servicio">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-warning" title="Editar servicio">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Eliminar servicio">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Servicio 5 - Inactivo -->
+                                        <tr class="servicio-inactivo">
+                                            <td>
+                                                <strong>Color de Cabello</strong>
+                                            </td>
+                                            <td>
+                                                <div class="service-description-truncate" title="Tinte y coloración profesional">
+                                                    Tinte y coloración profesional
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>$40</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">90 min</span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>5</strong>
+                                                    <br>
+                                                    <small class="text-muted">3 completadas</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    Inactivo
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary" title="Ver servicio">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-warning" title="Editar servicio">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Eliminar servicio">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Paginación -->
+                            <div class="d-flex justify-content-center mt-3">
+                                <nav aria-label="Paginación de servicios">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Información de la demo -->
+                    <div class="mt-4 p-3 bg-light text-dark rounded">
+                        <h6><i class="fas fa-info-circle me-2"></i>Características de la Tabla de Servicios Móvil:</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="mb-0">
+                                    <li>✅ Filas convertidas en tarjetas</li>
+                                    <li>✅ Etiquetas con iconos para cada campo</li>
+                                    <li>✅ Precios destacados visualmente</li>
+                                    <li>✅ Estados visuales mejorados</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="mb-0">
+                                    <li>✅ Botones de acción optimizados</li>
+                                    <li>✅ Paginación responsive</li>
+                                    <li>✅ Animaciones suaves</li>
+                                    <li>✅ Accesibilidad mejorada</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Estados de servicios -->
+                    <div class="mt-4 p-3 bg-light text-dark rounded">
+                        <h6><i class="fas fa-tags me-2"></i>Estados de Servicios:</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="badge bg-success me-2">Activo</div>
+                                    <small>Servicio disponible</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="badge bg-info me-2">Nuevo</div>
+                                    <small>Servicio recién agregado</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="badge bg-warning me-2">Popular</div>
+                                    <small>Servicio muy solicitado</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="badge bg-danger me-2">Premium</div>
+                                    <small>Servicio de alta calidad</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="badge bg-secondary me-2">Inactivo</div>
+                                    <small>Servicio temporalmente no disponible</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Back to Home -->
+                    <div class="text-center mt-3">
+                        <a href="/" class="back-home">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

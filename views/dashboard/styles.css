@@ -692,6 +692,7 @@ body {
     transform: translateY(-2px);
 }
 
+/* Estilos de botones outline - Usando solo Bootstrap */
 .btn-outline-primary {
     background: transparent;
     border: 2px solid var(--accent-color);
@@ -701,7 +702,6 @@ body {
 .btn-outline-primary:hover {
     background: var(--accent-color);
     color: var(--dark-bg);
-    transform: translateY(-2px);
 }
 
 .btn-outline-danger {
@@ -713,7 +713,39 @@ body {
 .btn-outline-danger:hover {
     background: var(--danger-color);
     color: var(--text-light);
-    transform: translateY(-2px);
+}
+
+.btn-outline-warning {
+    background: transparent;
+    border: 2px solid var(--warning-color);
+    color: var(--warning-color);
+}
+
+.btn-outline-warning:hover {
+    background: var(--warning-color);
+    color: var(--dark-bg);
+}
+
+.btn-outline-info {
+    background: transparent;
+    border: 2px solid var(--info-color);
+    color: var(--info-color);
+}
+
+.btn-outline-info:hover {
+    background: var(--info-color);
+    color: var(--dark-bg);
+}
+
+.btn-outline-success {
+    background: transparent;
+    border: 2px solid var(--success-color);
+    color: var(--success-color);
+}
+
+.btn-outline-success:hover {
+    background: var(--success-color);
+    color: var(--dark-bg);
 }
 
 .btn-sm {

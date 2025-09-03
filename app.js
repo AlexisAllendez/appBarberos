@@ -17,6 +17,7 @@ const AppointmentService = require('./services/appointmentService');
 
 // Importar middleware
 const { requestLogger, errorHandler } = require('./middleware/auth');
+const { handleSSLErrors, filterFrontendLogs, handleProtocolErrors, simplifyFrontendErrors } = require('./middleware/development');
 
 // Importar rutas
 const authRoutes = require('./routes/auth');
@@ -75,6 +76,13 @@ app.use(cookieParser());
 // Middleware de logging
 app.use(requestLogger);
 
+// Middleware de desarrollo (solo en desarrollo)
+if (process.env.NODE_ENV !== 'production') {
+    app.use(handleSSLErrors);
+    app.use(filterFrontendLogs);
+    app.use(simplifyFrontendErrors);
+}
+
 // Servir archivos estáticos ANTES del rate limiting
 app.use('/public', express.static('public'));
 app.use('/views', express.static('views'));
@@ -109,6 +117,21 @@ app.use('/auth', limiter);
 // Ruta principal (pública)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Ruta de diagnóstico (pública)
+app.get('/debug', (req, res) => {
+    res.sendFile(path.join(__dirname, 'debug.html'));
+});
+
+// Ruta de demo de servicios móvil (pública)
+app.get('/demo-services', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/dashboard/services-mobile-demo.html'));
+});
+
+// Ruta de demo de horarios móvil (pública)
+app.get('/demo-schedule', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/dashboard/schedule-mobile-demo.html'));
 });
 
 // Rutas públicas del usuario
@@ -179,6 +202,11 @@ app.use((req, res, next) => {
 
 // Middleware para manejar errores
 app.use(errorHandler);
+
+// Middleware para manejar errores de protocolo (después del errorHandler principal)
+if (process.env.NODE_ENV !== 'production') {
+    app.use(handleProtocolErrors);
+}
 
 // Función para iniciar el servidor
 async function startServer() {
