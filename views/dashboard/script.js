@@ -843,6 +843,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // View client details
     async function viewClient(id) {
         try {
+            console.log('🔍 Solicitando detalles del cliente ID:', id);
+            
             const response = await fetch(`/dashboard/clients/${id}`, {
                 method: 'GET',
                 credentials: 'include'
@@ -850,22 +852,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 const data = await response.json();
+                console.log('🔍 Respuesta del servidor:', data);
+                
                 if (data.success) {
                     showClientDetailsModal(data.data);
                 } else {
-                    showError(data.message);
+                    console.error('❌ Error en respuesta del servidor:', data.message);
+                    showError(data.message || 'Error al cargar los detalles del cliente');
                 }
             } else {
-                throw new Error(`Error del servidor: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                console.error('❌ Error HTTP:', response.status, errorData);
+                throw new Error(`Error del servidor: ${response.status} - ${errorData.message || 'Error desconocido'}`);
             }
         } catch (error) {
-            console.error('Error viewing client:', error);
-            showError('Error al cargar los detalles del cliente');
+            console.error('❌ Error viewing client:', error);
+            showError('Error al cargar los detalles del cliente: ' + error.message);
         }
     }
 
     // Show client details modal
     function showClientDetailsModal(data) {
+        console.log('🔍 Datos recibidos en showClientDetailsModal:', data);
+        
         const modalElement = document.getElementById('viewClientModal');
         if (!modalElement) {
             console.warn('⚠️ Modal de detalles de cliente no encontrado');
@@ -873,6 +882,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const modal = new bootstrap.Modal(modalElement);
+        
+        // Determinar la estructura de datos
+        let clientData;
+        let appointmentHistory;
+        
+        if (data.client) {
+            // Estructura del clientController
+            clientData = data.client;
+            appointmentHistory = data.appointmentHistory || [];
+        } else {
+            // Estructura del dashboardController
+            clientData = data;
+            appointmentHistory = data.appointments || [];
+        }
+        
+        // Validar que tenemos datos del cliente
+        if (!clientData || !clientData.nombre) {
+            console.error('❌ Datos del cliente incompletos:', clientData);
+            showError('Error: Datos del cliente incompletos');
+            return;
+        }
         
         // Fill client information
         const nombreElement = document.getElementById('viewClientNombre');
@@ -884,20 +914,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const ultimoTurnoElement = document.getElementById('viewClientUltimoTurno');
         const estadoElement = document.getElementById('viewClientEstado');
         
-        if (nombreElement) nombreElement.textContent = `${data.client.nombre} ${data.client.apellido}`;
-        if (telefonoElement) telefonoElement.textContent = data.client.telefono;
-        if (emailElement) emailElement.textContent = data.client.email || '-';
-        if (fechaElement) fechaElement.textContent = data.client.fecha_nacimiento ? formatDate(data.client.fecha_nacimiento) : '-';
-        if (notasElement) notasElement.textContent = data.client.notas || '-';
-        if (totalCitasElement) totalCitasElement.textContent = data.client.total_citas || 0;
-        if (ultimoTurnoElement) ultimoTurnoElement.textContent = data.client.ultima_cita ? formatDate(data.client.ultima_cita) : 'Nunca';
+        if (nombreElement) nombreElement.textContent = `${clientData.nombre} ${clientData.apellido || ''}`;
+        if (telefonoElement) telefonoElement.textContent = clientData.telefono || '-';
+        if (emailElement) emailElement.textContent = clientData.email || '-';
+        if (fechaElement) fechaElement.textContent = clientData.fecha_nacimiento ? formatDate(clientData.fecha_nacimiento) : '-';
+        if (notasElement) notasElement.textContent = clientData.notas || '-';
+        if (totalCitasElement) totalCitasElement.textContent = clientData.total_citas || 0;
+        if (ultimoTurnoElement) ultimoTurnoElement.textContent = clientData.ultima_cita ? formatDate(clientData.ultima_cita) : 'Nunca';
         if (estadoElement) estadoElement.textContent = 'Activo';
         
         // Fill appointment history
         const historyTbody = document.getElementById('clientHistoryTableBody');
         if (historyTbody) {
-            if (data.appointmentHistory && data.appointmentHistory.length > 0) {
-                historyTbody.innerHTML = data.appointmentHistory.map(appointment => `
+            if (appointmentHistory && appointmentHistory.length > 0) {
+                historyTbody.innerHTML = appointmentHistory.map(appointment => `
                     <tr>
                         <td>${formatDate(appointment.fecha)}</td>
                         <td>${formatTime(appointment.hora_inicio)}</td>
@@ -922,7 +952,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Set client ID for edit button
         const editBtn = document.getElementById('editClientBtn');
-        if (editBtn) editBtn.dataset.clientId = data.client.id;
+        if (editBtn) editBtn.dataset.clientId = clientData.id;
 
         modal.show();
     }

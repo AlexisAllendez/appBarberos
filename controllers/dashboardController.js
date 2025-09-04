@@ -955,10 +955,14 @@ async function getClientDetails(req, res) {
     try {
         const userId = req.user.id;
         const { id } = req.params;
+        
+        console.log('🔍 Obteniendo detalles del cliente:', { userId, clientId: id });
 
         // Obtener información del cliente usando el modelo
         const Client = require('../models/Client');
         const client = await Client.findById(id);
+        
+        console.log('🔍 Cliente encontrado:', client);
         
         if (!client) {
             if (!res.headersSent) {
@@ -979,20 +983,45 @@ async function getClientDetails(req, res) {
                 c.telefono,
                 c.email,
                 c.notas,
+                c.fecha_nacimiento,
                 COUNT(t.id) as total_citas,
                 SUM(CASE WHEN t.estado = 'completado' THEN t.precio_final ELSE 0 END) as total_gastado,
                 MAX(t.fecha) as ultima_cita
             FROM clientes c
             LEFT JOIN turnos t ON c.id = t.id_cliente AND t.id_usuario = ?
             WHERE c.id = ?
-            GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas
+            GROUP BY c.id, c.nombre, c.apellido, c.telefono, c.email, c.notas, c.fecha_nacimiento
         `, [userId, id]);
 
-        if (clientWithUser.length === 0 || clientWithUser[0].total_citas === 0) {
+        if (clientWithUser.length === 0) {
             if (!res.headersSent) {
                 return res.status(404).json({
                     success: false,
-                    message: 'Cliente no encontrado o sin citas con este usuario'
+                    message: 'Cliente no encontrado'
+                });
+            }
+            return;
+        }
+
+        // Si el cliente no tiene citas, usar datos básicos del cliente
+        const clientData = clientWithUser[0];
+        if (clientData.total_citas === 0) {
+            // Cliente sin citas - devolver datos básicos
+            if (!res.headersSent) {
+                res.json({
+                    success: true,
+                    data: {
+                        ...client,
+                        ...clientData,
+                        appointments: [],
+                        stats: {
+                            total_citas: 0,
+                            citas_completadas: 0,
+                            citas_canceladas: 0,
+                            total_gastado: 0,
+                            promedio_gasto: 0
+                        }
+                    }
                 });
             }
             return;
@@ -1031,7 +1060,7 @@ async function getClientDetails(req, res) {
         `, [id, userId]);
 
         if (!res.headersSent) {
-            res.json({
+            const responseData = {
                 success: true,
                 data: {
                     ...client,
@@ -1039,7 +1068,10 @@ async function getClientDetails(req, res) {
                     appointments,
                     stats: stats[0]
                 }
-            });
+            };
+            
+            console.log('🔍 Enviando respuesta:', responseData);
+            res.json(responseData);
         }
 
     } catch (error) {
