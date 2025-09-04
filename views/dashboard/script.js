@@ -255,11 +255,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         container.innerHTML = appointments.map(appointment => {
-            // Debug: mostrar la fecha original y formateada
-            console.log('🔍 Fecha original:', appointment.fecha, 'Tipo:', typeof appointment.fecha);
             const time = formatTime(appointment.hora_inicio);
             const date = formatDate(appointment.fecha);
-            console.log('🔍 Fecha formateada:', date);
             const statusClass = getStatusClass(appointment.estado);
             const statusText = getStatusText(appointment.estado);
             

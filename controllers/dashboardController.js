@@ -80,12 +80,6 @@ async function getDashboardStats(req, res) {
             LIMIT 10
         `, [userId]);
 
-        // Debug: mostrar las fechas de los próximos turnos
-        console.log('🔍 Próximos turnos encontrados:', upcomingTurnos.length);
-        upcomingTurnos.forEach(turno => {
-            console.log('🔍 Turno ID:', turno.id, 'Fecha:', turno.fecha, 'Tipo fecha:', typeof turno.fecha);
-        });
-
         // Servicios más populares
         const popularServices = await query(`
             SELECT 

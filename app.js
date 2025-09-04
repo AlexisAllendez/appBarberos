@@ -6,6 +6,9 @@ const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
+// Importar gestor de logs
+require('./config/log-manager');
+
 
 
 // Importar configuración de base de datos

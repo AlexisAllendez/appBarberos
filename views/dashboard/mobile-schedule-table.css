@@ -1,5 +1,5 @@
 /* ========================================
-   MEJORAS RESPONSIVE PARA TABLA DE HORARIOS
+   MEJORAS RESPONSIVE PARA TABLA DE HORARIOS DETALLADOS
    ======================================== */
 
 /* Estilos específicos para móviles */
@@ -14,11 +14,7 @@
     }
     
     /* Ocultar encabezados en móviles */
-    #scheduleTableBody {
-        display: block;
-    }
-    
-    #scheduleTableBody thead {
+    .table-responsive table thead {
         display: none;
     }
     
@@ -120,23 +116,18 @@
         letter-spacing: 0.5px;
     }
     
-    /* Estilos para botones de acciones */
+    /* Estilos para botones de acción */
     #scheduleTableBody td .btn-group {
         display: flex;
         gap: 0.5rem;
-        flex-wrap: wrap;
+        justify-content: flex-start;
         margin-top: 0.5rem;
     }
     
     #scheduleTableBody td .btn-group .btn {
-        flex: 1;
-        min-width: 40px;
-        height: 40px;
+        padding: 0.5rem;
         border-radius: 8px;
         font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         transition: all 0.3s ease;
     }
     
@@ -144,594 +135,158 @@
         transform: scale(1.05);
     }
     
-    /* Separador visual entre elementos */
-    #scheduleTableBody td:not(:last-child) {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 0.75rem;
+    /* Estilos específicos para horarios activos */
+    #scheduleTableBody tr.horario-activo {
+        border-left: 4px solid #28a745;
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
     }
     
-    /* Estado vacío */
-    #scheduleTableBody tr td[colspan="6"] {
-        text-align: center;
-        padding: 2rem 1rem;
-        color: var(--text-muted);
+    /* Estilos específicos para horarios inactivos */
+    #scheduleTableBody tr.horario-inactivo {
+        border-left: 4px solid #6c757d;
+        background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
+        opacity: 0.8;
     }
     
-    #scheduleTableBody tr td[colspan="6"] p {
-        font-size: 1rem;
-        margin: 0;
+    /* Estilos específicos para horarios de fin de semana */
+    #scheduleTableBody tr.horario-fin-semana {
+        border-left: 4px solid #17a2b8;
+        background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
     }
     
-    /* Estado vacío con icono */
-    #scheduleTableBody tr td[colspan="6"] i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-}
-
-/* Estilos para tablets */
-@media (min-width: 769px) and (max-width: 1024px) {
-    
-    /* Reducir padding en tablets */
-    #scheduleTableBody thead th,
-    #scheduleTableBody tbody td {
-        padding: 0.75rem 0.5rem;
+    /* Estilos específicos para horarios especiales */
+    #scheduleTableBody tr.horario-especial {
+        border-left: 4px solid #ffc107;
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
     }
     
-    /* Hacer botones más pequeños */
-    #scheduleTableBody tbody td .btn-group .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-    }
-    
-    /* Reducir tamaño de texto */
-    #scheduleTableBody tbody td strong {
-        font-size: 0.9rem;
-    }
-    
-    #scheduleTableBody tbody td small {
-        font-size: 0.75rem;
-    }
-}
-
-/* Estilos para pantallas muy pequeñas */
-@media (max-width: 480px) {
-    
-    /* Reducir padding en móviles pequeños */
+    /* Animaciones de entrada */
     #scheduleTableBody tr {
-        padding: 0.75rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    #scheduleTableBody td {
-        padding: 0.4rem 0;
-    }
-    
-    /* Hacer botones más compactos */
-    #scheduleTableBody td .btn-group {
-        gap: 0.25rem;
-    }
-    
-    #scheduleTableBody td .btn-group .btn {
-        min-width: 35px;
-        height: 35px;
-        font-size: 0.8rem;
-    }
-    
-    /* Reducir tamaño de texto */
-    #scheduleTableBody td strong {
-        font-size: 0.9rem;
-    }
-    
-    #scheduleTableBody td small {
-        font-size: 0.7rem;
-    }
-    
-    /* Etiquetas más pequeñas */
-    #scheduleTableBody td:before {
-        font-size: 0.7rem;
-    }
-}
-
-/* ========================================
-   MEJORAS VISUALES ADICIONALES
-   ======================================== */
-
-/* Animación de entrada para las filas */
-@keyframes slideInUp {
-    from {
+        animation: slideInUp 0.3s ease forwards;
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#scheduleTableBody tr {
-    animation: slideInUp 0.3s ease-out;
-}
-
-/* Efecto de pulso para horarios activos */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-/* Estados que requieren atención */
-#scheduleTableBody tr.horario-activo .badge {
-    animation: pulse 2s infinite;
-}
-
-/* Mejoras para accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-    #scheduleTableBody tr,
-    #scheduleTableBody td .btn-group .btn {
-        animation: none;
-        transition: none;
-    }
-}
-
-/* Modo oscuro mejorado */
-@media (prefers-color-scheme: dark) {
-    #scheduleTableBody tr {
-        background: rgba(30, 30, 30, 0.8);
-        border-color: rgba(255, 255, 255, 0.1);
+    
+    #scheduleTableBody tr:nth-child(1) { animation-delay: 0.1s; }
+    #scheduleTableBody tr:nth-child(2) { animation-delay: 0.2s; }
+    #scheduleTableBody tr:nth-child(3) { animation-delay: 0.3s; }
+    #scheduleTableBody tr:nth-child(4) { animation-delay: 0.4s; }
+    #scheduleTableBody tr:nth-child(5) { animation-delay: 0.5s; }
+    #scheduleTableBody tr:nth-child(6) { animation-delay: 0.6s; }
+    #scheduleTableBody tr:nth-child(7) { animation-delay: 0.7s; }
+    
+    @keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
-    #scheduleTableBody tr:hover {
-        background: rgba(40, 40, 40, 0.9);
-        border-color: var(--accent-color);
+    /* Mejoras para el estado vacío */
+    #scheduleTableBody tr td:nth-child(2):empty::after,
+    #scheduleTableBody tr td:nth-child(3):empty::after,
+    #scheduleTableBody tr td:nth-child(4):empty::after {
+        content: "No configurado";
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 0.9rem;
+    }
+    
+    /* Estilos para el contenedor de la tabla */
+    .card-body .table-responsive {
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Mejoras para el espaciado */
+    #scheduleTableBody tr:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Estilos para el mensaje de estado vacío */
+    #scheduleTableBody tr td[colspan] {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-muted);
+        font-style: italic;
     }
 }
 
 /* ========================================
-   ESTADOS ESPECÍFICOS MEJORADOS
+   ESTILOS ADICIONALES PARA TABLET
+   ======================================== */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Mantener diseño de tabla pero con mejoras */
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    #scheduleTableBody tr {
+        transition: all 0.3s ease;
+    }
+    
+    #scheduleTableBody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+        transform: translateY(-1px);
+    }
+    
+    /* Mejorar botones en tablet */
+    #scheduleTableBody td .btn-group .btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* ========================================
+   ESTILOS PARA ESTADOS ESPECÍFICOS
    ======================================== */
 
 /* Horario activo */
 #scheduleTableBody tr.horario-activo {
     border-left: 4px solid #28a745;
-    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
 }
 
 /* Horario inactivo */
 #scheduleTableBody tr.horario-inactivo {
     border-left: 4px solid #6c757d;
-    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
     opacity: 0.8;
-}
-
-/* Horario especial */
-#scheduleTableBody tr.horario-especial {
-    border-left: 4px solid #ffc107;
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
 }
 
 /* Horario de fin de semana */
 #scheduleTableBody tr.horario-fin-semana {
     border-left: 4px solid #17a2b8;
-    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
 }
 
-/* Horario reducido */
-#scheduleTableBody tr.horario-reducido {
-    border-left: 4px solid #dc3545;
-    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
-}
-
-/* ========================================
-   ESTILOS ESPECÍFICOS PARA HORARIOS
-   ======================================== */
-
-/* Información del día destacada */
-#scheduleTableBody td:nth-child(1) strong {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-/* Horas de trabajo */
-#scheduleTableBody td:nth-child(2),
-#scheduleTableBody td:nth-child(3) {
-    color: var(--info-color);
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-/* Información de pausa */
-#scheduleTableBody td:nth-child(4) {
-    color: var(--warning-color);
-    font-style: italic;
-    line-height: 1.4;
-}
-
-/* Estado del horario */
-#scheduleTableBody td:nth-child(5) .badge {
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Botones de acción - Estilo igual que tabla de turnos */
-#scheduleTableBody td .btn-group .btn:hover {
-    transform: scale(1.05);
-}
-
-/* Efectos modernos para badges y botones - Igual que tabla de turnos */
-#scheduleTableBody tr:hover .badge {
-    transform: scale(1.08) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-}
-
-#scheduleTableBody tr:hover .btn-group .btn {
-    transform: scale(1.05) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* ========================================
-   MEJORAS PARA DÍAS ESPECIALES
-   ======================================== */
-
-/* Contenedor de días especiales */
-#specialDaysContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-}
-
-/* Tarjetas de días especiales */
-.special-day-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.special-day-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Tipos de días especiales */
-.special-day-card.vacaciones {
-    border-left: 4px solid #17a2b8;
-    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
-}
-
-.special-day-card.feriado {
-    border-left: 4px solid #dc3545;
-    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
-}
-
-.special-day-card.enfermedad {
-    border-left: 4px solid #ffc107;
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
-}
-
-.special-day-card.otro {
-    border-left: 4px solid #6c757d;
-    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
-}
-
-/* ========================================
-   MEJORAS PARA CONFIGURACIÓN GENERAL
-   ======================================== */
-
-/* Formulario de configuración */
-.config-form {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Campos del formulario */
-.config-form .form-label {
-    font-weight: 600;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-}
-
-.config-form .form-select,
-.config-form .form-control {
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
-}
-
-.config-form .form-select:focus,
-.config-form .form-control:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-/* Checkbox personalizado */
-.config-form .form-check-input:checked {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
-/* ========================================
-   MEJORAS PARA BOTONES DE ACCIÓN
-   ======================================== */
-
-/* Botón agregar horario */
-#addScheduleBtn {
-    background: var(--success-color);
-    border-color: var(--success-color);
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-#addScheduleBtn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-}
-
-/* Botón agregar día especial */
-#addSpecialDayBtn {
-    background: var(--warning-color);
-    border-color: var(--warning-color);
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-#addSpecialDayBtn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-}
-
-/* ========================================
-   MEJORAS PARA VISTA SEMANAL
-   ======================================== */
-
-/* Vista semanal en móviles */
-.weekly-overview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.week-day-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.week-day-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.week-day-card.active {
-    border-left: 4px solid #28a745;
-    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
-}
-
-.week-day-card.inactive {
-    border-left: 4px solid #6c757d;
-    background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
-    opacity: 0.6;
-}
-
-/* ========================================
-   ESTILOS PARA HORARIOS ESPECÍFICOS
-   ======================================== */
-
-/* Horarios de lunes a viernes */
-#scheduleTableBody tr.horario-laboral {
-    border-left: 4px solid #28a745;
-}
-
-/* Horarios de fin de semana */
-#scheduleTableBody tr.horario-fin-semana {
-    border-left: 4px solid #17a2b8;
-}
-
-/* Horarios con pausa */
-#scheduleTableBody tr.horario-con-pausa {
+/* Horario especial */
+#scheduleTableBody tr.horario-especial {
     border-left: 4px solid #ffc107;
 }
 
-/* Horarios sin pausa */
-#scheduleTableBody tr.horario-sin-pausa {
-    border-left: 4px solid #6c757d;
-}
-
 /* ========================================
-   MEJORAS PARA RESPONSIVE ESPECÍFICO
+   MEJORAS DE ACCESIBILIDAD
    ======================================== */
 
-/* Móviles muy pequeños */
-@media (max-width: 360px) {
-    #scheduleTableBody tr {
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    #scheduleTableBody td {
-        padding: 0.3rem 0;
-    }
-    
-    #scheduleTableBody td .btn-group .btn {
-        min-width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-    }
-    
+/* Mejorar contraste en modo oscuro */
+@media (prefers-color-scheme: dark) {
     #scheduleTableBody td:before {
-        font-size: 0.6rem;
+        color: var(--accent-color);
     }
-}
-
-/* Tablets en modo portrait */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    
     #scheduleTableBody tr {
-        padding: 1.5rem;
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Mejorar legibilidad para usuarios con problemas de visión */
+@media (prefers-reduced-motion: reduce) {
+    #scheduleTableBody tr {
+        animation: none;
+        transition: none;
     }
     
-    #scheduleTableBody td {
-        padding: 0.75rem 0;
+    #scheduleTableBody tr:hover {
+        transform: none;
     }
-    
-    #scheduleTableBody td strong {
-        font-size: 1.1rem;
-    }
-}
-
-/* ========================================
-   ESTILOS PARA ESTADOS DE HORARIOS
-   ======================================== */
-
-/* Estado activo */
-#scheduleTableBody tr .badge.bg-success {
-    background: var(--success-color) !important;
-    color: white;
-}
-
-/* Estado inactivo */
-#scheduleTableBody tr .badge.bg-secondary {
-    background: var(--text-muted) !important;
-    color: white;
-}
-
-/* Estado especial */
-#scheduleTableBody tr .badge.bg-warning {
-    background: var(--warning-color) !important;
-    color: white;
-}
-
-/* Estado de emergencia */
-#scheduleTableBody tr .badge.bg-danger {
-    background: var(--danger-color) !important;
-    color: white;
-}
-
-/* ========================================
-   MEJORAS PARA ACCESIBILIDAD
-   ======================================== */
-
-/* Contraste mejorado */
-#scheduleTableBody td {
-    color: var(--text-light);
-}
-
-#scheduleTableBody td:before {
-    color: var(--accent-color);
-    font-weight: 700;
-}
-
-/* Tamaños mínimos para tocar */
-#scheduleTableBody td .btn-group .btn {
-    min-height: 44px;
-    min-width: 44px;
-}
-
-/* Focus visible */
-#scheduleTableBody td .btn-group .btn:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-
-/* ========================================
-   ESTILOS PARA ANIMACIONES
-   ======================================== */
-
-/* Animación de carga */
-@keyframes loading {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
-
-#scheduleTableBody tr.loading {
-    animation: loading 1.5s infinite;
-}
-
-/* Animación de éxito */
-@keyframes success {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-#scheduleTableBody tr.success {
-    animation: success 0.5s ease-out;
-}
-
-/* ========================================
-   ESTILOS PARA HORARIOS VACÍOS
-   ======================================== */
-
-/* Mensaje cuando no hay horarios */
-#scheduleTableBody:empty::after {
-    content: "No hay horarios configurados";
-    display: block;
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-/* Mensaje de carga */
-#scheduleTableBody.loading::after {
-    content: "Cargando horarios...";
-    display: block;
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-/* ========================================
-   ESTILOS PARA HORARIOS ESPECIALES
-   ======================================== */
-
-/* Horarios con descripción */
-#scheduleTableBody tr.horario-con-descripcion {
-    border-left: 4px solid #6f42c1;
-    background: linear-gradient(135deg, rgba(111, 66, 193, 0.1) 0%, rgba(111, 66, 193, 0.05) 100%);
-}
-
-/* Horarios temporales */
-#scheduleTableBody tr.horario-temporal {
-    border-left: 4px solid #fd7e14;
-    background: linear-gradient(135deg, rgba(253, 126, 20, 0.1) 0%, rgba(253, 126, 20, 0.05) 100%);
-}
-
-/* ========================================
-   MEJORAS PARA INTERACCIONES
-   ======================================== */
-
-/* Efecto de selección */
-#scheduleTableBody tr.selected {
-    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 123, 255, 0.05) 100%);
-    border-color: var(--primary-color);
-}
-
-/* Efecto de hover mejorado */
-#scheduleTableBody tr:hover {
-    cursor: pointer;
-}
-
-/* Transiciones suaves */
-#scheduleTableBody tr,
-#scheduleTableBody td,
-#scheduleTableBody td .btn-group .btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

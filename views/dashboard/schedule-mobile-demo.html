@@ -32,14 +32,11 @@
                     
                     <!-- Demo Card -->
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-header">
                             <h5 class="card-title mb-0">
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 Horarios Detallados
                             </h5>
-                            <button class="btn btn-success btn-sm" id="addScheduleBtn">
-                                <i class="fas fa-plus me-2"></i>Agregar Horario
-                            </button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -56,27 +53,13 @@
                                     </thead>
                                     <tbody id="scheduleTableBody">
                                         <!-- Lunes - Activo -->
-                                        <tr class="horario-activo horario-laboral">
-                                            <td>
-                                                <strong>Lunes</strong>
-                                            </td>
-                                            <td>
-                                                <strong>09:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>18:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">
-                                                    <i class="fas fa-coffee me-1"></i>13:00 - 14:00
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">
-                                                    Activo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-activo">
+                                            <td data-label="Día"><strong>Lunes</strong></td>
+                                            <td data-label="Hora Inicio"><strong>09:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>18:00</strong></td>
+                                            <td data-label="Pausa">12:00 - 13:00</td>
+                                            <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -89,27 +72,13 @@
                                         </tr>
                                         
                                         <!-- Martes - Activo -->
-                                        <tr class="horario-activo horario-laboral">
-                                            <td>
-                                                <strong>Martes</strong>
-                                            </td>
-                                            <td>
-                                                <strong>09:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>18:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">
-                                                    <i class="fas fa-coffee me-1"></i>13:00 - 14:00
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">
-                                                    Activo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-activo">
+                                            <td data-label="Día"><strong>Martes</strong></td>
+                                            <td data-label="Hora Inicio"><strong>09:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>18:00</strong></td>
+                                            <td data-label="Pausa">12:00 - 13:00</td>
+                                            <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -122,27 +91,13 @@
                                         </tr>
                                         
                                         <!-- Miércoles - Activo -->
-                                        <tr class="horario-activo horario-laboral">
-                                            <td>
-                                                <strong>Miércoles</strong>
-                                            </td>
-                                            <td>
-                                                <strong>09:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>18:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">
-                                                    <i class="fas fa-coffee me-1"></i>13:00 - 14:00
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">
-                                                    Activo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-activo">
+                                            <td data-label="Día"><strong>Miércoles</strong></td>
+                                            <td data-label="Hora Inicio"><strong>09:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>18:00</strong></td>
+                                            <td data-label="Pausa">12:00 - 13:00</td>
+                                            <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -155,27 +110,13 @@
                                         </tr>
                                         
                                         <!-- Jueves - Activo -->
-                                        <tr class="horario-activo horario-laboral">
-                                            <td>
-                                                <strong>Jueves</strong>
-                                            </td>
-                                            <td>
-                                                <strong>09:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>18:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">
-                                                    <i class="fas fa-coffee me-1"></i>13:00 - 14:00
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">
-                                                    Activo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-activo">
+                                            <td data-label="Día"><strong>Jueves</strong></td>
+                                            <td data-label="Hora Inicio"><strong>09:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>18:00</strong></td>
+                                            <td data-label="Pausa">12:00 - 13:00</td>
+                                            <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -188,27 +129,13 @@
                                         </tr>
                                         
                                         <!-- Viernes - Activo -->
-                                        <tr class="horario-activo horario-laboral">
-                                            <td>
-                                                <strong>Viernes</strong>
-                                            </td>
-                                            <td>
-                                                <strong>09:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>18:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">
-                                                    <i class="fas fa-coffee me-1"></i>13:00 - 14:00
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">
-                                                    Activo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-activo">
+                                            <td data-label="Día"><strong>Viernes</strong></td>
+                                            <td data-label="Hora Inicio"><strong>09:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>18:00</strong></td>
+                                            <td data-label="Pausa">12:00 - 13:00</td>
+                                            <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -221,27 +148,13 @@
                                         </tr>
                                         
                                         <!-- Sábado - Fin de semana -->
-                                        <tr class="horario-activo horario-fin-semana horario-especial">
-                                            <td>
-                                                <strong>Sábado</strong>
-                                            </td>
-                                            <td>
-                                                <strong>10:00</strong>
-                                            </td>
-                                            <td>
-                                                <strong>16:00</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-muted">
-                                                    <i class="fas fa-times me-1"></i>Sin pausa
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-warning">
-                                                    Especial
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-fin-semana">
+                                            <td data-label="Día"><strong>Sábado</strong></td>
+                                            <td data-label="Hora Inicio"><strong>10:00</strong></td>
+                                            <td data-label="Hora Fin"><strong>16:00</strong></td>
+                                            <td data-label="Pausa">Sin pausa</td>
+                                            <td data-label="Estado"><span class="badge bg-info">Fin de Semana</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <button class="btn btn-outline-primary" title="Editar horario">
                                                         <i class="fas fa-edit"></i>
@@ -254,33 +167,16 @@
                                         </tr>
                                         
                                         <!-- Domingo - Inactivo -->
-                                        <tr class="horario-inactivo horario-fin-semana">
-                                            <td>
-                                                <strong>Domingo</strong>
-                                            </td>
-                                            <td>
-                                                <strong>--:--</strong>
-                                            </td>
-                                            <td>
-                                                <strong>--:--</strong>
-                                            </td>
-                                            <td>
-                                                <span class="text-muted">
-                                                    <i class="fas fa-times me-1"></i>Sin pausa
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-secondary">
-                                                    Inactivo
-                                                </span>
-                                            </td>
-                                            <td>
+                                        <tr class="horario-inactivo">
+                                            <td data-label="Día"><strong>Domingo</strong></td>
+                                            <td data-label="Hora Inicio">-</td>
+                                            <td data-label="Hora Fin">-</td>
+                                            <td data-label="Pausa">-</td>
+                                            <td data-label="Estado"><span class="badge bg-secondary">Inactivo</span></td>
+                                            <td data-label="Acciones">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <button class="btn btn-outline-primary" title="Editar horario">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline-danger" title="Eliminar horario">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button class="btn btn-outline-success" title="Agregar horario">
+                                                        <i class="fas fa-plus"></i>
                                                     </button>
                                                 </div>
                                             </td>
@@ -291,221 +187,28 @@
                         </div>
                     </div>
                     
-                    <!-- Días Especiales Demo -->
-                    <div class="card mt-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-calendar-day me-2"></i>
-                                Días Especiales
-                            </h5>
-                            <button class="btn btn-warning btn-sm" id="addSpecialDayBtn">
-                                <i class="fas fa-plus me-2"></i>Agregar Día Especial
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div class="row" id="specialDaysContainer">
-                                <!-- Vacaciones -->
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="special-day-card vacaciones">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-umbrella-beach me-2"></i>
-                                                Vacaciones
-                                            </h6>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                        <p class="text-muted mb-1">
-                                            <i class="fas fa-calendar me-1"></i>
-                                            15/12/2024 - 20/12/2024
-                                        </p>
-                                        <p class="text-muted mb-0">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            Vacaciones de fin de año
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Feriado -->
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="special-day-card feriado">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-flag me-2"></i>
-                                                Feriado Nacional
-                                            </h6>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                        <p class="text-muted mb-1">
-                                            <i class="fas fa-calendar me-1"></i>
-                                            25/12/2024
-                                        </p>
-                                        <p class="text-muted mb-0">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            Navidad
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Enfermedad -->
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="special-day-card enfermedad">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-user-injured me-2"></i>
-                                                Enfermedad
-                                            </h6>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                        <p class="text-muted mb-1">
-                                            <i class="fas fa-calendar me-1"></i>
-                                            10/11/2024
-                                        </p>
-                                        <p class="text-muted mb-0">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            Consulta médica
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Configuración General Demo -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-cog me-2"></i>
-                                Configuración General
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form class="config-form">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="bufferTime" class="form-label">Buffer entre turnos</label>
-                                        <select class="form-select" id="bufferTime">
-                                            <option value="0">Sin buffer</option>
-                                            <option value="5" selected>5 minutos</option>
-                                            <option value="10">10 minutos</option>
-                                            <option value="15">15 minutos</option>
-                                        </select>
-                                        <small class="form-text text-muted">
-                                            <i class="fas fa-clock me-1"></i>
-                                            Tiempo de limpieza/preparación entre turnos
-                                        </small>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="anticipacionReserva" class="form-label">Anticipación mínima</label>
-                                        <select class="form-select" id="anticipacionReserva">
-                                            <option value="60">1 hora antes</option>
-                                            <option value="120">2 horas antes</option>
-                                            <option value="240">4 horas antes</option>
-                                            <option value="1440" selected>1 día antes</option>
-                                            <option value="2880">2 días antes</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="maxReservasDia" class="form-label">Máximo reservas por día</label>
-                                        <input type="number" class="form-control" id="maxReservasDia" value="20" min="1" max="50">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-check mt-4">
-                                            <input class="form-check-input" type="checkbox" id="permitirReservasMismoDia" checked>
-                                            <label class="form-check-label" for="permitirReservasMismoDia">
-                                                Permitir reservas el mismo día
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-save me-2"></i>Guardar Configuración
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Información de la demo -->
-                    <div class="mt-4 p-3 bg-light text-dark rounded">
-                        <h6><i class="fas fa-info-circle me-2"></i>Características de la Tabla de Horarios Móvil:</h6>
-                        <div class="row">
-                            <div class="col-md-6">
+                    <!-- Información adicional -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Características del diseño móvil:</h6>
                                 <ul class="mb-0">
-                                    <li>✅ Filas convertidas en tarjetas</li>
-                                    <li>✅ Etiquetas con iconos para cada campo</li>
-                                    <li>✅ Horarios destacados visualmente</li>
-                                    <li>✅ Estados visuales mejorados</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="mb-0">
-                                    <li>✅ Botones de acción optimizados</li>
-                                    <li>✅ Días especiales en tarjetas</li>
-                                    <li>✅ Configuración responsive</li>
-                                    <li>✅ Accesibilidad mejorada</li>
+                                    <li>✅ Filas convertidas en tarjetas individuales</li>
+                                    <li>✅ Etiquetas descriptivas con emojis</li>
+                                    <li>✅ Botones de acción optimizados para toque</li>
+                                    <li>✅ Estados visuales diferenciados (activo, inactivo, fin de semana)</li>
+                                    <li>✅ Animaciones suaves y transiciones</li>
+                                    <li>✅ Diseño responsive para todos los tamaños de pantalla</li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Estados de horarios -->
-                    <div class="mt-4 p-3 bg-light text-dark rounded">
-                        <h6><i class="fas fa-tags me-2"></i>Estados de Horarios:</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="badge bg-success me-2">Activo</div>
-                                    <small>Horario disponible</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="badge bg-secondary me-2">Inactivo</div>
-                                    <small>Horario no disponible</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="badge bg-warning me-2">Especial</div>
-                                    <small>Horario modificado</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="badge bg-info me-2">Fin de Semana</div>
-                                    <small>Sábado o domingo</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="badge bg-danger me-2">Reducido</div>
-                                    <small>Horario acortado</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Back to Home -->
-                    <div class="text-center mt-3">
-                        <a href="/" class="back-home">
-                            <i class="fas fa-arrow-left me-2"></i>
-                            Volver al inicio
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

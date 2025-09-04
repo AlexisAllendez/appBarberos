@@ -94,46 +94,69 @@ class Client {
      */
     static async findOrCreateByPhone(clientData) {
         try {
-            const { nombre, apellido, telefono, email = null, notas = null } = clientData;
+            // Validar datos requeridos
+            if (!clientData || !clientData.nombre || !clientData.apellido || !clientData.telefono) {
+                throw new Error('Datos del cliente incompletos');
+            }
 
-            console.log('🔍 Buscando cliente por teléfono:', telefono);
+            const { 
+                nombre, 
+                apellido, 
+                telefono, 
+                email = null, 
+                notas = null,
+                fecha_nacimiento = null 
+            } = clientData;
+
+            // Limpiar y validar teléfono
+            const cleanPhone = telefono.replace(/\D/g, '').trim();
+            if (!cleanPhone || cleanPhone.length < 7) {
+                throw new Error('Número de teléfono inválido');
+            }
 
             // Buscar cliente por teléfono exacto
-            const existingClient = await this.findByPhone(telefono);
+            const existingClient = await this.findByPhone(cleanPhone);
             
             if (existingClient) {
-                console.log('✅ Cliente encontrado:', existingClient.nombre, existingClient.apellido, '(ID:', existingClient.id + ')');
-                
                 // Actualizar información del cliente si es necesario
                 const updateData = {
                     nombre: nombre.trim(),
                     apellido: apellido.trim(),
                     email: email ? email.trim() : existingClient.email,
-                    notas: notas ? notas.trim() : existingClient.notas
+                    notas: notas ? notas.trim() : existingClient.notas,
+                    fecha_nacimiento: fecha_nacimiento || existingClient.fecha_nacimiento
                 };
 
                 // Solo actualizar si hay cambios
-                if (updateData.nombre !== existingClient.nombre || 
+                const hasChanges = 
+                    updateData.nombre !== existingClient.nombre || 
                     updateData.apellido !== existingClient.apellido ||
                     updateData.email !== existingClient.email ||
-                    updateData.notas !== existingClient.notas) {
-                    
-                    console.log('🔄 Actualizando información del cliente...');
+                    updateData.notas !== existingClient.notas ||
+                    updateData.fecha_nacimiento !== existingClient.fecha_nacimiento;
+
+                if (hasChanges) {
                     await this.update(existingClient.id, updateData);
-                    
-                    // Retornar cliente actualizado
                     return await this.findById(existingClient.id);
                 }
                 
                 return existingClient;
             } else {
-                console.log('🆕 Creando nuevo cliente...');
-                // Crear nuevo cliente
-                return await this.create(clientData);
+                // Crear nuevo cliente con datos limpios
+                const newClientData = {
+                    nombre: nombre.trim(),
+                    apellido: apellido.trim(),
+                    email: email ? email.trim() : null,
+                    telefono: cleanPhone,
+                    fecha_nacimiento: fecha_nacimiento,
+                    notas: notas ? notas.trim() : null
+                };
+
+                return await this.create(newClientData);
             }
         } catch (error) {
             console.error('Error en findOrCreateByPhone:', error);
-            throw new Error('Error al buscar o crear el cliente');
+            throw new Error(`Error al buscar o crear el cliente: ${error.message}`);
         }
     }
 
@@ -297,8 +320,6 @@ class Client {
      */
     static async searchByName(id_usuario, searchTerm, limit = 20) {
         try {
-            console.log('🔍 Buscando clientes por nombre para usuario:', id_usuario, 'término:', searchTerm);
-            
             const sql = `
                 SELECT DISTINCT c.*, 
                        COUNT(t.id) as total_citas

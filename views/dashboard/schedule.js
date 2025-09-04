@@ -126,34 +126,38 @@ document.addEventListener('DOMContentLoaded', function() {
                     : 'Sin pausa';
 
                 html += `
-                    <tr>
-                        <td>${nombresDias[index]}</td>
-                        <td>${horario.hora_inicio}</td>
-                        <td>${horario.hora_fin}</td>
-                        <td>${pausa}</td>
-                        <td><span class="badge bg-success">Activo</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary edit-schedule" data-id="${horario.id}" data-day="${dia}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger delete-schedule" data-id="${horario.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                    <tr class="horario-activo">
+                        <td data-label="Día"><strong>${nombresDias[index]}</strong></td>
+                        <td data-label="Hora Inicio"><strong>${horario.hora_inicio}</strong></td>
+                        <td data-label="Hora Fin"><strong>${horario.hora_fin}</strong></td>
+                        <td data-label="Pausa">${pausa}</td>
+                        <td data-label="Estado"><span class="badge bg-success">Activo</span></td>
+                        <td data-label="Acciones">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-outline-primary edit-schedule" data-id="${horario.id}" data-day="${dia}" title="Editar horario">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-danger delete-schedule" data-id="${horario.id}" title="Eliminar horario">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
             } else {
                 html += `
-                    <tr>
-                        <td>${nombresDias[index]}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><span class="badge bg-secondary">Inactivo</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-success add-schedule" data-day="${dia}">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                    <tr class="horario-inactivo">
+                        <td data-label="Día"><strong>${nombresDias[index]}</strong></td>
+                        <td data-label="Hora Inicio">-</td>
+                        <td data-label="Hora Fin">-</td>
+                        <td data-label="Pausa">-</td>
+                        <td data-label="Estado"><span class="badge bg-secondary">Inactivo</span></td>
+                        <td data-label="Acciones">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-outline-success add-schedule" data-day="${dia}" title="Agregar horario">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -555,12 +559,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show modal
     function showModal(title, content) {
         const modalHtml = `
-            <div class="modal fade" id="scheduleModal" tabindex="-1">
+            <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">${title}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h5 class="modal-title" id="scheduleModalLabel">${title}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
                             ${content}
